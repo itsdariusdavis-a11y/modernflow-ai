@@ -1,0 +1,48 @@
+/*
+ * Design: Full-width CTA section with gradient background
+ * Centered text with prominent CTA button
+ * Font: Outfit headings, DM Sans body
+ */
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+
+export default function CTA() {
+  return (
+    <section
+      id="book"
+      className="py-20 md:py-28 relative overflow-hidden"
+    >
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.696_0.17_162.48/5%)] via-[oklch(0.696_0.17_162.48/10%)] to-[oklch(0.696_0.17_162.48/5%)]" />
+
+      <div className="container relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-3xl mx-auto"
+        >
+          <p className="section-label mb-4">// Let's Build Your System</p>
+          <h2
+            className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            Ready to stop losing leads and{" "}
+            <span className="gradient-text">start growing?</span>
+          </h2>
+          <p className="text-[oklch(0.65_0.02_155.83)] text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
+            Book a free strategy call and we'll show you exactly how we can automate
+            your lead capture, follow-up, and conversion — tailored to your business.
+          </p>
+          <a href="#book" className="cta-button text-lg !py-4 !px-8">
+            Book My Free Strategy Call <ArrowRight className="w-5 h-5" />
+          </a>
+          <p className="text-[oklch(0.55_0.02_155.83)] text-sm mt-6">
+            No commitment required. 100% free. Let's just talk.
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
