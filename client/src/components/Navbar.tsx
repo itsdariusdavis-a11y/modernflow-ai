@@ -40,7 +40,7 @@ export default function Navbar() {
           className="flex items-center gap-2.5"
         >
           <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/logo-v2-AUfha38so65wrTLhTbAgFp.webp"
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/logo-v3_fdb15a6f.png"
             alt="ModernFlow AI"
             className="h-9 w-9"
           />
