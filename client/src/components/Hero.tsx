@@ -7,6 +7,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronRight, Zap, MessageSquare, Calendar, Star } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useCalendly } from "@/hooks/useCalendly";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/hero-bg-fYkT5qdFmnrDgNZeHnoYC3.webp";
 
@@ -75,6 +76,7 @@ function LiveFeed() {
 }
 
 export default function Hero() {
+  const { openCalendly } = useCalendly();
   return (
     <section
       className="relative min-h-screen flex items-center pt-[72px] overflow-hidden"
@@ -128,9 +130,9 @@ export default function Hero() {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4"
             >
-              <a href="#book" className="cta-button">
+              <button onClick={openCalendly} className="cta-button">
                 Book a Free Strategy Call <ArrowRight className="w-5 h-5" />
-              </a>
+              </button>
               <a href="#how-it-works" className="cta-button-outline">
                 See How It Works <ChevronRight className="w-5 h-5" />
               </a>

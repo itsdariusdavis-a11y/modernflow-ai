@@ -5,8 +5,10 @@
  */
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useCalendly } from "@/hooks/useCalendly";
 
 export default function CTA() {
+  const { openCalendly } = useCalendly();
   return (
     <section
       id="book"
@@ -35,9 +37,9 @@ export default function CTA() {
             Book a free strategy call and we'll show you exactly how we can automate
             your lead capture, follow-up, and conversion — tailored to your business.
           </p>
-          <a href="#book" className="cta-button text-lg !py-4 !px-8">
+          <button onClick={openCalendly} className="cta-button text-lg !py-4 !px-8">
             Book My Free Strategy Call <ArrowRight className="w-5 h-5" />
-          </a>
+          </button>
           <p className="text-[oklch(0.55_0.02_155.83)] text-sm mt-6">
             No commitment required. 100% free. Let's just talk.
           </p>

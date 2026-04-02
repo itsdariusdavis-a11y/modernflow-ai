@@ -1,7 +1,7 @@
 /*
- * Design: Testimonial cards with star ratings
+ * Design: Testimonial cards with star ratings and real headshot photos
  * Glass-card styling, 3 columns on desktop
- * Green accent stars, avatar initials
+ * Green accent stars, circular avatar photos
  * Font: Outfit headings, DM Sans body
  */
 import { motion } from "framer-motion";
@@ -10,45 +10,51 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     name: "Mike Thompson",
-    role: "Thompson Electric, San Diego",
-    quote: "We went from missing 40% of our leads to responding to every single one in under 2 minutes. Our revenue jumped 35% in the first quarter.",
+    role: "Owner, Thompson Electric",
+    location: "San Diego, CA",
+    quote: "We went from missing 40% of our leads to responding to every single one in under 2 minutes. Our revenue jumped 35% in the first quarter alone.",
     stars: 5,
-    initials: "MT",
+    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-1-XGpvVk5WdGkYVwEfa4xnqS.webp",
   },
   {
-    name: "Sarah Chen",
-    role: "ClearFlow Plumbing, Austin",
-    quote: "The AI assistant handles our after-hours calls perfectly. We're booking jobs at 11PM that we would have completely missed before.",
+    name: "Maria Gonzalez",
+    role: "Owner, ClearFlow Plumbing",
+    location: "Austin, TX",
+    quote: "The AI assistant handles our after-hours calls perfectly. We're booking jobs at 11PM that we would have completely missed before. Game changer.",
     stars: 5,
-    initials: "SC",
+    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-2-CiPERiD4q35kYpoBYpciNK.webp",
   },
   {
-    name: "David Rodriguez",
-    role: "Elite HVAC Solutions, Phoenix",
-    quote: "ModernFlow built us a system that runs itself. I spend zero time on follow-ups now, and our close rate went from 22% to 41%.",
+    name: "David Williams",
+    role: "Owner, Elite HVAC Solutions",
+    location: "Phoenix, AZ",
+    quote: "ModernFlow built us a system that runs itself. I spend zero time on follow-ups now, and our close rate went from 22% to 41% in 90 days.",
     stars: 5,
-    initials: "DR",
+    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-3-LNdUf5zEVaGjtTf2c9hcQW.webp",
   },
   {
-    name: "James Wilson",
-    role: "Wilson Roofing, Denver",
-    quote: "The paid ads campaign they built generates 30+ qualified leads per week. Best marketing investment we've ever made.",
+    name: "Jennifer Walsh",
+    role: "Owner, Walsh Roofing Co.",
+    location: "Denver, CO",
+    quote: "The paid ads campaign they built generates 30+ qualified leads per week. Best marketing investment we've ever made. ROI was positive in week two.",
     stars: 5,
-    initials: "JW",
+    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-4-GvUkNnscwNaV2tqbPyRA3n.webp",
   },
   {
-    name: "Lisa Park",
-    role: "GreenScape Landscaping, Portland",
-    quote: "Our Google reviews went from 47 to 180+ in six months. The automated review requests are a game-changer for our reputation.",
+    name: "Kevin Nguyen",
+    role: "Owner, Nguyen Landscaping",
+    location: "Portland, OR",
+    quote: "Our Google reviews went from 47 to 180+ in six months. The automated review requests are a game-changer for our reputation and local SEO.",
     stars: 5,
-    initials: "LP",
+    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-5-RikxRFDncEjKWDfE3ehhEc.webp",
   },
   {
     name: "Robert Martinez",
-    role: "Martinez General Contracting, LA",
+    role: "Owner, Martinez General Contracting",
+    location: "Los Angeles, CA",
     quote: "I was skeptical about AI, but the results speak for themselves. We've doubled our monthly revenue since implementing ModernFlow's system.",
     stars: 5,
-    initials: "RM",
+    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-6-4PYJmsqb9ywuFKoBfNNirE.webp",
   },
 ];
 
@@ -81,27 +87,28 @@ export default function Results() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.35, delay: i * 0.04 }}
-              className="glass-card p-7"
+              className="glass-card p-7 flex flex-col"
             >
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.stars }).map((_, j) => (
                   <Star key={j} className="w-4 h-4 fill-[#00C896] text-[#00C896]" />
                 ))}
               </div>
-              <p className="text-white/90 text-sm leading-relaxed mb-6 italic">
+              <p className="text-white/90 text-sm leading-relaxed mb-6 italic flex-1">
                 "{t.quote}"
               </p>
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${i % 2 === 0 ? 'bg-[#00C896]/15' : 'bg-[#00B4D8]/15'}`}>
-                  <span className={`text-xs font-bold ${i % 2 === 0 ? 'text-[#00C896]' : 'text-[#00B4D8]'}`} style={{ fontFamily: "'Outfit', sans-serif" }}>
-                    {t.initials}
-                  </span>
-                </div>
+                <img
+                  src={t.photo}
+                  alt={t.name}
+                  className="w-11 h-11 rounded-full object-cover object-top ring-2 ring-[#00C896]/20 flex-shrink-0"
+                />
                 <div>
-                  <p className="text-white font-medium text-sm" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  <p className="text-white font-semibold text-sm" style={{ fontFamily: "'Outfit', sans-serif" }}>
                     {t.name}
                   </p>
                   <p className="text-[oklch(0.55_0.02_155.83)] text-xs">{t.role}</p>
+                  <p className="text-[#00C896]/70 text-xs">{t.location}</p>
                 </div>
               </div>
             </motion.div>

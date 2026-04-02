@@ -2,10 +2,12 @@
  * Design: Dark transparent navbar with green accent CTA
  * Font: Outfit for brand, DM Sans for nav links
  * Style: Solid bg, sticky top, green border-bottom on scroll
+ * Calendly: Opens popup on CTA click
  */
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCalendly } from "@/hooks/useCalendly";
 
 const navLinks = [
   { label: "Services", href: "#services" },
@@ -13,12 +15,14 @@ const navLinks = [
   { label: "Results", href: "#results" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrolledRef = useRef(false);
+  const { openCalendly } = useCalendly();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,10 +52,7 @@ export default function Navbar() {
     >
       <div className="container flex items-center justify-between h-[72px]">
         {/* Logo */}
-        <a
-          href="#"
-          className="flex items-center gap-2.5"
-        >
+        <a href="#" className="flex items-center gap-2.5">
           <img
             src="https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/logo-green-solid-icon-eq6vWGfcUacBZsGt7wW64F.webp"
             alt="ModernFlow AI"
@@ -80,13 +81,13 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA Button */}
-        <a
-          href="#book"
+        {/* CTA Button — opens Calendly popup */}
+        <button
+          onClick={openCalendly}
           className="hidden md:inline-flex cta-button text-sm !py-2.5 !px-5"
         >
           Book a Free Strategy Call <ArrowRight className="w-4 h-4" />
-        </a>
+        </button>
 
         {/* Mobile Menu Toggle */}
         <button
@@ -120,13 +121,12 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <a
-                href="#book"
+              <button
+                onClick={(e) => { setMobileOpen(false); openCalendly(e); }}
                 className="cta-button text-sm justify-center mt-2"
-                onClick={() => setMobileOpen(false)}
               >
                 Book a Free Strategy Call <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

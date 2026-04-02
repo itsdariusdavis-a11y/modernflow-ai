@@ -9,6 +9,7 @@ import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import About from "@/components/About";
 import CTA from "@/components/CTA";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -25,6 +26,7 @@ export default function Home() {
       <FAQ />
       <About />
       <CTA />
+      <Contact />
       <Footer />
     </div>
   );

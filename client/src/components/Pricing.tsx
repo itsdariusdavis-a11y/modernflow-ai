@@ -5,6 +5,7 @@
  */
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
+import { useCalendly } from "@/hooks/useCalendly";
 
 const plans = [
   {
@@ -55,6 +56,7 @@ const plans = [
 ];
 
 export default function Pricing() {
+  const { openCalendly } = useCalendly();
   return (
     <section id="pricing" className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]">
       <div className="container">
@@ -137,12 +139,12 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <a
-                href={plan.href}
+              <button
+                onClick={openCalendly}
                 className={plan.popular ? "cta-button justify-center" : "cta-button-outline justify-center"}
               >
                 {plan.cta} <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </motion.div>
           ))}
         </div>
