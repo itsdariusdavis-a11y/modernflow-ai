@@ -85,15 +85,15 @@ export default function Results() {
             >
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.stars }).map((_, j) => (
-                  <Star key={j} className="w-4 h-4 fill-[oklch(0.696_0.17_162.48)] text-[oklch(0.696_0.17_162.48)]" />
+                  <Star key={j} className="w-4 h-4 fill-[#00C896] text-[#00C896]" />
                 ))}
               </div>
               <p className="text-white/90 text-sm leading-relaxed mb-6 italic">
                 "{t.quote}"
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[oklch(0.696_0.17_162.48/15%)] flex items-center justify-center">
-                  <span className="text-[oklch(0.696_0.17_162.48)] text-xs font-bold" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${i % 2 === 0 ? 'bg-[#00C896]/15' : 'bg-[#00B4D8]/15'}`}>
+                  <span className={`text-xs font-bold ${i % 2 === 0 ? 'text-[#00C896]' : 'text-[#00B4D8]'}`} style={{ fontFamily: "'Outfit', sans-serif" }}>
                     {t.initials}
                   </span>
                 </div>

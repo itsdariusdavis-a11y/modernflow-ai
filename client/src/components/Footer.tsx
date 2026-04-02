@@ -32,11 +32,20 @@ export default function Footer() {
           <div>
             <a
               href="#"
-              className="font-heading text-xl font-bold text-white tracking-tight inline-block mb-4"
-              style={{ fontFamily: "'Outfit', sans-serif" }}
+              className="flex items-center gap-2.5 mb-4"
             >
-              Modern<span className="gradient-text">Flow</span>{" "}
-              <span className="text-white font-light">AI</span>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/logo-v2-AUfha38so65wrTLhTbAgFp.webp"
+                alt="ModernFlow AI"
+                className="h-8 w-8"
+              />
+              <span
+                className="font-heading text-xl font-bold text-white tracking-tight"
+                style={{ fontFamily: "'Outfit', sans-serif" }}
+              >
+                Modern<span className="gradient-text">Flow</span>{" "}
+                <span className="text-white/70 font-light">AI</span>
+              </span>
             </a>
             <p className="text-[oklch(0.55_0.02_155.83)] text-sm leading-relaxed">
               AI-powered automation systems for service businesses. Capture more leads,
@@ -57,7 +66,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[oklch(0.696_0.17_162.48)] transition-colors text-sm"
+                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm"
                   >
                     {link.label}
                   </a>
@@ -79,7 +88,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[oklch(0.696_0.17_162.48)] transition-colors text-sm"
+                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm"
                   >
                     {link.label}
                   </a>
@@ -101,7 +110,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[oklch(0.696_0.17_162.48)] transition-colors text-sm"
+                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm"
                   >
                     {link.label}
                   </a>

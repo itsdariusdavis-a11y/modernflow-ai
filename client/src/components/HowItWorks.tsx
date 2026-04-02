@@ -66,8 +66,8 @@ export default function HowItWorks() {
               >
                 {step.number}
               </span>
-              <div className="w-10 h-10 rounded-lg bg-[oklch(0.696_0.17_162.48/10%)] flex items-center justify-center mb-5">
-                <span className="text-[oklch(0.696_0.17_162.48)] font-bold text-sm" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-5 ${i % 2 === 0 ? 'bg-[#00C896]/10' : 'bg-[#00B4D8]/10'}`}>
+                <span className={`font-bold text-sm ${i % 2 === 0 ? 'text-[#00C896]' : 'text-[#00B4D8]'}`} style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   {step.number}
                 </span>
               </div>

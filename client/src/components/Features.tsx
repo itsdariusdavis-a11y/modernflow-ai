@@ -72,8 +72,8 @@ export default function Features() {
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 className="glass-card p-7"
               >
-                <div className="w-12 h-12 rounded-xl bg-[oklch(0.696_0.17_162.48/10%)] flex items-center justify-center mb-5">
-                  <Icon className="w-6 h-6 text-[oklch(0.696_0.17_162.48)]" />
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${i % 2 === 0 ? 'bg-[#00C896]/10' : 'bg-[#00B4D8]/10'}`}>
+                  <Icon className={`w-6 h-6 ${i % 2 === 0 ? 'text-[#00C896]' : 'text-[#00B4D8]'}`} />
                 </div>
                 <h3
                   className="text-lg font-semibold text-white mb-3"

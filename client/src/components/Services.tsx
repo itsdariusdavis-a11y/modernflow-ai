@@ -83,7 +83,7 @@ export default function Services() {
                 onClick={() => setActiveTab(i)}
                 className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium transition-all ${
                   activeTab === i
-                    ? "bg-[oklch(0.696_0.17_162.48)] text-[oklch(0.145_0.014_155.83)]"
+                    ? "bg-gradient-to-r from-[#00C896] to-[#00B4D8] text-[oklch(0.145_0.014_155.83)]"
                     : "glass-card text-[oklch(0.65_0.02_155.83)] hover:text-white"
                 }`}
                 style={{ fontFamily: "'Outfit', sans-serif" }}
@@ -120,7 +120,7 @@ export default function Services() {
               <ul className="space-y-3">
                 {active.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-3 text-white/90 text-sm">
-                    <Check className="w-4 h-4 text-[oklch(0.696_0.17_162.48)] shrink-0" />
+                    <Check className="w-4 h-4 text-[#00C896] shrink-0" />
                     {feature}
                   </li>
                 ))}

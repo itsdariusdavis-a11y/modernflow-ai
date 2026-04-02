@@ -9,54 +9,45 @@ import { Check, ArrowRight } from "lucide-react";
 const plans = [
   {
     name: "Starter",
-    subtitle: "For contractors just getting started",
-    setupFee: "$997",
-    monthlyFee: "$297/mo",
+    subtitle: "Small Businesses",
+    setupFee: "$1,000",
+    monthlyFee: "$97/mo",
     popular: false,
     features: [
-      "Custom CRM setup & configuration",
-      "AI lead response (SMS & email)",
-      "Basic automation sequences",
-      "Google review automation",
-      "Mobile app access",
-      "Email support",
+      "3-Page Website",
+      "SEO Optimization",
+      "Lead Capture",
+      "Mobile-Friendly",
     ],
     cta: "Get Started",
     href: "#book",
   },
   {
     name: "Growth",
-    subtitle: "Our most popular package",
-    setupFee: "$1,997",
-    monthlyFee: "$497/mo",
+    subtitle: "Scaling Businesses",
+    setupFee: "$2,000",
+    monthlyFee: "$297/mo",
     popular: true,
     features: [
-      "Everything in Starter, plus:",
-      "Advanced AI assistant (multi-channel)",
-      "Full automation engine",
-      "Website chat widget",
-      "Appointment booking integration",
-      "Reputation management dashboard",
-      "Priority support",
-      "Monthly strategy calls",
+      "5-Page Website",
+      "Booking System",
+      "Payments",
+      "Auto Reviews",
     ],
     cta: "Get Started",
     href: "#book",
   },
   {
-    name: "Scale",
-    subtitle: "For established businesses ready to dominate",
-    setupFee: "Custom",
-    monthlyFee: "Custom",
+    name: "Elite",
+    subtitle: "Enterprises",
+    setupFee: "$3,000",
+    monthlyFee: "$697/mo",
     popular: false,
     features: [
-      "Everything in Growth, plus:",
-      "Paid ads management (Google & Meta)",
-      "Custom landing pages & funnels",
-      "Advanced reporting & analytics",
-      "Multi-location support",
-      "Dedicated account manager",
-      "Weekly strategy calls",
+      "10+ Page Website",
+      "AI Voice Agent",
+      "AI Chatbot",
+      "Ongoing SEO",
     ],
     cta: "Contact Us",
     href: "#book",
@@ -74,16 +65,16 @@ export default function Pricing() {
           transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <p className="section-label mb-4">// Investment</p>
+          <p className="section-label mb-4">// Our Service Packages</p>
           <h2
             className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            Simple, transparent{" "}
-            <span className="gradient-text">pricing.</span>
+            Choose Your{" "}
+            <span className="gradient-text">Growth Plan.</span>
           </h2>
           <p className="text-[oklch(0.65_0.02_155.83)] mt-4 max-w-2xl mx-auto">
-            Every plan includes a one-time setup fee and a monthly platform fee. No hidden costs, no long-term contracts on automation services.
+            Never Miss Another Customer — Capture Leads Around the Clock. Every plan includes a one-time setup fee and a monthly platform fee.
           </p>
         </motion.div>
 
@@ -103,7 +94,7 @@ export default function Pricing() {
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-[oklch(0.696_0.17_162.48)] text-[oklch(0.145_0.014_155.83)] text-xs font-bold px-4 py-1.5 rounded-full" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  <span className="bg-gradient-to-r from-[#00C896] to-[#00B4D8] text-[oklch(0.145_0.014_155.83)] text-xs font-bold px-4 py-1.5 rounded-full" style={{ fontFamily: "'Outfit', sans-serif" }}>
                     Most Popular
                   </span>
                 </div>
@@ -127,20 +118,20 @@ export default function Pricing() {
                   >
                     {plan.setupFee}
                   </span>
-                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">setup</span>
+                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">Setup</span>
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-lg font-semibold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>
                     {plan.monthlyFee}
                   </span>
-                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">platform fee</span>
+                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">per month</span>
                 </div>
               </div>
 
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3 text-sm">
-                    <Check className="w-4 h-4 text-[oklch(0.696_0.17_162.48)] shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-[#00C896] shrink-0 mt-0.5" />
                     <span className="text-white/80">{feature}</span>
                   </li>
                 ))}

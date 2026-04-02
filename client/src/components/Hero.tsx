@@ -11,12 +11,12 @@ import { useState, useEffect } from "react";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/hero-bg-fYkT5qdFmnrDgNZeHnoYC3.webp";
 
 const feedItems = [
-  { icon: Zap, text: "New lead captured from Google Ads", time: "Just now", color: "text-[oklch(0.696_0.17_162.48)]" },
-  { icon: MessageSquare, text: "AI assistant responded in 8 seconds", time: "2m ago", color: "text-[oklch(0.696_0.17_162.48)]" },
-  { icon: Calendar, text: "Appointment booked — Tuesday 2PM", time: "5m ago", color: "text-[oklch(0.696_0.17_162.48)]" },
-  { icon: Star, text: "5-star review request sent automatically", time: "12m ago", color: "text-[oklch(0.696_0.17_162.48)]" },
-  { icon: Zap, text: "Follow-up sequence triggered for Mike R.", time: "18m ago", color: "text-[oklch(0.696_0.17_162.48)]" },
-  { icon: MessageSquare, text: "Missed call auto-text sent to lead", time: "25m ago", color: "text-[oklch(0.696_0.17_162.48)]" },
+  { icon: Zap, text: "New lead captured from Google Ads", time: "Just now", color: "text-[#00C896]" },
+  { icon: MessageSquare, text: "AI assistant responded in 8 seconds", time: "2m ago", color: "text-[#00B4D8]" },
+  { icon: Calendar, text: "Appointment booked — Tuesday 2PM", time: "5m ago", color: "text-[#00C896]" },
+  { icon: Star, text: "5-star review request sent automatically", time: "12m ago", color: "text-[#00B4D8]" },
+  { icon: Zap, text: "Follow-up sequence triggered for Mike R.", time: "18m ago", color: "text-[#00C896]" },
+  { icon: MessageSquare, text: "Missed call auto-text sent to lead", time: "25m ago", color: "text-[#00B4D8]" },
 ];
 
 function LiveFeed() {
@@ -45,7 +45,7 @@ function LiveFeed() {
       className="glass-card p-6 w-full max-w-md"
     >
       <div className="flex items-center gap-2 mb-4">
-        <div className="w-2 h-2 rounded-full bg-[oklch(0.696_0.17_162.48)] animate-pulse" />
+        <div className="w-2 h-2 rounded-full bg-[#00C896] animate-pulse" />
         <span className="section-label !text-xs">Live Automation Feed</span>
       </div>
       <div className="space-y-3">

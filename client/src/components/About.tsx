@@ -78,7 +78,7 @@ export default function About() {
                     key={badge.text}
                     className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[oklch(0.18_0.014_155.83/80%)] border border-[oklch(0.696_0.17_162.48/12%)]"
                   >
-                    <Icon className="w-4 h-4 text-[oklch(0.696_0.17_162.48)]" />
+                    <Icon className="w-4 h-4 text-[#00C896]" />
                     <span className="text-white/80 text-sm">{badge.text}</span>
                   </div>
                 );

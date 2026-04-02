@@ -37,11 +37,20 @@ export default function Navbar() {
         {/* Logo */}
         <a
           href="#"
-          className="font-heading text-xl font-bold text-white tracking-tight"
-          style={{ fontFamily: "'Outfit', sans-serif" }}
+          className="flex items-center gap-2.5"
         >
-          Modern<span className="gradient-text">Flow</span>{" "}
-          <span className="text-white font-light">AI</span>
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/logo-v2-AUfha38so65wrTLhTbAgFp.webp"
+            alt="ModernFlow AI"
+            className="h-9 w-9"
+          />
+          <span
+            className="font-heading text-xl font-bold text-white tracking-tight"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            Modern<span className="gradient-text">Flow</span>{" "}
+            <span className="text-white/70 font-light">AI</span>
+          </span>
         </a>
 
         {/* Desktop Nav */}
@@ -50,7 +59,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-[oklch(0.65_0.02_155.83)] hover:text-white transition-colors text-sm font-medium"
+              className="text-[oklch(0.65_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm font-medium"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               {link.label}

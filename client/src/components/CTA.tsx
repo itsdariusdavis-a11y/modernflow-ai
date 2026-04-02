@@ -13,7 +13,7 @@ export default function CTA() {
       className="py-20 md:py-28 relative overflow-hidden"
     >
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.696_0.17_162.48/5%)] via-[oklch(0.696_0.17_162.48/10%)] to-[oklch(0.696_0.17_162.48/5%)]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#00C896]/5 via-[#00A67E]/10 to-[#00B4D8]/5" />
 
       <div className="container relative z-10">
         <motion.div

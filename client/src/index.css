@@ -146,22 +146,25 @@ html {
   }
   .glass-card:hover {
     border-color: oklch(0.696 0.17 162.48 / 25%);
-    box-shadow: 0 0 30px oklch(0.696 0.17 162.48 / 8%);
+    box-shadow: 0 0 30px oklch(0.696 0.17 162.48 / 6%), 0 0 60px rgba(0, 180, 216, 0.04);
   }
 
-  /* Section label - code-like */
+  /* Section label - code-like with gradient */
   .section-label {
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: oklch(0.696 0.17 162.48);
+    background: linear-gradient(90deg, #00C896, #00B4D8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
     font-weight: 500;
   }
 
-  /* Gradient text */
+  /* Gradient text - green to teal to blue */
   .gradient-text {
-    background: linear-gradient(135deg, oklch(0.696 0.17 162.48), oklch(0.765 0.177 163.22));
+    background: linear-gradient(135deg, #00C896, #00A67E, #00B4D8);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -184,7 +187,7 @@ html {
     transition: all 0.3s;
   }
   .cta-button:hover {
-    background: oklch(0.765 0.177 163.22);
+    background: linear-gradient(135deg, #00C896, #00A67E);
     transform: translateY(-2px);
     box-shadow: 0 8px 30px oklch(0.696 0.17 162.48 / 30%);
   }
@@ -196,8 +199,8 @@ html {
     gap: 0.5rem;
     padding: 1rem 2rem;
     background: transparent;
-    color: oklch(0.696 0.17 162.48);
-    border: 1px solid oklch(0.696 0.17 162.48 / 40%);
+    color: #00C896;
+    border: 1px solid rgba(0, 200, 150, 0.4);
     border-radius: 0.75rem;
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
@@ -206,8 +209,8 @@ html {
     transition: all 0.3s;
   }
   .cta-button-outline:hover {
-    background: oklch(0.696 0.17 162.48 / 10%);
-    border-color: oklch(0.696 0.17 162.48);
+    background: rgba(0, 200, 150, 0.1);
+    border-color: #00C896;
     transform: translateY(-2px);
   }
 }

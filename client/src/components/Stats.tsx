@@ -29,7 +29,7 @@ export default function Stats() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="glass-card p-6 text-center"
               >
-                <Icon className="w-6 h-6 text-[oklch(0.696_0.17_162.48)] mx-auto mb-3" />
+                <Icon className={`w-6 h-6 mx-auto mb-3 ${i % 2 === 0 ? 'text-[#00C896]' : 'text-[#00B4D8]'}`} />
                 <p
                   className="text-3xl md:text-4xl font-bold gradient-text mb-2"
                   style={{ fontFamily: "'Outfit', sans-serif" }}
