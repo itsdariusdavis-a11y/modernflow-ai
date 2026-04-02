@@ -35,7 +35,7 @@ export default function Footer() {
               className="flex items-center gap-2.5 mb-4"
             >
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/logo-v3_fdb15a6f.png"
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/logo-green-solid-icon-eq6vWGfcUacBZsGt7wW64F.webp"
                 alt="ModernFlow AI"
                 className="h-8 w-8"
               />
