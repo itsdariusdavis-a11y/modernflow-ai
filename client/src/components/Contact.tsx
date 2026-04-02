@@ -4,11 +4,13 @@
  * Right: Quick info + Calendly CTA
  * Font: Outfit headings, DM Sans body
  * Brand: Dark bg, green accents, gradient-text
+ * Backend: tRPC mutation → GoHighLevel Inbound Webhook
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Mail, Phone, MapPin, CheckCircle } from "lucide-react";
+import { ArrowRight, Mail, MapPin, CheckCircle, Loader2 } from "lucide-react";
 import { useCalendly } from "@/hooks/useCalendly";
+import { trpc } from "@/lib/trpc";
 
 const businessTypes = [
   "HVAC",
@@ -23,7 +25,6 @@ const businessTypes = [
 
 export default function Contact() {
   const { openCalendly } = useCalendly();
-  const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -31,18 +32,47 @@ export default function Contact() {
     businessType: "",
     message: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const submitMutation = trpc.contact.submit.useMutation();
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.name.trim()) newErrors.name = "Name is required";
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = "Valid email is required";
+    if (!form.message.trim()) newErrors.message = "Message is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (errors[e.target.name]) {
+      setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In production this would POST to a backend or form service
-    setSubmitted(true);
+    if (!validate()) return;
+    submitMutation.mutate({
+      name: form.name,
+      email: form.email,
+      phone: form.phone || undefined,
+      businessType: form.businessType || undefined,
+      message: form.message,
+    });
   };
+
+  const inputClass = (field: string) =>
+    `w-full bg-[oklch(0.18_0.014_155.83)] border rounded-lg px-4 py-3 text-white placeholder:text-[oklch(0.45_0.02_155.83)] text-sm focus:outline-none transition-colors ${
+      errors[field]
+        ? "border-red-500/60 focus:border-red-500"
+        : "border-[oklch(0.696_0.17_162.48/15%)] focus:border-[#00C896]/50"
+    }`;
 
   return (
     <section
@@ -80,7 +110,7 @@ export default function Contact() {
             transition={{ duration: 0.35 }}
             className="lg:col-span-3"
           >
-            {submitted ? (
+            {submitMutation.isSuccess ? (
               <div className="glass-card p-10 flex flex-col items-center justify-center text-center min-h-[400px]">
                 <CheckCircle className="w-14 h-14 text-[#00C896] mb-5" />
                 <h3
@@ -110,13 +140,15 @@ export default function Contact() {
                     <input
                       type="text"
                       name="name"
-                      required
                       value={form.name}
                       onChange={handleChange}
                       placeholder="John Smith"
-                      className="w-full bg-[oklch(0.18_0.014_155.83)] border border-[oklch(0.696_0.17_162.48/15%)] rounded-lg px-4 py-3 text-white placeholder:text-[oklch(0.45_0.02_155.83)] text-sm focus:outline-none focus:border-[#00C896]/50 transition-colors"
+                      className={inputClass("name")}
                       style={{ fontFamily: "'DM Sans', sans-serif" }}
                     />
+                    {errors.name && (
+                      <p className="text-red-400 text-xs mt-1">{errors.name}</p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -128,13 +160,15 @@ export default function Contact() {
                     <input
                       type="email"
                       name="email"
-                      required
                       value={form.email}
                       onChange={handleChange}
                       placeholder="john@company.com"
-                      className="w-full bg-[oklch(0.18_0.014_155.83)] border border-[oklch(0.696_0.17_162.48/15%)] rounded-lg px-4 py-3 text-white placeholder:text-[oklch(0.45_0.02_155.83)] text-sm focus:outline-none focus:border-[#00C896]/50 transition-colors"
+                      className={inputClass("email")}
                       style={{ fontFamily: "'DM Sans', sans-serif" }}
                     />
+                    {errors.email && (
+                      <p className="text-red-400 text-xs mt-1">{errors.email}</p>
+                    )}
                   </div>
                 </div>
 
@@ -152,7 +186,7 @@ export default function Contact() {
                       value={form.phone}
                       onChange={handleChange}
                       placeholder="(555) 000-0000"
-                      className="w-full bg-[oklch(0.18_0.014_155.83)] border border-[oklch(0.696_0.17_162.48/15%)] rounded-lg px-4 py-3 text-white placeholder:text-[oklch(0.45_0.02_155.83)] text-sm focus:outline-none focus:border-[#00C896]/50 transition-colors"
+                      className={inputClass("phone")}
                       style={{ fontFamily: "'DM Sans', sans-serif" }}
                     />
                   </div>
@@ -167,12 +201,16 @@ export default function Contact() {
                       name="businessType"
                       value={form.businessType}
                       onChange={handleChange}
-                      className="w-full bg-[oklch(0.18_0.014_155.83)] border border-[oklch(0.696_0.17_162.48/15%)] rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-[#00C896]/50 transition-colors appearance-none"
+                      className={`${inputClass("businessType")} appearance-none`}
                       style={{ fontFamily: "'DM Sans', sans-serif" }}
                     >
-                      <option value="" className="bg-[oklch(0.18_0.014_155.83)]">Select type...</option>
+                      <option value="" className="bg-[oklch(0.18_0.014_155.83)]">
+                        Select type...
+                      </option>
                       {businessTypes.map((t) => (
-                        <option key={t} value={t} className="bg-[oklch(0.18_0.014_155.83)]">{t}</option>
+                        <option key={t} value={t} className="bg-[oklch(0.18_0.014_155.83)]">
+                          {t}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -187,18 +225,41 @@ export default function Contact() {
                   </label>
                   <textarea
                     name="message"
-                    required
                     value={form.message}
                     onChange={handleChange}
                     rows={4}
                     placeholder="What's your biggest challenge right now? How many leads do you get per month?"
-                    className="w-full bg-[oklch(0.18_0.014_155.83)] border border-[oklch(0.696_0.17_162.48/15%)] rounded-lg px-4 py-3 text-white placeholder:text-[oklch(0.45_0.02_155.83)] text-sm focus:outline-none focus:border-[#00C896]/50 transition-colors resize-none"
+                    className={`${inputClass("message")} resize-none`}
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   />
+                  {errors.message && (
+                    <p className="text-red-400 text-xs mt-1">{errors.message}</p>
+                  )}
                 </div>
 
-                <button type="submit" className="cta-button w-full justify-center">
-                  Send Message <ArrowRight className="w-4 h-4" />
+                {submitMutation.isError && (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3">
+                    <p className="text-red-400 text-sm">
+                      Something went wrong. Please try again or book a call directly.
+                    </p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={submitMutation.isPending}
+                  className="cta-button w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {submitMutation.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
               </form>
             )}
@@ -215,8 +276,18 @@ export default function Contact() {
             {/* Calendly CTA card */}
             <div className="glass-card p-7 border-[oklch(0.696_0.17_162.48/30%)]">
               <div className="w-10 h-10 rounded-lg bg-[#00C896]/15 flex items-center justify-center mb-4">
-                <svg className="w-5 h-5 text-[#00C896]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="w-5 h-5 text-[#00C896]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
               <h3
@@ -226,10 +297,14 @@ export default function Contact() {
                 Prefer to talk now?
               </h3>
               <p className="text-[oklch(0.65_0.02_155.83)] text-sm mb-5 leading-relaxed">
-                Skip the form and book a free 30-minute strategy call directly on our calendar.
-                We'll walk through your business and show you exactly what's possible.
+                Skip the form and book a free 30-minute strategy call directly on our
+                calendar. We'll walk through your business and show you exactly what's
+                possible.
               </p>
-              <button onClick={openCalendly} className="cta-button w-full justify-center text-sm">
+              <button
+                onClick={openCalendly}
+                className="cta-button w-full justify-center text-sm"
+              >
                 Book a Free Strategy Call <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -258,21 +333,7 @@ export default function Contact() {
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-[#00B4D8]/10 flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-[#00B4D8]" />
-                </div>
-                <div>
-                  <p className="text-white/80 text-sm font-medium">Phone</p>
-                  <a
-                    href="tel:+1-800-000-0000"
-                    className="text-[oklch(0.65_0.02_155.83)] text-sm hover:text-[#00C896] transition-colors"
-                  >
-                    Available on strategy call
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#00C896]/10 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-[#00C896]" />
+                  <MapPin className="w-4 h-4 text-[#00B4D8]" />
                 </div>
                 <div>
                   <p className="text-white/80 text-sm font-medium">Service Area</p>
