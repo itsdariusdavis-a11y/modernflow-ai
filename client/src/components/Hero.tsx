@@ -39,9 +39,9 @@ function LiveFeed() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 40 }}
+      initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, delay: 0.3 }}
+      transition={{ duration: 0.4, delay: 0.2 }}
       className="glass-card p-6 w-full max-w-md"
     >
       <div className="flex items-center gap-2 mb-4">
@@ -92,19 +92,19 @@ export default function Hero() {
           {/* Left: Content */}
           <div>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="section-label mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="section-label mb-6"
             >
               // Automation Beyond Limits
             </motion.p>
 
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6"
+                 initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6"
               style={{ fontFamily: "'Outfit', sans-serif" }}
             >
               Stop Losing Leads.{" "}
@@ -112,10 +112,10 @@ export default function Hero() {
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-[oklch(0.65_0.02_155.83)] max-w-xl mb-8 leading-relaxed"
+                    initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.15 }}
+            className="text-lg md:text-xl text-[oklch(0.65_0.02_155.83)] max-w-xl mb-8 leading-relaxed"
             >
               We build AI-powered automation systems that capture, follow up, and
               convert leads for service businesses — so you never miss another
@@ -123,10 +123,10 @@ export default function Hero() {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="flex flex-col sm:flex-row gap-4"
             >
               <a href="#book" className="cta-button">
                 Book a Free Strategy Call <ArrowRight className="w-5 h-5" />

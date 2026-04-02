@@ -85,6 +85,23 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Prevent scroll flashing by promoting sections to GPU layers */
+section {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -135,14 +152,14 @@ html {
     }
   }
 
-  /* Glass card effect */
+  /* Glass card effect — no backdrop-filter to prevent scroll flashing */
   .glass-card {
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    background: oklch(0.18 0.014 155.83 / 60%);
+    background: oklch(0.18 0.014 155.83 / 88%);
     border: 1px solid oklch(0.696 0.17 162.48 / 12%);
     border-radius: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
+    will-change: transform;
+    transform: translateZ(0);
   }
   .glass-card:hover {
     border-color: oklch(0.696 0.17 162.48 / 25%);

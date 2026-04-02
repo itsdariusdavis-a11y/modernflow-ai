@@ -1,9 +1,9 @@
 /*
  * Design: Dark transparent navbar with green accent CTA
  * Font: Outfit for brand, DM Sans for nav links
- * Style: Backdrop blur, sticky top, green border-bottom on scroll
+ * Style: Solid bg, sticky top, green border-bottom on scroll
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -18,20 +18,33 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const scrolledRef = useRef(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      if (isScrolled !== scrolledRef.current) {
+        scrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[oklch(0.145_0.014_155.83/85%)] backdrop-blur-xl border-b border-[oklch(0.696_0.17_162.48/12%)]"
-          : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-[border-color,background-color] duration-300"
+      style={{
+        backgroundColor: scrolled
+          ? "oklch(0.145 0.014 155.83 / 95%)"
+          : "oklch(0.145 0.014 155.83 / 0%)",
+        borderBottom: scrolled
+          ? "1px solid oklch(0.696 0.17 162.48 / 12%)"
+          : "1px solid transparent",
+        willChange: "background-color",
+        transform: "translateZ(0)",
+      }}
     >
       <div className="container flex items-center justify-between h-[72px]">
         {/* Logo */}
@@ -91,7 +104,10 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[oklch(0.145_0.014_155.83/95%)] backdrop-blur-xl border-b border-[oklch(0.696_0.17_162.48/12%)]"
+            className="md:hidden border-b border-[oklch(0.696_0.17_162.48/12%)]"
+            style={{
+              backgroundColor: "oklch(0.145 0.014 155.83 / 98%)",
+            }}
           >
             <div className="container py-6 flex flex-col gap-4">
               {navLinks.map((link) => (

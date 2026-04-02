@@ -59,10 +59,10 @@ export default function Pricing() {
     <section id="pricing" className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]">
       <div className="container">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.35 }}
           className="text-center mb-14"
         >
           <p className="section-label mb-4">// Our Service Packages</p>
@@ -82,10 +82,10 @@ export default function Pricing() {
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.35, delay: i * 0.05 }}
               className={`glass-card p-7 relative flex flex-col ${
                 plan.popular
                   ? "border-[oklch(0.696_0.17_162.48/40%)] shadow-[0_0_40px_oklch(0.696_0.17_162.48/10%)]"
