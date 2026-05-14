@@ -1,0 +1,752 @@
+{
+  "name": "MFA Lead Generation + Outbound Email Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## MFA Lead Generation + Outbound Email Workflow\n\n**Trigger:** Manual (for now)\n**Future:** Change to Schedule trigger, run Mon/Wed/Fri at 8AM PST\n\n**Flow:**\n1. Pull leads from Apollo\n2. Enrich via Google Maps\n3. Enrich via SerpAPI (owner verification)\n4. Dedup + Scrub\n5. Generate personalized email with Claude\n6. Write to Google Sheets (Qualified / Discarded)\n7. Create Gmail Draft\n8. Output Summary",
+        "height": 320,
+        "width": 420
+      },
+      "id": "note-header",
+      "name": "Workflow Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-200, -200]
+    },
+    {
+      "parameters": {},
+      "id": "trigger-manual",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "var-leads-per-run",
+              "name": "LEADS_PER_RUN",
+              "value": 25,
+              "type": "number"
+            },
+            {
+              "id": "var-industries",
+              "name": "TARGET_INDUSTRIES",
+              "value": "=[\"HVAC\",\"Plumbing\",\"Roofing\",\"Electrical\",\"Auto Repair\"]",
+              "type": "array"
+            },
+            {
+              "id": "var-city",
+              "name": "TARGET_CITY",
+              "value": "San Diego",
+              "type": "string"
+            },
+            {
+              "id": "var-state",
+              "name": "TARGET_STATE",
+              "value": "CA",
+              "type": "string"
+            },
+            {
+              "id": "var-spreadsheet",
+              "name": "SPREADSHEET_ID",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "var-run-date",
+              "name": "RUN_DATE",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-variables",
+      "name": "Set Workflow Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apollo.io/v1/mixed_people/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"person_titles\": [\"Owner\", \"Co-Owner\", \"Founder\", \"President\", \"General Manager\"],\n  \"person_locations\": [\"San Diego, California, US\"],\n  \"organization_locations\": [\"San Diego, California, US\"],\n  \"organization_num_employees_ranges\": [\"1,50\"],\n  \"q_organization_keyword_tags\": {{ $json.TARGET_INDUSTRIES }},\n  \"page\": 1,\n  \"per_page\": {{ $json.LEADS_PER_RUN }}\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "apollo-pull",
+      "name": "Pull Apollo Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "apollo_api_key",
+          "name": "apollo_api_key"
+        }
+      },
+      "onError": "stopWorkflow",
+      "continueOnFail": false
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "people",
+        "options": {}
+      },
+      "id": "split-apollo-results",
+      "name": "Split Apollo People",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f-first-name",
+              "name": "first_name",
+              "value": "={{ $json.first_name || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-last-name",
+              "name": "last_name",
+              "value": "={{ $json.last_name || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-email",
+              "name": "email",
+              "value": "={{ $json.email || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-org",
+              "name": "organization_name",
+              "value": "={{ ($json.organization && $json.organization.name) || $json.organization_name || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-industry",
+              "name": "industry",
+              "value": "={{ ($json.organization && $json.organization.industry) || $json.industry || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-phones",
+              "name": "phone_numbers",
+              "value": "={{ JSON.stringify($json.phone_numbers || []) }}",
+              "type": "string"
+            },
+            {
+              "id": "f-linkedin",
+              "name": "linkedin_url",
+              "value": "={{ $json.linkedin_url || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-city",
+              "name": "city",
+              "value": "={{ $json.city || ($json.organization && $json.organization.city) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-state",
+              "name": "state",
+              "value": "={{ $json.state || ($json.organization && $json.organization.state) || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "normalize-lead",
+      "name": "Normalize Lead Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://maps.googleapis.com/maps/api/place/textsearch/json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $json.organization_name }} San Diego CA"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "google-maps-enrich",
+      "name": "Enrich via Google Maps",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 300],
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "google_maps_api_key",
+          "name": "google_maps_api_key"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "gm-place-id",
+              "name": "place_id",
+              "value": "={{ ($json.results && $json.results[0] && $json.results[0].place_id) || 'Not Found' }}",
+              "type": "string"
+            },
+            {
+              "id": "gm-address",
+              "name": "formatted_address",
+              "value": "={{ ($json.results && $json.results[0] && $json.results[0].formatted_address) || 'Not Found' }}",
+              "type": "string"
+            },
+            {
+              "id": "gm-rating",
+              "name": "rating",
+              "value": "={{ ($json.results && $json.results[0] && $json.results[0].rating) || 'Not Found' }}",
+              "type": "string"
+            },
+            {
+              "id": "gm-reviews",
+              "name": "user_ratings_total",
+              "value": "={{ ($json.results && $json.results[0] && $json.results[0].user_ratings_total) || 0 }}",
+              "type": "string"
+            },
+            {
+              "id": "gm-status",
+              "name": "business_status",
+              "value": "={{ ($json.results && $json.results[0] && $json.results[0].business_status) || 'Not Found' }}",
+              "type": "string"
+            }
+          ],
+          "include": "all"
+        },
+        "options": {}
+      },
+      "id": "parse-maps",
+      "name": "Parse Maps Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://serpapi.com/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "=\"{{ $json.first_name }} {{ $json.last_name }}\" owner \"{{ $json.organization_name }}\" San Diego"
+            },
+            {
+              "name": "num",
+              "value": "3"
+            },
+            {
+              "name": "engine",
+              "value": "google"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "serp-enrich",
+      "name": "Enrich via SerpAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1780, 300],
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "serp_api_key",
+          "name": "serp_api_key"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build owner_verification_context from SerpAPI organic results.\n// If SerpAPI failed or returned no results, fall back to 'Search unavailable'.\n\nconst items = $input.all();\nconst out = [];\n\nfor (const item of items) {\n  const lead = item.json;\n  let context = 'Search unavailable';\n\n  try {\n    const organic = lead.organic_results || [];\n    if (Array.isArray(organic) && organic.length > 0) {\n      const top = organic.slice(0, 3).map((r, i) => {\n        const title = r.title || '';\n        const snippet = r.snippet || '';\n        return `(${i + 1}) ${title} — ${snippet}`;\n      }).join(' | ');\n      if (top.trim().length > 0) context = top;\n    }\n  } catch (err) {\n    context = 'Search unavailable';\n  }\n\n  // Pull normalized lead fields from earlier in the chain\n  const normalized = $('Parse Maps Result').item.json;\n  const leadFields = $('Normalize Lead Fields').item.json;\n\n  out.push({\n    json: {\n      ...leadFields,\n      ...normalized,\n      owner_verification_context: context\n    }\n  });\n}\n\nreturn out;\n"
+      },
+      "id": "build-context",
+      "name": "Build Owner Verification Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2000, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// STEP 4 — DEDUP + SCRUB FILTER\n// Returns each item with `__qualified` boolean and `__discard_reason` string.\n// Routing happens in the IF node downstream.\n\nconst items = $input.all();\nconst seenOrgs = new Set();\nconst targetIndustries = ['HVAC', 'Plumbing', 'Roofing', 'Electrical', 'Auto Repair'];\nconst freeEmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];\n\nconst out = [];\n\nfor (const item of items) {\n  const lead = { ...item.json };\n  let qualified = true;\n  let reason = '';\n\n  const email = (lead.email || '').toLowerCase().trim();\n  const firstName = (lead.first_name || '').trim();\n  const lastName = (lead.last_name || '').trim();\n  const org = (lead.organization_name || '').trim().toLowerCase();\n  const industry = (lead.industry || '').trim();\n  const bizStatus = (lead.business_status || '').trim();\n\n  if (!email) {\n    qualified = false;\n    reason = 'Missing email';\n  } else {\n    const domain = email.split('@')[1] || '';\n    if (freeEmailDomains.includes(domain)) {\n      qualified = false;\n      reason = `Free email domain (${domain})`;\n    }\n  }\n\n  if (qualified && bizStatus && bizStatus !== 'Not Found' && bizStatus !== 'OPERATIONAL') {\n    qualified = false;\n    reason = `Business status: ${bizStatus}`;\n  }\n\n  if (qualified && (!firstName || !lastName)) {\n    qualified = false;\n    reason = 'Missing first or last name';\n  }\n\n  if (qualified) {\n    const matchIndustry = targetIndustries.some(t =>\n      industry.toLowerCase().includes(t.toLowerCase())\n    );\n    if (!matchIndustry) {\n      qualified = false;\n      reason = `Industry mismatch: ${industry || 'unknown'}`;\n    }\n  }\n\n  if (qualified && org) {\n    if (seenOrgs.has(org)) {\n      qualified = false;\n      reason = 'Duplicate organization';\n    } else {\n      seenOrgs.add(org);\n    }\n  }\n\n  lead.__qualified = qualified;\n  lead.__discard_reason = reason;\n  out.push({ json: lead });\n}\n\nreturn out;\n"
+      },
+      "id": "dedup-scrub",
+      "name": "Dedup + Scrub Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2220, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-qualified",
+              "leftValue": "={{ $json.__qualified }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "route-qualified",
+      "name": "Route: Qualified vs Discarded",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [2440, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-opus-4-5\",\n  \"max_tokens\": 600,\n  \"system\": \"You are the outbound sales writer for Modern Flow AI (MFA), an AI automation and marketing agency based in San Diego. We help home service contractors (HVAC, plumbing, roofing, electrical, auto repair) get more booked jobs with less manual follow-up through done-for-you CRM automation and marketing systems.\\n\\nOur co-founder Ryan handles sales and client relationships. Write in Ryan's voice: confident, direct, human, zero corporate speak.\\n\\nNEVER use these words: leverage, utilize, synergy, robust, comprehensive, game-changer, transform, world-class, premier, leading, ultimate, premium, guaranteed, best.\\n\\nEMAIL RULES:\\n- Subject line: max 8 words, no clickbait, no ALL CAPS\\n- Opening line: reference something specific to their business (use the data provided — rating, review count, business name)\\n- Body: 3-4 sentences MAX. One pain point. One outcome we deliver.\\n- CTA: One clear ask. Book a 15-min call. No 'click here.' No 'learn more.'\\n- Signature: Ryan | Modern Flow AI | modernflowai.com\\n- Tone: peer-to-peer. Not vendor-to-prospect.\\n- Output format: JSON only. No preamble. No explanation.\\n  { \\\"subject\\\": \\\"\\\", \\\"body\\\": \\\"\\\" }\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": {{ JSON.stringify(`Write a cold outreach email for this lead:\\n\\nBusiness: ${$json.organization_name}\\nOwner: ${$json.first_name} ${$json.last_name}\\nIndustry: ${$json.industry}\\nGoogle Rating: ${$json.rating} stars (${$json.user_ratings_total} reviews)\\nCity: ${$json.city}, ${$json.state}\\nOwner Verification Context: ${$json.owner_verification_context}\\n\\nReturn JSON only.`) }}\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "claude-email",
+      "name": "Generate Email via Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2660, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "anthropic_api_key",
+          "name": "anthropic_api_key"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Claude's JSON response and merge with lead data.\n// On parse failure, mark lead status as 'Email Generation Failed'.\n\nconst items = $input.all();\nconst out = [];\n\nfor (const item of items) {\n  const response = item.json;\n  const lead = $('Route: Qualified vs Discarded').item.json;\n\n  let subject = '';\n  let body = '';\n  let status = 'Ready to Send';\n\n  try {\n    const content = response && response.content && response.content[0] && response.content[0].text;\n    if (!content) throw new Error('No content in Claude response');\n\n    // Strip code fences if present, then parse\n    const cleaned = content\n      .replace(/^```json\\s*/i, '')\n      .replace(/^```\\s*/, '')\n      .replace(/```\\s*$/, '')\n      .trim();\n\n    const parsed = JSON.parse(cleaned);\n    subject = parsed.subject || '';\n    body = parsed.body || '';\n\n    if (!subject || !body) {\n      status = 'Email Generation Failed';\n    }\n  } catch (err) {\n    status = 'Email Generation Failed';\n    subject = '';\n    body = '';\n  }\n\n  out.push({\n    json: {\n      ...lead,\n      email_subject: subject,\n      email_body: body,\n      lead_status: status\n    }\n  });\n}\n\nreturn out;\n"
+      },
+      "id": "parse-claude",
+      "name": "Parse Claude Email JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2880, 200]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Set Workflow Variables').item.json.SPREADSHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Qualified Leads",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Business Name": "={{ $json.organization_name }}",
+            "Owner First Name": "={{ $json.first_name }}",
+            "Owner Last Name": "={{ $json.last_name }}",
+            "Owner Email": "={{ $json.email }}",
+            "Industry": "={{ $json.industry }}",
+            "Phone": "={{ $json.phone_numbers }}",
+            "City": "={{ $json.city }}",
+            "State": "={{ $json.state }}",
+            "Google Rating": "={{ $json.rating }}",
+            "Total Reviews": "={{ $json.user_ratings_total }}",
+            "Google Maps Address": "={{ $json.formatted_address }}",
+            "LinkedIn URL": "={{ $json.linkedin_url }}",
+            "Email Subject (from Claude)": "={{ $json.email_subject }}",
+            "Email Body (from Claude)": "={{ $json.email_body }}",
+            "Run Date": "={{ $('Set Workflow Variables').item.json.RUN_DATE }}",
+            "Lead Status": "={{ $json.lead_status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "Business Name", "displayName": "Business Name", "type": "string", "required": false },
+            { "id": "Owner First Name", "displayName": "Owner First Name", "type": "string", "required": false },
+            { "id": "Owner Last Name", "displayName": "Owner Last Name", "type": "string", "required": false },
+            { "id": "Owner Email", "displayName": "Owner Email", "type": "string", "required": false },
+            { "id": "Industry", "displayName": "Industry", "type": "string", "required": false },
+            { "id": "Phone", "displayName": "Phone", "type": "string", "required": false },
+            { "id": "City", "displayName": "City", "type": "string", "required": false },
+            { "id": "State", "displayName": "State", "type": "string", "required": false },
+            { "id": "Google Rating", "displayName": "Google Rating", "type": "string", "required": false },
+            { "id": "Total Reviews", "displayName": "Total Reviews", "type": "string", "required": false },
+            { "id": "Google Maps Address", "displayName": "Google Maps Address", "type": "string", "required": false },
+            { "id": "LinkedIn URL", "displayName": "LinkedIn URL", "type": "string", "required": false },
+            { "id": "Email Subject (from Claude)", "displayName": "Email Subject (from Claude)", "type": "string", "required": false },
+            { "id": "Email Body (from Claude)", "displayName": "Email Body (from Claude)", "type": "string", "required": false },
+            { "id": "Run Date", "displayName": "Run Date", "type": "string", "required": false },
+            { "id": "Lead Status", "displayName": "Lead Status", "type": "string", "required": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "sheets-qualified",
+      "name": "Append to Qualified Leads Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [3100, 200],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google_sheets_oauth",
+          "name": "google_sheets_oauth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Set Workflow Variables').item.json.SPREADSHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Discarded Leads",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Business Name": "={{ $json.organization_name }}",
+            "Owner Email": "={{ $json.email }}",
+            "Industry": "={{ $json.industry }}",
+            "Discard Reason": "={{ $json.__discard_reason }}",
+            "Run Date": "={{ $('Set Workflow Variables').item.json.RUN_DATE }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "Business Name", "displayName": "Business Name", "type": "string", "required": false },
+            { "id": "Owner Email", "displayName": "Owner Email", "type": "string", "required": false },
+            { "id": "Industry", "displayName": "Industry", "type": "string", "required": false },
+            { "id": "Discard Reason", "displayName": "Discard Reason", "type": "string", "required": false },
+            { "id": "Run Date", "displayName": "Run Date", "type": "string", "required": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "sheets-discarded",
+      "name": "Append to Discarded Leads Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2660, 460],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google_sheets_oauth",
+          "name": "google_sheets_oauth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "leftValue": ""
+          },
+          "conditions": [
+            {
+              "id": "cond-ready",
+              "leftValue": "={{ $json.lead_status }}",
+              "rightValue": "Ready to Send",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "filter-ready",
+      "name": "Only Drafts for Ready Leads",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [3320, 200]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {
+          "sendTo": "={{ $json.email }}",
+          "labels": ["MFA-Outbound"]
+        }
+      },
+      "id": "gmail-draft",
+      "name": "Create Gmail Draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [3540, 140],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gmail_oauth",
+          "name": "gmail_oauth"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Set Workflow Variables').item.json.SPREADSHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Discarded Leads",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Business Name": "={{ $json.organization_name }}",
+            "Owner Email": "={{ $json.email }}",
+            "Industry": "={{ $json.industry }}",
+            "Discard Reason": "Gmail Draft Failed",
+            "Run Date": "={{ $('Set Workflow Variables').item.json.RUN_DATE }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "Business Name", "displayName": "Business Name", "type": "string", "required": false },
+            { "id": "Owner Email", "displayName": "Owner Email", "type": "string", "required": false },
+            { "id": "Industry", "displayName": "Industry", "type": "string", "required": false },
+            { "id": "Discard Reason", "displayName": "Discard Reason", "type": "string", "required": false },
+            { "id": "Run Date", "displayName": "Run Date", "type": "string", "required": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "log-gmail-failure",
+      "name": "Log Gmail Draft Failure",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [3760, 280],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google_sheets_oauth",
+          "name": "google_sheets_oauth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-summary",
+      "name": "Merge for Summary",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [3980, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Final summary node — aggregates run stats and outputs a single summary item.\n\nconst apolloLeads = $('Split Apollo People').all().length;\nconst qualified = $('Route: Qualified vs Discarded').all().length;\nconst discarded = apolloLeads - qualified;\nconst drafts = $('Create Gmail Draft').all().length;\nconst gmailErrors = $('Log Gmail Draft Failure').all().length;\nconst emailGenFailed = $('Parse Claude Email JSON').all().filter(i => i.json.lead_status === 'Email Generation Failed').length;\nconst totalErrors = gmailErrors + emailGenFailed;\n\nconst summary = {\n  run_date: $('Set Workflow Variables').item.json.RUN_DATE,\n  total_leads_pulled_from_apollo: apolloLeads,\n  total_leads_qualified: qualified,\n  total_leads_discarded: discarded,\n  total_gmail_drafts_created: drafts,\n  total_errors_encountered: totalErrors,\n  errors_breakdown: {\n    claude_email_generation_failed: emailGenFailed,\n    gmail_draft_failed: gmailErrors\n  }\n};\n\nconsole.log('=== MFA Lead Gen Run Summary ===');\nconsole.log(JSON.stringify(summary, null, 2));\n\nreturn [{ json: summary }];\n"
+      },
+      "id": "summary-node",
+      "name": "Run Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [4200, 400]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Set Workflow Variables", "type": "main", "index": 0 }]]
+    },
+    "Set Workflow Variables": {
+      "main": [[{ "node": "Pull Apollo Leads", "type": "main", "index": 0 }]]
+    },
+    "Pull Apollo Leads": {
+      "main": [[{ "node": "Split Apollo People", "type": "main", "index": 0 }]]
+    },
+    "Split Apollo People": {
+      "main": [[{ "node": "Normalize Lead Fields", "type": "main", "index": 0 }]]
+    },
+    "Normalize Lead Fields": {
+      "main": [[{ "node": "Enrich via Google Maps", "type": "main", "index": 0 }]]
+    },
+    "Enrich via Google Maps": {
+      "main": [[{ "node": "Parse Maps Result", "type": "main", "index": 0 }]]
+    },
+    "Parse Maps Result": {
+      "main": [[{ "node": "Enrich via SerpAPI", "type": "main", "index": 0 }]]
+    },
+    "Enrich via SerpAPI": {
+      "main": [[{ "node": "Build Owner Verification Context", "type": "main", "index": 0 }]]
+    },
+    "Build Owner Verification Context": {
+      "main": [[{ "node": "Dedup + Scrub Filter", "type": "main", "index": 0 }]]
+    },
+    "Dedup + Scrub Filter": {
+      "main": [[{ "node": "Route: Qualified vs Discarded", "type": "main", "index": 0 }]]
+    },
+    "Route: Qualified vs Discarded": {
+      "main": [
+        [{ "node": "Generate Email via Claude", "type": "main", "index": 0 }],
+        [{ "node": "Append to Discarded Leads Sheet", "type": "main", "index": 0 }]
+      ]
+    },
+    "Generate Email via Claude": {
+      "main": [[{ "node": "Parse Claude Email JSON", "type": "main", "index": 0 }]]
+    },
+    "Parse Claude Email JSON": {
+      "main": [[{ "node": "Append to Qualified Leads Sheet", "type": "main", "index": 0 }]]
+    },
+    "Append to Qualified Leads Sheet": {
+      "main": [[{ "node": "Only Drafts for Ready Leads", "type": "main", "index": 0 }]]
+    },
+    "Only Drafts for Ready Leads": {
+      "main": [
+        [{ "node": "Create Gmail Draft", "type": "main", "index": 0 }],
+        [{ "node": "Merge for Summary", "type": "main", "index": 0 }]
+      ]
+    },
+    "Create Gmail Draft": {
+      "main": [
+        [{ "node": "Merge for Summary", "type": "main", "index": 1 }],
+        [{ "node": "Log Gmail Draft Failure", "type": "main", "index": 0 }]
+      ]
+    },
+    "Log Gmail Draft Failure": {
+      "main": [[{ "node": "Merge for Summary", "type": "main", "index": 1 }]]
+    },
+    "Append to Discarded Leads Sheet": {
+      "main": [[{ "node": "Merge for Summary", "type": "main", "index": 1 }]]
+    },
+    "Merge for Summary": {
+      "main": [[{ "node": "Run Summary", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "pinData": {},
+  "versionId": "1.0.0",
+  "id": "mfa-lead-gen-v1",
+  "tags": [
+    { "name": "outbound" },
+    { "name": "lead-gen" },
+    { "name": "mfa" }
+  ]
+}
