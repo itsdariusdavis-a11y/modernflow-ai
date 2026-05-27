@@ -10,7 +10,8 @@ directly through Twilio (SMS) and Resend (email). ServiceTitan stays the CRM.
 |---|---|
 | `workflow.json` | **Outbound** workflow — ServiceTitan job → SMS + email + Note |
 | `inbound-workflow.json` | **Inbound** workflow — Twilio STOP / replies → ServiceTitan opt-out + owner alert |
-| `CLIENT-ONBOARDING.md` | Customer-facing doc — what we need from them |
+| `CLIENT-GUIDE.md` | **The doc to send the client** — comprehensive, plain-language, branded |
+| `CLIENT-ONBOARDING.md` | Shorter onboarding checklist (subset of CLIENT-GUIDE) |
 | `README.md` | This file — internal SOP |
 
 ## Architecture
