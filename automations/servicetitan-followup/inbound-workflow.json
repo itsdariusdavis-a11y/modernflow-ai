@@ -1,0 +1,262 @@
+{
+  "name": "Twilio Inbound — STOP + Reply Handler (Template)",
+  "nodes": [
+    {
+      "id": "i1",
+      "name": "Twilio Inbound SMS",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [200, 400],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "twilio/inbound-sms",
+        "responseMode": "lastNode",
+        "multipleMethods": false,
+        "options": { "rawBody": false }
+      },
+      "notes": "Configure this URL in Twilio Console → Phone Number → 'A MESSAGE COMES IN'. Twilio POSTs form-encoded with From, Body, To, MessageSid."
+    },
+    {
+      "id": "i2",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [420, 400],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "tenantId", "type": "string", "value": "={{ $env.ST_TENANT_ID }}" },
+            { "id": "2", "name": "appKey", "type": "string", "value": "={{ $env.ST_APP_KEY }}" },
+            { "id": "3", "name": "clientId", "type": "string", "value": "={{ $env.ST_CLIENT_ID }}" },
+            { "id": "4", "name": "clientSecret", "type": "string", "value": "={{ $env.ST_CLIENT_SECRET }}" },
+            { "id": "5", "name": "stBaseUrl", "type": "string", "value": "https://api-integration.servicetitan.io" },
+            { "id": "6", "name": "stAuthUrl", "type": "string", "value": "https://auth-integration.servicetitan.io/connect/token" },
+            { "id": "7", "name": "resendApiKey", "type": "string", "value": "={{ $env.RESEND_API_KEY }}" },
+            { "id": "8", "name": "resendFromEmail", "type": "string", "value": "={{ $env.RESEND_FROM_EMAIL }}" },
+            { "id": "9", "name": "ownerNotifyEmail", "type": "string", "value": "={{ $env.OWNER_NOTIFY_EMAIL }}" },
+            { "id": "10", "name": "clientName", "type": "string", "value": "={{ $env.CLIENT_BUSINESS_NAME }}" },
+            { "id": "11", "name": "fromPhone", "type": "string", "value": "={{ ($json.body && $json.body.From) || $json.From || '' }}" },
+            { "id": "12", "name": "messageBody", "type": "string", "value": "={{ ($json.body && $json.body.Body) || $json.Body || '' }}" },
+            { "id": "13", "name": "isOptOut", "type": "boolean", "value": "={{ /^\\s*(stop|stopall|unsubscribe|cancel|quit|end|opt[ -]?out)\\s*$/i.test((($json.body && $json.body.Body) || $json.Body || '')) }}" }
+          ]
+        },
+        "options": {}
+      },
+      "notes": "Parses Twilio form payload and classifies as opt-out vs regular reply."
+    },
+    {
+      "id": "i3",
+      "name": "ServiceTitan OAuth Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [640, 400],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.stAuthUrl }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Content-Type", "value": "application/x-www-form-urlencoded" }] },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            { "name": "grant_type", "value": "client_credentials" },
+            { "name": "client_id", "value": "={{ $json.clientId }}" },
+            { "name": "client_secret", "value": "={{ $json.clientSecret }}" }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "i4",
+      "name": "Carry Context",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [860, 400],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "accessToken", "type": "string", "value": "={{ $json.access_token }}" },
+            { "id": "2", "name": "tenantId", "type": "string", "value": "={{ $('Config').item.json.tenantId }}" },
+            { "id": "3", "name": "appKey", "type": "string", "value": "={{ $('Config').item.json.appKey }}" },
+            { "id": "4", "name": "stBaseUrl", "type": "string", "value": "={{ $('Config').item.json.stBaseUrl }}" },
+            { "id": "5", "name": "fromPhone", "type": "string", "value": "={{ $('Config').item.json.fromPhone }}" },
+            { "id": "6", "name": "messageBody", "type": "string", "value": "={{ $('Config').item.json.messageBody }}" },
+            { "id": "7", "name": "isOptOut", "type": "boolean", "value": "={{ $('Config').item.json.isOptOut }}" },
+            { "id": "8", "name": "ownerNotifyEmail", "type": "string", "value": "={{ $('Config').item.json.ownerNotifyEmail }}" },
+            { "id": "9", "name": "clientName", "type": "string", "value": "={{ $('Config').item.json.clientName }}" },
+            { "id": "10", "name": "resendApiKey", "type": "string", "value": "={{ $('Config').item.json.resendApiKey }}" },
+            { "id": "11", "name": "resendFromEmail", "type": "string", "value": "={{ $('Config').item.json.resendFromEmail }}" }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "i5",
+      "name": "Find Customer by Phone",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1080, 400],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.stBaseUrl }}/crm/v2/tenant/{{ $json.tenantId }}/customers?phone={{ encodeURIComponent($json.fromPhone) }}&pageSize=1",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $json.appKey }}" }
+          ]
+        },
+        "sendBody": false,
+        "options": {}
+      },
+      "continueOnFail": true,
+      "notes": "Best-effort lookup. If no match, downstream nodes still complete."
+    },
+    {
+      "id": "i6",
+      "name": "Opt-out?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1300, 400],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "combinator": "and",
+          "conditions": [
+            { "id": "c1", "leftValue": "={{ $('Carry Context').item.json.isOptOut }}", "rightValue": true, "operator": { "type": "boolean", "operation": "equals" } }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "i7",
+      "name": "PATCH doNotMail=true",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1540, 280],
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Carry Context').item.json.stBaseUrl }}/crm/v2/tenant/{{ $('Carry Context').item.json.tenantId }}/customers/{{ ($json.data && $json.data[0] && $json.data[0].id) || '' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Context').item.json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $('Carry Context').item.json.appKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doNotMail: true }) }}",
+        "options": {}
+      },
+      "continueOnFail": true
+    },
+    {
+      "id": "i8",
+      "name": "Note: Opted Out",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1760, 280],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Carry Context').item.json.stBaseUrl }}/crm/v2/tenant/{{ $('Carry Context').item.json.tenantId }}/customers/{{ ($('Find Customer by Phone').item.json.data && $('Find Customer by Phone').item.json.data[0] && $('Find Customer by Phone').item.json.data[0].id) || '' }}/notes",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Context').item.json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $('Carry Context').item.json.appKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: 'ModernFlow Automation: customer opted out via SMS reply (' + $('Carry Context').item.json.messageBody + '). doNotMail set to true.', pinToTop: true }) }}",
+        "options": {}
+      },
+      "continueOnFail": true
+    },
+    {
+      "id": "i9",
+      "name": "Note: Reply Received",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1540, 520],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Carry Context').item.json.stBaseUrl }}/crm/v2/tenant/{{ $('Carry Context').item.json.tenantId }}/customers/{{ ($json.data && $json.data[0] && $json.data[0].id) || '' }}/notes",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Context').item.json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $('Carry Context').item.json.appKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: 'Customer replied to follow-up SMS: \"' + $('Carry Context').item.json.messageBody + '\" (from ' + $('Carry Context').item.json.fromPhone + ')', pinToTop: true }) }}",
+        "options": {}
+      },
+      "continueOnFail": true
+    },
+    {
+      "id": "i10",
+      "name": "Alert Owner (Resend)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1760, 520],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Context').item.json.resendApiKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ from: $('Carry Context').item.json.resendFromEmail, to: [$('Carry Context').item.json.ownerNotifyEmail], subject: 'Customer reply to ' + $('Carry Context').item.json.clientName + ' follow-up', html: '<p>A customer replied to a follow-up SMS:</p><blockquote>' + $('Carry Context').item.json.messageBody + '</blockquote><p>From: ' + $('Carry Context').item.json.fromPhone + '</p>' }) }}",
+        "options": {}
+      },
+      "continueOnFail": true,
+      "notes": "Emails the business owner so they can respond personally."
+    }
+  ],
+  "connections": {
+    "Twilio Inbound SMS": { "main": [[{ "node": "Config", "type": "main", "index": 0 }]] },
+    "Config": { "main": [[{ "node": "ServiceTitan OAuth Token", "type": "main", "index": 0 }]] },
+    "ServiceTitan OAuth Token": { "main": [[{ "node": "Carry Context", "type": "main", "index": 0 }]] },
+    "Carry Context": { "main": [[{ "node": "Find Customer by Phone", "type": "main", "index": 0 }]] },
+    "Find Customer by Phone": { "main": [[{ "node": "Opt-out?", "type": "main", "index": 0 }]] },
+    "Opt-out?": { "main": [[{ "node": "PATCH doNotMail=true", "type": "main", "index": 0 }], [{ "node": "Note: Reply Received", "type": "main", "index": 0 }]] },
+    "PATCH doNotMail=true": { "main": [[{ "node": "Note: Opted Out", "type": "main", "index": 0 }]] },
+    "Note: Reply Received": { "main": [[{ "node": "Alert Owner (Resend)", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "timezone": "America/New_York"
+  }
+}
