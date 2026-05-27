@@ -1,0 +1,287 @@
+{
+  "name": "ServiceTitan → GHL — Post-Job Follow-Up (Template)",
+  "nodes": [
+    {
+      "id": "webhook-st-job-complete",
+      "name": "ServiceTitan Job Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [240, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "servicetitan/job-complete",
+        "responseMode": "onReceived",
+        "multipleMethods": false,
+        "options": {}
+      },
+      "notes": "ServiceTitan posts the job-completion event here. URL goes into ServiceTitan → Settings → Integrations → Webhooks. One workflow per tenant; clone for additional clients."
+    },
+    {
+      "id": "set-config",
+      "name": "Config (per-client)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "tenantId", "type": "string", "value": "={{ $env.ST_TENANT_ID }}" },
+            { "id": "2", "name": "appKey", "type": "string", "value": "={{ $env.ST_APP_KEY }}" },
+            { "id": "3", "name": "clientId", "type": "string", "value": "={{ $env.ST_CLIENT_ID }}" },
+            { "id": "4", "name": "clientSecret", "type": "string", "value": "={{ $env.ST_CLIENT_SECRET }}" },
+            { "id": "5", "name": "stBaseUrl", "type": "string", "value": "https://api-integration.servicetitan.io" },
+            { "id": "6", "name": "stAuthUrl", "type": "string", "value": "https://auth-integration.servicetitan.io/connect/token" },
+            { "id": "7", "name": "ghlWebhookUrl", "type": "string", "value": "={{ $env.GHL_FOLLOWUP_WEBHOOK_URL }}" },
+            { "id": "8", "name": "reviewLink", "type": "string", "value": "={{ $env.CLIENT_REVIEW_LINK }}" },
+            { "id": "9", "name": "clientName", "type": "string", "value": "={{ $env.CLIENT_BUSINESS_NAME }}" },
+            { "id": "10", "name": "jobId", "type": "string", "value": "={{ $json.body.jobId ?? $json.body.id }}" }
+          ]
+        },
+        "options": {}
+      },
+      "notes": "All per-client values live in env vars so this workflow is portable. Sandbox base URLs shown — swap to https://api.servicetitan.io and https://auth.servicetitan.io/connect/token for production."
+    },
+    {
+      "id": "http-st-token",
+      "name": "ServiceTitan OAuth Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [680, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.stAuthUrl }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/x-www-form-urlencoded" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            { "name": "grant_type", "value": "client_credentials" },
+            { "name": "client_id", "value": "={{ $json.clientId }}" },
+            { "name": "client_secret", "value": "={{ $json.clientSecret }}" }
+          ]
+        },
+        "options": { "response": { "response": { "responseFormat": "json" } } }
+      },
+      "notes": "Client-credentials OAuth. Tokens are short-lived (~30 min). For high volume add a cache; for low volume re-fetch per run is fine."
+    },
+    {
+      "id": "set-token",
+      "name": "Carry Token + Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [900, 300],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "accessToken", "type": "string", "value": "={{ $json.access_token }}" },
+            { "id": "2", "name": "tenantId", "type": "string", "value": "={{ $('Config (per-client)').item.json.tenantId }}" },
+            { "id": "3", "name": "appKey", "type": "string", "value": "={{ $('Config (per-client)').item.json.appKey }}" },
+            { "id": "4", "name": "stBaseUrl", "type": "string", "value": "={{ $('Config (per-client)').item.json.stBaseUrl }}" },
+            { "id": "5", "name": "ghlWebhookUrl", "type": "string", "value": "={{ $('Config (per-client)').item.json.ghlWebhookUrl }}" },
+            { "id": "6", "name": "reviewLink", "type": "string", "value": "={{ $('Config (per-client)').item.json.reviewLink }}" },
+            { "id": "7", "name": "clientName", "type": "string", "value": "={{ $('Config (per-client)').item.json.clientName }}" },
+            { "id": "8", "name": "jobId", "type": "string", "value": "={{ $('Config (per-client)').item.json.jobId }}" }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "http-st-get-job",
+      "name": "GET Job (ServiceTitan)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1120, 200],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.stBaseUrl }}/jpm/v2/tenant/{{ $json.tenantId }}/jobs/{{ $json.jobId }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $json.appKey }}" }
+          ]
+        },
+        "sendBody": false,
+        "options": { "response": { "response": { "responseFormat": "json" } } }
+      }
+    },
+    {
+      "id": "http-st-get-customer",
+      "name": "GET Customer (ServiceTitan)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1340, 200],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $('Carry Token + Config').item.json.stBaseUrl }}/crm/v2/tenant/{{ $('Carry Token + Config').item.json.tenantId }}/customers/{{ $json.customerId }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Token + Config').item.json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $('Carry Token + Config').item.json.appKey }}" }
+          ]
+        },
+        "sendBody": false,
+        "options": { "response": { "response": { "responseFormat": "json" } } }
+      }
+    },
+    {
+      "id": "if-eligible",
+      "name": "Eligible? (Completed + opted-in)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1560, 200],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $('GET Job (ServiceTitan)').item.json.jobStatus }}",
+              "rightValue": "Completed",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.doNotMail ?? false }}",
+              "rightValue": false,
+              "operator": { "type": "boolean", "operation": "equals" }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "set-ghl-payload",
+      "name": "Build GHL Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1780, 100],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "firstName", "type": "string", "value": "={{ $json.firstName ?? ($json.name ? $json.name.split(' ')[0] : '') }}" },
+            { "id": "2", "name": "lastName", "type": "string", "value": "={{ $json.lastName ?? ($json.name ? $json.name.split(' ').slice(1).join(' ') : '') }}" },
+            { "id": "3", "name": "email", "type": "string", "value": "={{ $json.email ?? '' }}" },
+            { "id": "4", "name": "phone", "type": "string", "value": "={{ ($json.contacts && $json.contacts.find(c => c.type === 'MobilePhone'))?.value ?? $json.phone ?? '' }}" },
+            { "id": "5", "name": "source", "type": "string", "value": "ServiceTitan Job Completion" },
+            { "id": "6", "name": "tags", "type": "array", "value": "={{ ['servicetitan-job-complete', 'review-request'] }}" },
+            {
+              "id": "7",
+              "name": "customFields",
+              "type": "object",
+              "value": "={{ { jobId: $('Carry Token + Config').item.json.jobId, jobType: $('GET Job (ServiceTitan)').item.json.jobTypeName ?? '', completedAt: $('GET Job (ServiceTitan)').item.json.completedOn ?? '', technicianName: $('GET Job (ServiceTitan)').item.json.leadTechnicianName ?? '', invoiceTotal: $('GET Job (ServiceTitan)').item.json.total ?? 0, reviewLink: $('Carry Token + Config').item.json.reviewLink, businessName: $('Carry Token + Config').item.json.clientName } }}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "http-ghl-post",
+      "name": "POST → GHL Inbound Webhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2000, 100],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Carry Token + Config').item.json.ghlWebhookUrl }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": { "response": { "response": { "responseFormat": "json" } } }
+      },
+      "notes": "GHL workflow on the other side handles the actual SMS + email + review-link send and tags the contact."
+    },
+    {
+      "id": "http-st-note",
+      "name": "Log Note Back to ServiceTitan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2220, 100],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Carry Token + Config').item.json.stBaseUrl }}/crm/v2/tenant/{{ $('Carry Token + Config').item.json.tenantId }}/customers/{{ $('GET Customer (ServiceTitan)').item.json.id }}/notes",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Token + Config').item.json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $('Carry Token + Config').item.json.appKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: 'ModernFlow Automation: follow-up + review request sent for job ' + $('Carry Token + Config').item.json.jobId, pinToTop: false }) }}",
+        "options": { "response": { "response": { "responseFormat": "json" } } }
+      },
+      "notes": "Writes an audit trail back to the customer record in ServiceTitan so techs/CSRs can see the automation fired."
+    }
+  ],
+  "connections": {
+    "ServiceTitan Job Webhook": {
+      "main": [[{ "node": "Config (per-client)", "type": "main", "index": 0 }]]
+    },
+    "Config (per-client)": {
+      "main": [[{ "node": "ServiceTitan OAuth Token", "type": "main", "index": 0 }]]
+    },
+    "ServiceTitan OAuth Token": {
+      "main": [[{ "node": "Carry Token + Config", "type": "main", "index": 0 }]]
+    },
+    "Carry Token + Config": {
+      "main": [[{ "node": "GET Job (ServiceTitan)", "type": "main", "index": 0 }]]
+    },
+    "GET Job (ServiceTitan)": {
+      "main": [[{ "node": "GET Customer (ServiceTitan)", "type": "main", "index": 0 }]]
+    },
+    "GET Customer (ServiceTitan)": {
+      "main": [[{ "node": "Eligible? (Completed + opted-in)", "type": "main", "index": 0 }]]
+    },
+    "Eligible? (Completed + opted-in)": {
+      "main": [
+        [{ "node": "Build GHL Payload", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Build GHL Payload": {
+      "main": [[{ "node": "POST → GHL Inbound Webhook", "type": "main", "index": 0 }]]
+    },
+    "POST → GHL Inbound Webhook": {
+      "main": [[{ "node": "Log Note Back to ServiceTitan", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "timezone": "America/New_York"
+  }
+}
