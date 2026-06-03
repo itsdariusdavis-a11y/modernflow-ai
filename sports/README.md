@@ -18,6 +18,17 @@ shows, for **both** teams:
 It refreshes for the current date automatically, so it's a fresh slate every day.
 A date picker lets you look back/ahead.
 
+## Two ways to run it
+
+- **`live/index.html`** — a single self-contained file (no build, no deps) that
+  you host anywhere and visit live; it auto-updates to the current day on every
+  load. This is the "put it online" version. See [`live/README.md`](live/README.md).
+- **The React/Vite app** (this folder) — the same dashboard as a dev project, for
+  local hacking and extension.
+
+A GitHub Pages workflow (`.github/workflows/deploy-sports.yml`) publishes
+`live/` automatically.
+
 ## Data source
 
 Everything comes from the **free, no-key [MLB Stats API](https://statsapi.mlb.com)**

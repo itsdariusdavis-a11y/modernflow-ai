@@ -1,0 +1,41 @@
+name: Deploy MLB dashboard to GitHub Pages
+
+# Publishes the self-contained dashboard at sports/live/ to GitHub Pages.
+# The page fetches live data from the MLB Stats API in the browser on each
+# visit, so it "updates daily" with no rebuild — this workflow only needs to
+# run when the HTML itself changes.
+#
+# Setup (once): repo Settings → Pages → Build and deployment → Source =
+# "GitHub Actions". Note: Pages on a PRIVATE repo requires a paid GitHub plan;
+# otherwise host sports/live/index.html on any static host (Netlify, Cloudflare
+# Pages, Vercel) — it's a single file with no build step.
+
+on:
+  push:
+    branches: [main]
+    paths: ["sports/live/**", ".github/workflows/deploy-sports.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: sports/live
+      - id: deployment
+        uses: actions/deploy-pages@v4
