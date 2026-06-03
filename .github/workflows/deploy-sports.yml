@@ -1,20 +1,33 @@
-name: Deploy MLB dashboard to GitHub Pages
+name: MLB dashboard — daily snapshot & Pages deploy
 
-# Publishes the self-contained dashboard at sports/live/ to GitHub Pages.
-# The page fetches live data from the MLB Stats API in the browser on each
-# visit, so it "updates daily" with no rebuild — this workflow only needs to
-# run when the HTML itself changes.
+# Builds a fresh data snapshot from the MLB Stats API and publishes the
+# self-contained dashboard (sports/live/) to GitHub Pages.
 #
-# Setup (once): repo Settings → Pages → Build and deployment → Source =
-# "GitHub Actions". Note: Pages on a PRIVATE repo requires a paid GitHub plan;
-# otherwise host sports/live/index.html on any static host (Netlify, Cloudflare
-# Pages, Vercel) — it's a single file with no build step.
+# - Runs on a daily schedule so the live page always reflects the current slate.
+# - The snapshot is baked into the Pages artifact (not committed), so the repo
+#   stays clean and every deploy is fresh.
+# - configure-pages enables Pages automatically (no manual Settings toggle).
+#
+# Scheduled workflows only run from the DEFAULT branch (main), so this must live
+# on main to auto-update daily.
 
 on:
+  schedule:
+    # Several times a day (UTC) to pick up probable pitchers, lineups & results.
+    - cron: "30 13 * * *" # ~9:30am ET
+    - cron: "30 17 * * *" # ~1:30pm ET
+    - cron: "30 22 * * *" # ~6:30pm ET
   push:
     branches: [main]
-    paths: ["sports/live/**", ".github/workflows/deploy-sports.yml"]
+    paths:
+      - "sports/live/**"
+      - "sports/scripts/**"
+      - ".github/workflows/deploy-sports.yml"
   workflow_dispatch:
+    inputs:
+      date:
+        description: "Date to snapshot (YYYY-MM-DD); blank = today (ET)"
+        required: false
 
 permissions:
   contents: read
@@ -33,9 +46,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build daily snapshot from the MLB Stats API
+        run: node sports/scripts/build-snapshot.mjs ${{ inputs.date }}
+
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: sports/live
+
       - id: deployment
         uses: actions/deploy-pages@v4

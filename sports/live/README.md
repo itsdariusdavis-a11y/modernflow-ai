@@ -19,9 +19,20 @@ Pick any of these — the file is host-agnostic:
 
 ## Daily updates
 
-There's no server cron needed: the page is data-driven off "today" each time it
-loads. The cache key is the date, so a new day = a fresh fetch automatically.
-Use **↻** to force-refresh, or the date arrows to browse other days.
+Two layers, so it's always current:
+
+1. **Server-side daily snapshot** — the GitHub Action
+   (`.github/workflows/deploy-sports.yml`) runs on a cron a few times a day,
+   executes `sports/scripts/build-snapshot.mjs` to pull the full slate from the
+   MLB Stats API, and bakes it into the deployed page as `data/today.json`. So
+   the page is fresh every day even before any browser fetch.
+2. **Live in-browser refresh** — on load the page reads the snapshot for an
+   instant first paint, then refreshes against the API directly (picking up
+   lineups/scores as the day goes on). The cache key is the date, so a new day =
+   a fresh fetch automatically.
+
+Use **↻** to force-refresh, or the date arrows to browse other days. To build a
+snapshot locally: `node sports/scripts/build-snapshot.mjs` (needs internet).
 
 ## If the API is blocked
 
