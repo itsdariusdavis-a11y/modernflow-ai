@@ -459,21 +459,43 @@
       function setBanner(html, cls) { el("banner").innerHTML = html ? '<div class="banner ' + (cls || "") + '">' + html + "</div>" : ""; }
       function setUpdated(ts) { el("updated").textContent = ts ? " · updated " + new Date(ts).toLocaleTimeString() : ""; }
 
+      // Prebuilt daily snapshot (generated server-side by the GitHub Action).
+      // Gives an instant first paint and keeps working even if the viewer's
+      // network can't reach the API directly.
+      async function loadSnapshot(date) {
+        const urls = ["./data/" + date + ".json"];
+        if (date === isoDate()) urls.push("./data/today.json");
+        for (const url of urls) {
+          try {
+            const res = await fetch(url, { cache: "no-store" });
+            if (!res.ok) continue;
+            const snap = await res.json();
+            if (snap && snap.date === date && Array.isArray(snap.matchups)) return snap;
+          } catch (e) {}
+        }
+        return null;
+      }
+
       async function show(date, force) {
         DATE = date; el("date").value = date;
-        const cached = !force && cachedDay(date);
-        if (cached) { render(cached.matchups, date); setUpdated(cached.ts); }
-        else { el("content").innerHTML = '<div class="loading">Loading slate for ' + date + '…</div>'; }
         setBanner("");
+        let painted = false;
+        const cached = !force && cachedDay(date);
+        if (cached) { render(cached.matchups, date); setUpdated(cached.ts); painted = true; }
+        if (!painted) {
+          const snap = await loadSnapshot(date);
+          if (snap) { render(snap.matchups, date); setUpdated(Date.parse(snap.generatedAt) || Date.now()); painted = true; }
+        }
+        if (!painted) el("content").innerHTML = '<div class="loading">Loading slate for ' + date + '…</div>';
         try {
           const data = await loadDay(date);
           render(data.matchups, date); setUpdated(data.ts);
         } catch (e) {
-          if (!cached) {
+          if (!painted) {
             setBanner('Could not reach the MLB Stats API (<code>' + esc(API) + '</code>). If it is blocked, append <code>?api=YOUR_PROXY</code> to the URL.', "err");
             el("content").innerHTML = '<div class="empty">No data.</div>';
           } else {
-            setBanner("Showing cached data — couldn’t refresh from the API.", "warn");
+            setBanner("Showing the daily snapshot — live in-browser refresh isn’t available on this network.", "warn");
           }
         }
       }
