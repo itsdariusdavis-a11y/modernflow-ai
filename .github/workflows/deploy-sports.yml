@@ -54,11 +54,31 @@ jobs:
       - name: Build daily snapshot from the MLB Stats API
         run: node sports/scripts/build-snapshot.mjs ${{ inputs.date }}
 
+      # The Pages steps below only succeed once GitHub Pages is enabled
+      # (Settings → Pages → Source: "GitHub Actions"). Until then they're
+      # allowed to fail softly so the daily run stays green instead of spamming
+      # failures. The moment Pages is enabled, the next run deploys automatically.
       - uses: actions/configure-pages@v5
+        id: configure
+        continue-on-error: true
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.configure.outcome == 'success'
+        continue-on-error: true
         with:
           path: sports/live
 
       - id: deployment
+        if: steps.configure.outcome == 'success'
+        continue-on-error: true
         uses: actions/deploy-pages@v4
+
+      - name: Pages status
+        run: |
+          if [ "${{ steps.configure.outcome }}" = "success" ]; then
+            echo "✅ Deployed to GitHub Pages: ${{ steps.deployment.outputs.page_url }}"
+          else
+            echo "ℹ️  GitHub Pages isn't enabled yet — snapshot built, deploy skipped."
+            echo "    Enable it at Settings → Pages → Source: 'GitHub Actions', then re-run."
+          fi
+
