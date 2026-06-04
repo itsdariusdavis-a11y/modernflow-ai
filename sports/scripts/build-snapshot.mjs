@@ -147,7 +147,7 @@ async function buildBullpens(season) {
         const st = p.stats?.[0]?.splits?.[0]?.stat;
         if (!st || (st.gamesStarted || 0) !== 0 || ipToOuts(st.inningsPitched) === 0) continue;
         outs += ipToOuts(st.inningsPitched); er += st.earnedRuns || 0; hits += st.hits || 0; bb += st.baseOnBalls || 0; k += st.strikeOuts || 0;
-        arms.push({ name: p.fullName, era: toNum(st.era), ip: st.inningsPitched, g: st.gamesPlayed || 0 });
+        arms.push({ id: p.id, name: p.fullName, era: toNum(st.era), ip: st.inningsPitched, g: st.gamesPlayed || 0 });
       }
       if (outs === 0) return [t[0], null];
       const ip = outs / 3;
