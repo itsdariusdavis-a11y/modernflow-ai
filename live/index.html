@@ -83,6 +83,22 @@
       table.bvp tr.team-row td { color: var(--accent); font-weight: 700; }
       .muted { color: var(--muted); }
       .loading, .empty { color: var(--muted); font-size: 13px; padding: 12px 0; }
+      .odds { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: rgba(56,189,248,.05); font-size: 12px; }
+      .odds-k { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted-2); font-weight: 700; }
+      .odds-i { font-variant-numeric: tabular-nums; font-weight: 600; }
+      .odds-p { margin-left: auto; color: var(--muted-2); font-size: 11px; }
+      .fav { color: #fbbf24; font-size: 10px; font-weight: 700; }
+      .offense.bp { margin-top: 0; }
+      .inj { margin-top: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-2); }
+      .inj summary { cursor: pointer; padding: 7px 10px; font-size: 12px; font-weight: 600; color: var(--muted); list-style: none; }
+      .inj summary::-webkit-details-marker { display: none; }
+      .inj[open] summary { border-bottom: 1px solid var(--border); }
+      .inj-list { margin: 0; padding: 6px 10px; list-style: none; max-height: 180px; overflow: auto; }
+      .inj-list li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,.04); }
+      .inj-name { color: var(--text); }
+      .inj-status { color: #f3a0a0; font-size: 11px; white-space: nowrap; }
+      .avail { font-size: 11px; font-weight: 700; white-space: nowrap; }
+      .avail.g { color: #4ade80; } .avail.y { color: #fbbf24; } .avail.r { color: #f87171; }
       @media (max-width: 720px) {
         .sides, .detail-grid { grid-template-columns: 1fr; }
         .side + .side { border-left: none; border-top: 1px solid var(--border); }
@@ -102,9 +118,10 @@
         </div>
       </header>
       <div class="app-sub">
-        Offense ranked 1–30 vs the handedness of today’s opposing starter (AVG · OPS ·
-        RPG), plus home/away, day/night and day-of-week records and batter-vs-pitcher
-        history. Auto-refreshes each day. Source: MLB Stats API.
+        Offense ranked 1–30 vs the opposing starter’s hand (AVG · OPS · RPG), bullpen
+        rank, home/away · day/night · weekday · last-10 records, injuries, betting odds,
+        and on expand: each starter’s last 3 starts, batter-vs-pitcher, and bullpen
+        availability. Auto-refreshes daily. Sources: MLB Stats API · ESPN.
         <span class="updated" id="updated"></span>
       </div>
       <div id="banner"></div>
@@ -239,7 +256,7 @@
           for (const tr of lg.teamRecords || []) {
             const splits = (tr.records && tr.records.splitRecords) || [];
             const pick = (type) => { const s = splits.find((r) => r.type === type); return s ? { w: s.wins, l: s.losses } : { w: 0, l: 0 }; };
-            out.set(tr.team.id, { overall: { w: tr.wins, l: tr.losses }, home: pick("home"), away: pick("away"), day: pick("day"), night: pick("night") });
+            out.set(tr.team.id, { overall: { w: tr.wins, l: tr.losses }, home: pick("home"), away: pick("away"), day: pick("day"), night: pick("night"), lastTen: pick("lastTen") });
           }
         }
         return out;
@@ -376,7 +393,34 @@
               chip(side.isHome ? "Home" : "Away", fmtRec(ha), true) +
               chip(dayNight === "day" ? "Day" : "Night", fmtRec(dn), true) +
               chip(weekday.slice(0, 3) + ".", fmtRec(wd), true) +
+              chip("L10", fmtRec(side.records && side.records.lastTen)) +
+            '</div>' +
+            bullpenHTML(side.bullpen) +
+            injuriesHTML(side.injuries) +
+          '</div>'
+        );
+      }
+      function bullpenHTML(b) {
+        if (!b) return "";
+        return (
+          '<div class="section-label">Bullpen</div>' +
+          '<div class="offense bp">' + rankBadge(b.rank) +
+            '<div class="statline">' +
+              '<div class="stat"><span class="v">' + (b.era != null ? b.era.toFixed(2) : "—") + '</span><span class="k">ERA</span></div>' +
+              '<div class="stat"><span class="v">' + (b.whip != null ? b.whip.toFixed(2) : "—") + '</span><span class="k">WHIP</span></div>' +
+              '<div class="stat"><span class="v">' + (b.k9 != null ? b.k9.toFixed(1) : "—") + '</span><span class="k">K/9</span></div>' +
             '</div></div>'
+        );
+      }
+      function injuriesHTML(list) {
+        if (!list || !list.length) return "";
+        const rows = list.slice(0, 12).map((p) =>
+          '<li><span class="inj-name">' + esc(p.name) + (p.pos ? ' <span class="muted">' + esc(p.pos) + '</span>' : "") +
+          '</span><span class="inj-status">' + esc(p.status || "") + '</span></li>'
+        ).join("");
+        return (
+          '<details class="inj"><summary>🩹 Injuries (' + list.length + ')</summary>' +
+          '<ul class="inj-list">' + rows + '</ul></details>'
         );
       }
       function chip(k, v, hl) {
@@ -393,9 +437,26 @@
                 '<span class="pill ' + tod + '">' + (tod === "day" ? "☀ Day game" : "☾ Night game") + '</span>' +
                 '<span class="pill">' + esc(m.status) + '</span>' +
               '</div></div>' +
+            oddsHTML(m) +
             '<div class="sides">' + sideHTML(m.away, m.weekday, tod) + sideHTML(m.home, m.weekday, tod) + '</div>' +
-            '<button class="expand-btn" data-expand="' + m.gamePk + '">▸ Show pitching matchups & batter-vs-pitcher</button>' +
+            '<button class="expand-btn" data-expand="' + m.gamePk + '">▸ Starters’ last 3 starts · batter-vs-pitcher · bullpen availability</button>' +
             '<div class="detail-host"></div>' +
+          '</div>'
+        );
+      }
+      function oddsHTML(m) {
+        const o = m.odds;
+        if (!o) return "";
+        const ml = (v) => (v == null ? "—" : v > 0 ? "+" + v : String(v));
+        const fav = (which) => (o.favorite === which ? ' <span class="fav">fav</span>' : "");
+        return (
+          '<div class="odds">' +
+            '<span class="odds-k">Odds</span>' +
+            '<span class="odds-i">' + m.away.team.abbr + ' ' + ml(o.awayML) + fav("away") + '</span>' +
+            '<span class="odds-i">' + m.home.team.abbr + ' ' + ml(o.homeML) + fav("home") + '</span>' +
+            (o.total != null ? '<span class="odds-i">O/U ' + o.total + '</span>' : "") +
+            (o.spread != null ? '<span class="odds-i">RL ' + (o.spread > 0 ? "+" : "") + o.spread + '</span>' : "") +
+            (o.provider ? '<span class="odds-p">' + esc(o.provider) + '</span>' : "") +
           '</div>'
         );
       }
@@ -437,20 +498,88 @@
           '<table class="bvp"><thead><tr><th>Opponent / Batter</th><th>PA/BF</th><th>AVG</th><th>OPS</th><th>HR</th><th>K</th><th>BB</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
         );
       }
+      // #1 — starter's last 3 starts (from the snapshot; no fetch needed).
+      function last3HTML(starter, teamName) {
+        if (!starter) return "";
+        const l3 = starter.last3 || [];
+        const body = l3.length
+          ? l3.map((s) =>
+              '<tr><td>' + esc(s.date) + '</td><td>' + (s.isHome ? "vs " : "@ ") + esc(s.opp || "") + '</td><td>' +
+              (s.ip ?? "—") + '</td><td>' + (s.er ?? "—") + '</td><td>' + (s.h ?? "—") + '</td><td>' +
+              (s.bb ?? "—") + '</td><td>' + (s.k ?? "—") + '</td><td>' + (s.np ?? "—") + '</td></tr>'
+            ).join("")
+          : '<tr><td colspan="8" class="empty">No recent starts.</td></tr>';
+        return (
+          '<div><div class="section-label">' + esc(teamName) + " — " + esc(starter.name) + " · last 3 starts</div>" +
+          '<table class="bvp"><thead><tr><th>Date</th><th>Opp</th><th>IP</th><th>ER</th><th>H</th><th>BB</th><th>K</th><th>NP</th></tr></thead><tbody>' +
+          body + "</tbody></table></div>"
+        );
+      }
+
+      // #3 — bullpen availability (lazy live: each top reliever's recent usage).
+      function daysBetween(a, b) {
+        return Math.round((Date.parse(a + "T00:00:00Z") - Date.parse(b + "T00:00:00Z")) / 86400000);
+      }
+      async function bullpenRestHTML(side, gameDate) {
+        const arms = (side.bullpen && side.bullpen.arms) || [];
+        if (!arms.length) return "";
+        const season = gameDate.slice(0, 4);
+        const rows = await mapPool(arms, 4, async (a) => {
+          if (!a.id) return { a };
+          try {
+            const d = await getJSON("/api/v1/people/" + a.id + "/stats", { stats: "gameLog", group: "pitching", season, sportId: 1 });
+            const splits = (d.stats && d.stats[0] && d.stats[0].splits) || [];
+            const dates = splits.map((s) => s.date).filter((x) => x && daysBetween(gameDate, x) >= 0);
+            const last = dates[dates.length - 1];
+            const lastSplit = splits[splits.length - 1];
+            return { a, last, dates, np: lastSplit && lastSplit.stat && lastSplit.stat.numberOfPitches };
+          } catch (e) { return { a }; }
+        });
+        const cell = (r) => {
+          if (!r.last) return { rest: "—", np: "—", badge: '<span class="avail g">🟢 Available</span>' };
+          const rest = daysBetween(gameDate, r.last);
+          const b1 = r.dates.some((d) => daysBetween(gameDate, d) === 1);
+          const b2 = r.dates.some((d) => daysBetween(gameDate, d) === 2);
+          let badge = '<span class="avail g">🟢 Available</span>';
+          if (rest <= 0) badge = '<span class="avail r">🔴 Pitched today</span>';
+          else if (b1 && b2) badge = '<span class="avail r">🔴 3 straight days</span>';
+          else if (b1) badge = '<span class="avail y">🟡 Back-to-back</span>';
+          return { rest: rest + "d", np: r.np != null ? r.np : "—", badge };
+        };
+        const body = rows.map((r) => {
+          const c = cell(r);
+          return '<tr><td>' + esc(r.a.name) + '</td><td>' + (r.a.era != null ? r.a.era.toFixed(2) : "—") +
+            '</td><td>' + (r.last ? esc(r.last) : "—") + '</td><td>' + c.rest + '</td><td>' + c.np + '</td><td>' + c.badge + '</td></tr>';
+        }).join("");
+        return (
+          '<div><div class="section-label">' + esc(side.team.name) + " bullpen — availability</div>" +
+          '<table class="bvp"><thead><tr><th>Reliever</th><th>ERA</th><th>Last</th><th>Rest</th><th>NP</th><th>Status</th></tr></thead><tbody>' +
+          body + "</tbody></table></div>"
+        );
+      }
+
       async function expand(gamePk, host) {
         const m = CURRENT.get(String(gamePk));
         if (!m) return;
-        host.innerHTML = '<div class="detail"><div class="loading">Loading pitcher history & batter-vs-pitcher…</div></div>';
+        // Instant: last-3 starts come straight from the snapshot.
+        const starts = '<div class="detail-grid">' + last3HTML(m.awayStarter, m.away.team.name) + last3HTML(m.homeStarter, m.home.team.name) + '</div>';
+        host.innerHTML = '<div class="detail">' + starts + '<div class="loading" id="d' + gamePk + '">Loading batter-vs-pitcher & bullpen availability…</div></div>';
         try {
           let away = [], home = [];
           try { const lu = await getLineups(gamePk); away = lu.away.batters; home = lu.home.batters; } catch (e) {}
-          const [awayHTML, homeHTML] = await Promise.all([
-            pitcherBlock(m.awayStarter, m.away.team.name, m.homeId, home), // away starter faces home lineup
-            pitcherBlock(m.homeStarter, m.home.team.name, m.awayId, away), // home starter faces away lineup
+          const [awayHTML, homeHTML, awayBp, homeBp] = await Promise.all([
+            pitcherBlock(m.awayStarter, m.away.team.name, m.homeId, home),
+            pitcherBlock(m.homeStarter, m.home.team.name, m.awayId, away),
+            bullpenRestHTML(m.away, m.officialDate || DATE),
+            bullpenRestHTML(m.home, m.officialDate || DATE),
           ]);
-          host.innerHTML = '<div class="detail"><div class="detail-grid">' + awayHTML + homeHTML + '</div></div>';
+          const lateHost = document.getElementById("d" + gamePk);
+          if (lateHost) lateHost.outerHTML =
+            '<div class="detail-grid">' + awayHTML + homeHTML + '</div>' +
+            ((awayBp || homeBp) ? '<div class="detail-grid">' + awayBp + homeBp + '</div>' : "");
         } catch (e) {
-          host.innerHTML = '<div class="detail"><div class="empty">Couldn’t load pitching detail.</div></div>';
+          const lateHost = document.getElementById("d" + gamePk);
+          if (lateHost) lateHost.outerHTML = '<div class="empty">Couldn’t load batter-vs-pitcher / bullpen detail.</div>';
         }
       }
 
@@ -463,8 +592,9 @@
       // Gives an instant first paint and keeps working even if the viewer's
       // network can't reach the API directly.
       async function loadSnapshot(date) {
-        const urls = ["./data/" + date + ".json"];
-        if (date === isoDate()) urls.push("./data/today.json");
+        const urls = [];
+        if (date === isoDate()) urls.push("./today.json", "./data/today.json");
+        urls.push("./data/" + date + ".json");
         for (const url of urls) {
           try {
             const res = await fetch(url, { cache: "no-store" });
@@ -479,14 +609,22 @@
       async function show(date, force) {
         DATE = date; el("date").value = date;
         setBanner("");
+        // 1) Committed daily snapshot — the complete source (bullpen ranks, last-10,
+        //    injuries, odds, pitcher last-3). Skipped when the user forces a refresh.
+        const snap = force ? null : await loadSnapshot(date);
+        if (snap) {
+          render(snap.matchups, date);
+          setUpdated(Date.parse(snap.generatedAt) || Date.now());
+          if (snap.date !== date)
+            setBanner("Showing the most recent daily snapshot (" + snap.date + ").", "warn");
+          return;
+        }
+        // 2) No snapshot (other dates / local dev / forced) — live MLB fan-out.
+        //    Core view only (bullpen/odds/injuries come from the snapshot).
         let painted = false;
         const cached = !force && cachedDay(date);
         if (cached) { render(cached.matchups, date); setUpdated(cached.ts); painted = true; }
-        if (!painted) {
-          const snap = await loadSnapshot(date);
-          if (snap) { render(snap.matchups, date); setUpdated(Date.parse(snap.generatedAt) || Date.now()); painted = true; }
-        }
-        if (!painted) el("content").innerHTML = '<div class="loading">Loading slate for ' + date + '…</div>';
+        else el("content").innerHTML = '<div class="loading">Loading slate for ' + date + '…</div>';
         try {
           const data = await loadDay(date);
           render(data.matchups, date); setUpdated(data.ts);
@@ -495,7 +633,7 @@
             setBanner('Could not reach the MLB Stats API (<code>' + esc(API) + '</code>). If it is blocked, append <code>?api=YOUR_PROXY</code> to the URL.', "err");
             el("content").innerHTML = '<div class="empty">No data.</div>';
           } else {
-            setBanner("Showing the daily snapshot — live in-browser refresh isn’t available on this network.", "warn");
+            setBanner("Showing cached data — couldn’t refresh from the API.", "warn");
           }
         }
       }
