@@ -1,6 +1,9 @@
 name: Probe endpoints (temporary)
 
 on:
+  push:
+    branches: [main]
+    paths: ["sports/scripts/probe.mjs", ".github/workflows/probe.yml"]
   workflow_dispatch:
     inputs:
       date:
