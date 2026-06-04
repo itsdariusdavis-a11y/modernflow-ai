@@ -23,6 +23,8 @@ on:
       - "sports/live/**"
       - "sports/scripts/**"
       - ".github/workflows/deploy-sports.yml"
+      - "!sports/live/today.json" # avoid a commit loop from the step below
+      - "!sports/live/data/**"
   workflow_dispatch:
     inputs:
       date:
@@ -30,7 +32,7 @@ on:
         required: false
 
 permissions:
-  contents: read
+  contents: write # to commit the daily today.json snapshot
   pages: write
   id-token: write
 
@@ -53,6 +55,19 @@ jobs:
 
       - name: Build daily snapshot from the MLB Stats API
         run: node sports/scripts/build-snapshot.mjs ${{ inputs.date }}
+
+      - name: Commit snapshot (served by githack)
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sports/live/today.json
+          if git diff --staged --quiet; then
+            echo "No snapshot changes to commit."
+          else
+            git commit -m "chore: daily MLB snapshot [skip ci]"
+            git push origin HEAD:main && echo "✅ snapshot committed" || echo "⚠️ snapshot push blocked"
+          fi
 
       # The Pages steps below only succeed once GitHub Pages is enabled
       # (Settings → Pages → Source: "GitHub Actions"). Until then they're
