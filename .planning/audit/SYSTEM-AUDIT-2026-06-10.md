@@ -1,5 +1,10 @@
 # System Audit — modernflow-ai
 
+> **Status update (2026-06-10, post-audit):** Task 2.1 (repo split, finding F2) has been
+> executed — `sports/` and `.github/workflows/deploy-sports.yml` were removed from this
+> repo and the MLB dashboard moved to its own repository (`mlb-dashboard`) with its
+> git history preserved. References to `sports/` below describe the pre-split state.
+
 **Date:** 2026-06-10
 **Auditor:** Claude (principal-level systems audit, read-only)
 **Scope:** `itsdariusdavis-a11y/modernflow-ai`, branch `claude/model-ysbyad` (identical to `origin/main` at `29dc2ca`)
