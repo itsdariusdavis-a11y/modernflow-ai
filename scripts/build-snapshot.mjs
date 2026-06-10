@@ -2,14 +2,14 @@
 /**
  * Pre-renders the complete daily data snapshot for the dashboard. Runs in CI
  * (GitHub Actions) where the network is open, and writes a committed
- * sports/live/today.json that githack serves for an instant, complete first
+ * live/today.json that githack serves for an instant, complete first
  * paint — no heavy browser fan-out, and no ESPN CORS dependency.
  *
  * Sources:
  *   MLB Stats API  — schedule, offense splits, records, bullpen, pitcher last-3
  *   ESPN           — injuries (all teams, one call) and betting odds (pickcenter)
  *
- * Usage: node sports/scripts/build-snapshot.mjs [YYYY-MM-DD]   (default: today ET)
+ * Usage: node scripts/build-snapshot.mjs [YYYY-MM-DD]   (default: today ET)
  */
 import { writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";

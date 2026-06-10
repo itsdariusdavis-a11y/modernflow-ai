@@ -26,7 +26,7 @@ A date picker lets you look back/ahead.
 - **The React/Vite app** (this folder) — the same dashboard as a dev project, for
   local hacking and extension.
 
-A GitHub Pages workflow (`.github/workflows/deploy-sports.yml`) publishes
+A GitHub Pages workflow (`.github/workflows/deploy.yml`) publishes
 `live/` automatically.
 
 ## Data source
@@ -53,7 +53,6 @@ break whenever the page layout changes and need a headless browser). Endpoints u
 ## Running it
 
 ```bash
-cd sports
 npm install      # or pnpm install
 npm run dev      # http://localhost:5173
 ```
