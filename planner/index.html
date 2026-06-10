@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ModernFlow AI — Command Center</title>
+<meta name="description" content="ModernFlow AI 30-day $3k MRR sprint command center: dashboard, pipeline, revenue, scripts, plan, roles, AI assistant, and real-time team notes." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b120e; --bg2:#0e1712; --panel:rgba(255,255,255,.035); --panel2:rgba(255,255,255,.06);
+    --border:rgba(52,211,153,.16); --border2:rgba(52,211,153,.35);
+    --text:#e7efe9; --muted:#93a89b; --accent:#34d399; --accent2:#10b981; --accent-dim:rgba(52,211,153,.12);
+    --red:#f87171; --amber:#fbbf24; --blue:#60a5fa;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(16,185,129,.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(16,185,129,.05), transparent 60%),
+      var(--bg);
+    color:var(--text); font-family:'DM Sans',system-ui,sans-serif; font-size:15px; line-height:1.55;
+  }
+  ::selection{background:rgba(52,211,153,.3)}
+  a{color:var(--accent)}
+  h1,h2,h3{font-family:'Outfit',sans-serif}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  .layout{display:flex;min-height:100vh}
+  .sidebar{
+    width:228px;flex:0 0 auto;padding:22px 14px;border-right:1px solid var(--border);
+    display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;
+  }
+  .brand{display:flex;align-items:center;gap:10px;padding:0 8px 18px}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#10b981,#0d9466);display:grid;place-items:center;font-family:'Outfit';font-weight:800;color:#06281c;font-size:17px}
+  .brand b{font-family:'Outfit';font-size:16px;letter-spacing:.2px}
+  .brand small{display:block;color:var(--muted);font-size:10.5px;font-family:'JetBrains Mono',monospace}
+  .nav-btn{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:1px solid transparent;
+    color:var(--muted);padding:9px 12px;border-radius:10px;cursor:pointer;font:500 14px 'DM Sans';transition:.15s;
+  }
+  .nav-btn:hover{color:var(--text);background:var(--panel)}
+  .nav-btn.active{color:var(--accent);background:var(--accent-dim);border-color:var(--border)}
+  .nav-btn .ico{width:18px;text-align:center}
+  .sidebar .spacer{flex:1}
+  .sync-pill{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);padding:8px 12px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#6b7280}
+  .dot.live{background:var(--accent);box-shadow:0 0 8px rgba(52,211,153,.8)}
+
+  .main{flex:1;min-width:0;padding:30px clamp(16px,4vw,46px) 70px}
+  .page{display:none;max-width:1060px;margin:0 auto}
+  .page.active{display:block}
+  .kicker{font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:12px;letter-spacing:.6px;margin-bottom:6px}
+  .page h1{font-size:clamp(22px,3vw,30px);font-weight:800;margin-bottom:4px}
+  .sub{color:var(--muted);margin-bottom:24px;max-width:680px}
+
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;backdrop-filter:blur(8px)}
+  .card+.card{margin-top:16px}
+  .card h3{font-size:15.5px;margin-bottom:10px}
+  .grid{display:grid;gap:14px}
+  .grid.c2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .grid.c3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .grid.c4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+
+  .stat .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.5px}
+  .stat .val{font-family:'Outfit';font-size:26px;font-weight:800;margin-top:2px}
+  .stat .val.acc{color:var(--accent)}
+  .stat .hint{font-size:12px;color:var(--muted);margin-top:2px}
+
+  .bar{height:14px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,#0d9466,#34d399);border-radius:99px;transition:width .5s ease;min-width:2px}
+
+  button,.btn{font:500 13.5px 'DM Sans';cursor:pointer}
+  .btn{background:var(--accent2);color:#06281c;border:none;padding:9px 16px;border-radius:9px;font-weight:700;transition:.15s}
+  .btn:hover{filter:brightness(1.1);box-shadow:0 0 18px rgba(16,185,129,.35)}
+  .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--border2)}
+  .btn.ghost:hover{background:var(--accent-dim);box-shadow:none}
+  .btn.tiny{padding:4px 10px;font-size:12px;border-radius:7px}
+  .btn.danger{background:transparent;border:1px solid rgba(248,113,113,.4);color:var(--red)}
+  input,select,textarea{
+    background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);border-radius:9px;
+    padding:9px 12px;font:400 14px 'DM Sans';width:100%;outline:none;transition:border-color .15s;
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--border2)}
+  label.f{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin:10px 0 4px;letter-spacing:.4px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+  .row>div{flex:1;min-width:130px}
+
+  /* sprint */
+  .week-h{font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:12.5px;margin:26px 0 6px;letter-spacing:.5px}
+  .week-sub{color:var(--muted);font-size:13px;margin-bottom:10px}
+  .day{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+  .day>summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--panel);
+    font-family:'Outfit';font-weight:700;font-size:14px;
+  }
+  .day>summary::-webkit-details-marker{display:none}
+  .day .prog{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+  .day.today>summary{border-left:3px solid var(--accent)}
+  .task{display:flex;gap:10px;align-items:flex-start;padding:8px 16px;border-top:1px solid rgba(255,255,255,.04)}
+  .task input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent2);margin-top:2px;flex:0 0 auto;cursor:pointer}
+  .task.done .t{color:var(--muted);text-decoration:line-through}
+  .task .who{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:6px;flex:0 0 auto;margin-top:3px}
+  .who.D{background:rgba(96,165,250,.15);color:var(--blue)}
+  .who.R{background:rgba(251,191,36,.15);color:var(--amber)}
+  .who.B{background:var(--accent-dim);color:var(--accent)}
+
+  /* pipeline */
+  .stage-col h4{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);letter-spacing:.5px;margin-bottom:8px}
+  .lead{background:var(--panel2);border:1px solid var(--border);border-radius:11px;padding:10px 12px;margin-bottom:8px}
+  .lead b{font-size:14px}
+  .lead .meta{font-size:12px;color:var(--muted);margin:2px 0 8px;white-space:pre-wrap}
+  .lead .acts{display:flex;gap:6px;flex-wrap:wrap}
+  .pipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:18px}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);text-align:left;letter-spacing:.5px;padding:6px 8px;border-bottom:1px solid var(--border)}
+  td{padding:8px;border-bottom:1px solid rgba(255,255,255,.05)}
+
+  /* scripts */
+  .script pre{
+    white-space:pre-wrap;font-family:'DM Sans';font-size:13.5px;color:#cfded5;background:rgba(0,0,0,.25);
+    border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;margin-top:10px;
+  }
+  .script .head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+  /* plan content */
+  .plan-doc h2{font-size:18px;margin:26px 0 8px;color:var(--accent)}
+  .plan-doc h2:first-child{margin-top:0}
+  .plan-doc p{margin:8px 0;color:#cfded5}
+  .plan-doc ul{margin:8px 0 8px 20px;color:#cfded5}
+  .plan-doc li{margin:4px 0}
+  .plan-doc table{margin:10px 0}
+  .plan-doc .callout{border:1px solid var(--border2);background:var(--accent-dim);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:14px}
+
+  /* roles */
+  .role-card .rh{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:'Outfit';font-weight:800;font-size:17px}
+  .avatar.D{background:rgba(96,165,250,.18);color:var(--blue)}
+  .avatar.R{background:rgba(251,191,36,.18);color:var(--amber)}
+  .role-card ul{margin:6px 0 0 18px;color:#cfded5;font-size:13.5px}
+  .role-card li{margin:4px 0}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)}
+
+  /* chat */
+  .chat-box{display:flex;flex-direction:column;gap:10px;max-height:480px;overflow-y:auto;padding:4px 2px;margin-bottom:12px}
+  .msg{max-width:85%;padding:10px 14px;border-radius:13px;font-size:14px;white-space:pre-wrap}
+  .msg.user{align-self:flex-end;background:var(--accent-dim);border:1px solid var(--border)}
+  .msg.ai{align-self:flex-start;background:var(--panel2);border:1px solid rgba(255,255,255,.07)}
+  .msg.err{align-self:flex-start;border:1px solid rgba(248,113,113,.4);color:var(--red);background:rgba(248,113,113,.06)}
+
+  /* notes */
+  .note{background:var(--panel2);border:1px solid var(--border);border-radius:11px;padding:11px 14px;margin-bottom:9px}
+  .note .nh{display:flex;gap:8px;align-items:baseline;margin-bottom:3px}
+  .note .nh b{font-size:13.5px}
+  .note .nh .tag{margin-left:auto}
+  .note p{font-size:14px;white-space:pre-wrap}
+
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#10241b;border:1px solid var(--border2);
+    color:var(--text);padding:10px 18px;border-radius:10px;font-size:13.5px;z-index:99;opacity:0;transition:.25s;pointer-events:none;
+  }
+  .toast.show{opacity:1}
+  .pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 8px;border-radius:6px;background:var(--accent-dim);color:var(--accent);border:1px solid var(--border)}
+  .small{font-size:12.5px;color:var(--muted)}
+  .empty{color:var(--muted);font-size:13.5px;padding:8px 0}
+
+  @media (max-width:840px){
+    .layout{flex-direction:column}
+    .sidebar{
+      width:100%;height:auto;position:sticky;top:0;z-index:50;background:rgba(11,18,14,.95);backdrop-filter:blur(10px);
+      flex-direction:row;align-items:center;overflow-x:auto;padding:10px 12px;border-right:none;border-bottom:1px solid var(--border);gap:6px;
+    }
+    .brand{padding:0 8px 0 0}
+    .brand small{display:none}
+    .nav-btn{width:auto;white-space:nowrap;padding:7px 11px}
+    .nav-btn .ico{display:none}
+    .sidebar .spacer,.sync-pill span{display:none}
+    .main{padding:22px 14px 60px}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="brand">
+      <div class="logo">M</div>
+      <div><b>ModernFlow AI</b><small>// COMMAND CENTER</small></div>
+    </div>
+    <button class="nav-btn" data-tab="dashboard"><span class="ico">◈</span>Dashboard</button>
+    <button class="nav-btn" data-tab="sprint"><span class="ico">☑</span>30-Day Sprint</button>
+    <button class="nav-btn" data-tab="pipeline"><span class="ico">⇶</span>Pipeline</button>
+    <button class="nav-btn" data-tab="revenue"><span class="ico">$</span>Revenue</button>
+    <button class="nav-btn" data-tab="scripts"><span class="ico">✎</span>Scripts</button>
+    <button class="nav-btn" data-tab="plan"><span class="ico">▤</span>The Plan</button>
+    <button class="nav-btn" data-tab="roles"><span class="ico">⚑</span>Roles</button>
+    <button class="nav-btn" data-tab="ai"><span class="ico">✦</span>Ask AI</button>
+    <button class="nav-btn" data-tab="notes"><span class="ico">✉</span>Team Notes</button>
+    <button class="nav-btn" data-tab="settings"><span class="ico">⚙</span>Settings</button>
+    <div class="spacer"></div>
+    <div class="sync-pill"><span id="syncDot" class="dot"></span><span id="syncLabel">local only</span></div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="page" id="page-dashboard">
+      <div class="kicker">// MISSION</div>
+      <h1>$3,000 MRR in 30 days</h1>
+      <p class="sub">Monthly <b>recurring</b> revenue only — one-time setup fees don't count toward the goal (they're tracked separately as cash collected).</p>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+          <h3 style="margin:0">MRR progress</h3>
+          <span class="mono" id="mrrFraction" style="color:var(--accent);font-size:14px"></span>
+        </div>
+        <div class="bar"><i id="mrrBar" style="width:0%"></i></div>
+        <p class="small" id="mrrGap" style="margin-top:8px"></p>
+      </div>
+
+      <div class="grid c4" style="margin-top:16px">
+        <div class="card stat"><div class="lbl">// MRR</div><div class="val acc" id="statMrr">$0</div><div class="hint">recurring / month</div></div>
+        <div class="card stat"><div class="lbl">// CASH COLLECTED</div><div class="val" id="statCash">$0</div><div class="hint">setup fees (not the goal)</div></div>
+        <div class="card stat"><div class="lbl">// CLIENTS</div><div class="val" id="statClients">0</div><div class="hint">closed deals</div></div>
+        <div class="card stat"><div class="lbl">// SPRINT</div><div class="val" id="statDay">—</div><div class="hint" id="statDayHint">set start date in Settings</div></div>
+      </div>
+
+      <div class="grid c2" style="margin-top:16px">
+        <div class="card">
+          <h3 id="todayTitle">Today's tasks</h3>
+          <div id="todayTasks"></div>
+        </div>
+        <div class="card">
+          <h3>Pipeline snapshot</h3>
+          <div id="pipeSnapshot"></div>
+          <h3 style="margin-top:18px">Latest team note</h3>
+          <div id="latestNote" class="small">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SPRINT ============ -->
+    <section class="page" id="page-sprint">
+      <div class="kicker">// EXECUTION</div>
+      <h1>30-Day Sprint</h1>
+      <p class="sub">Day-by-day checklist. Tags: <span class="who D mono" style="padding:2px 7px;border-radius:6px">DARIUS</span> <span class="who R mono" style="padding:2px 7px;border-radius:6px">RYAN</span> <span class="who B mono" style="padding:2px 7px;border-radius:6px">BOTH</span>. Daily non-negotiable from Day 8: <b>30–40 outreach touches combined</b>.</p>
+      <div id="sprintList"></div>
+    </section>
+
+    <!-- ============ PIPELINE ============ -->
+    <section class="page" id="page-pipeline">
+      <div class="kicker">// LEADS</div>
+      <h1>Pipeline</h1>
+      <p class="sub">Every touch gets logged. Move leads right. ~100 touches ≈ 1 close, so volume is the game.</p>
+      <div class="card">
+        <h3>Add lead</h3>
+        <div class="row">
+          <div><label class="f">BUSINESS / NAME</label><input id="leadName" placeholder="Joe's Plumbing — Joe" /></div>
+          <div><label class="f">TRADE</label><input id="leadTrade" placeholder="Plumber" /></div>
+          <div><label class="f">PHONE / CONTACT</label><input id="leadPhone" placeholder="(555) 123-4567" /></div>
+          <div style="flex:0 0 auto"><button class="btn" onclick="addLead()">Add</button></div>
+        </div>
+        <label class="f">NOTES</label><input id="leadNotes" placeholder="left VM, owner name is..., audit findings..." />
+      </div>
+      <div class="pipe-grid" id="pipeBoard"></div>
+    </section>
+
+    <!-- ============ REVENUE ============ -->
+    <section class="page" id="page-revenue">
+      <div class="kicker">// SCOREBOARD</div>
+      <h1>Revenue</h1>
+      <p class="sub"><b>MRR is the headline number.</b> Setup fees are logged but kept separate — they fund operations and do not count toward the $3k goal.</p>
+
+      <div class="grid c3">
+        <div class="card stat"><div class="lbl">// MRR (THE GOAL)</div><div class="val acc" id="revMrr">$0</div><div class="hint">of $3,000</div></div>
+        <div class="card stat"><div class="lbl">// SETUP CASH (SEPARATE)</div><div class="val" id="revCash">$0</div><div class="hint">one-time, excluded from goal</div></div>
+        <div class="card stat"><div class="lbl">// GAP TO GOAL</div><div class="val" id="revGap">$3,000</div><div class="hint" id="revGapHint"></div></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3>Log a closed deal</h3>
+        <div class="row">
+          <div><label class="f">CLIENT</label><input id="dealClient" placeholder="Joe's Plumbing" /></div>
+          <div><label class="f">TIER</label>
+            <select id="dealTier" onchange="tierAutofill()">
+              <option value="starter">Starter — $97/mo (+$1,000 setup)</option>
+              <option value="growth" selected>Growth — $297/mo (+$2,000 setup)</option>
+              <option value="growthplus">Growth+ Founding — $497/mo ($0 setup)</option>
+              <option value="elite">Elite — $697/mo (+$3,000 setup)</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div><label class="f">MRR $/MO</label><input id="dealMrr" type="number" value="297" /></div>
+          <div><label class="f">SETUP FEE $ (ONE-TIME)</label><input id="dealSetup" type="number" value="2000" /></div>
+          <div style="flex:0 0 auto"><button class="btn" onclick="addDeal()">Log deal</button></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3>Closed deals</h3>
+        <div id="dealsTable"></div>
+      </div>
+    </section>
+
+    <!-- ============ SCRIPTS ============ -->
+    <section class="page" id="page-scripts">
+      <div class="kicker">// SALES PLAYBOOK</div>
+      <h1>Scripts</h1>
+      <p class="sub">Copy, personalize the [brackets], send. Follow-up cadence after any conversation: Day 0 recap → Day 2 bump → Day 5 proof → Day 10 takeaway.</p>
+      <div id="scriptList"></div>
+    </section>
+
+    <!-- ============ PLAN ============ -->
+    <section class="page" id="page-plan">
+      <div class="kicker">// STRATEGY</div>
+      <h1>The Business Plan</h1>
+      <p class="sub">Condensed working version — the full document lives in <span class="mono">BUSINESS-PLAN.md</span> in the repo.</p>
+      <div class="card plan-doc" id="planDoc"></div>
+    </section>
+
+    <!-- ============ ROLES ============ -->
+    <section class="page" id="page-roles">
+      <div class="kicker">// TEAM</div>
+      <h1>Roles</h1>
+      <p class="sub">Two lanes, one scoreboard. Handoff point: signed deal → Team Note with details → Darius onboards within 48h.</p>
+      <div class="grid c2">
+        <div class="card role-card">
+          <div class="rh"><div class="avatar D">D</div><div><b style="font-family:'Outfit';font-size:17px">Darius</b><div class="tag">// DEVELOPER · DELIVERY</div></div></div>
+          <ul>
+            <li>Client builds: GHL sub-accounts, websites, automations, AI agents</li>
+            <li>Onboarding & 7-day launch checklist — live within 7 days of signing</li>
+            <li>Reusable GHL snapshot templates per tier (delivery gets faster every client)</li>
+            <li>Technical support + monthly client numbers email</li>
+            <li>ModernFlow site + this Command Center</li>
+            <li>5–10 outreach touches/day (FB groups, supplier counters, warm network)</li>
+          </ul>
+          <h3 style="margin-top:16px">Darius — today</h3>
+          <div id="todayD"></div>
+        </div>
+        <div class="card role-card">
+          <div class="rh"><div class="avatar R">R</div><div><b style="font-family:'Outfit';font-size:17px">Ryan</b><div class="tag">// SALES</div></div></div>
+          <ul>
+            <li>Owns the lead list + pipeline — every touch logged, every stage current</li>
+            <li>25–35 outreach touches/day: cold calls (9–11a, 4–6p), SMS/DM mid-day, walk-ins</li>
+            <li>Runs the Missed Lead Audit before every strategy call</li>
+            <li>Strategy calls, proposals, closes — target ~30% close rate on held calls</li>
+            <li>Follow-up cadence on every conversation (Day 0/2/5/10)</li>
+            <li>Referral ask at every client launch</li>
+          </ul>
+          <h3 style="margin-top:16px">Ryan — today</h3>
+          <div id="todayR"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>Operating rhythm</h3>
+        <ul style="margin-left:18px;color:#cfded5;font-size:14px">
+          <li><b>Monday 15 min</b> — pipeline sync: what's moving, what's stuck, this week's call slots.</li>
+          <li><b>Friday 15 min</b> — scoreboard: touches, conversations, calls, closes, MRR vs. $3k.</li>
+          <li><b>Async</b> — everything else through Team Notes (real-time).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ ASK AI ============ -->
+    <section class="page" id="page-ai">
+      <div class="kicker">// ASSISTANT</div>
+      <h1>Ask AI</h1>
+      <p class="sub">Powered by Claude Haiku 4.5 (Anthropic's cheapest model — a typical question costs a fraction of a cent). It knows this business plan, both roles, and your live numbers.</p>
+      <div class="card" id="aiSetup" style="display:none">
+        <h3>One-time setup</h3>
+        <p class="small" style="margin-bottom:10px">Get an API key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> → API Keys. The key is stored only in this browser's localStorage — never in the repo or on a server.</p>
+        <div class="row">
+          <div><label class="f">ANTHROPIC API KEY</label><input id="aiKeyInput" type="password" placeholder="sk-ant-..." /></div>
+          <div style="flex:0 0 auto"><button class="btn" onclick="saveAiKey()">Save key</button></div>
+        </div>
+      </div>
+      <div class="card" id="aiChatCard">
+        <div class="chat-box" id="chatBox">
+          <div class="msg ai">Hey! Ask me anything about the plan — e.g. "What should Ryan do today?", "How do I handle the price objection?", "How many Growth+ closes until we hit $3k MRR?"</div>
+        </div>
+        <div class="row">
+          <div><input id="chatInput" placeholder="Ask a question…" onkeydown="if(event.key==='Enter')askAi()" /></div>
+          <div style="flex:0 0 auto"><button class="btn" id="askBtn" onclick="askAi()">Ask</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NOTES ============ -->
+    <section class="page" id="page-notes">
+      <div class="kicker">// SYNC UP</div>
+      <h1>Team Notes</h1>
+      <p class="sub" id="notesSub">Shared notes between Darius and Ryan. With Firebase configured (Settings), notes appear on the other person's screen in real time.</p>
+      <div class="card">
+        <div class="row">
+          <div><label class="f">POSTING AS</label>
+            <select id="noteAuthor">
+              <option value="">— pick name —</option>
+              <option value="Darius">Darius</option>
+              <option value="Ryan">Ryan</option>
+            </select>
+          </div>
+        </div>
+        <label class="f">NOTE</label>
+        <textarea id="noteText" rows="3" placeholder="What's on your mind / what changed / what you need from the other person…"></textarea>
+        <div style="margin-top:10px"><button class="btn" onclick="addNote()">Post note</button></div>
+      </div>
+      <div id="notesFeed" style="margin-top:18px"></div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section class="page" id="page-settings">
+      <div class="kicker">// CONFIG</div>
+      <h1>Settings</h1>
+      <p class="sub">Sprint timing, identity, team sync, and AI. Everything here is stored in this browser only (localStorage).</p>
+
+      <div class="card">
+        <h3>Sprint & identity</h3>
+        <div class="row">
+          <div><label class="f">SPRINT START DATE</label><input id="setStart" type="date" onchange="saveSettingsForm()" /></div>
+          <div><label class="f">I AM</label>
+            <select id="setAuthor" onchange="saveSettingsForm()">
+              <option value="">—</option><option value="Darius">Darius</option><option value="Ryan">Ryan</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Real-time team sync (Firebase)</h3>
+        <p class="small">~5 minute one-time setup: 1) <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a> → Add project (any name, Analytics off). 2) Build → Realtime Database → Create database → start in <b>test mode</b>. 3) Copy the database URL (looks like <span class="mono">https://yourproject-default-rtdb.firebaseio.com</span>) and paste it below — on <b>both</b> of your devices. Notes, pipeline, sprint checkboxes, and revenue then sync live between you.</p>
+        <div class="row" style="margin-top:8px">
+          <div><label class="f">DATABASE URL</label><input id="setFirebase" placeholder="https://yourproject-default-rtdb.firebaseio.com" /></div>
+          <div style="flex:0 0 auto"><button class="btn" onclick="connectFirebase()">Connect</button></div>
+        </div>
+        <p class="small" id="fbStatus" style="margin-top:8px"></p>
+      </div>
+
+      <div class="card">
+        <h3>Ask AI (Anthropic)</h3>
+        <div class="row">
+          <div><label class="f">ANTHROPIC API KEY (claude-haiku-4-5)</label><input id="setAiKey" type="password" placeholder="sk-ant-..." onchange="saveSettingsForm()" /></div>
+        </div>
+        <p class="small" style="margin-top:6px">Stored in this browser only. Never commit this key anywhere.</p>
+      </div>
+
+      <div class="card">
+        <h3>Data</h3>
+        <div class="row">
+          <div style="flex:0 0 auto"><button class="btn ghost" onclick="exportData()">Export JSON</button></div>
+          <div style="flex:0 0 auto"><button class="btn ghost" onclick="document.getElementById('importFile').click()">Import JSON</button><input id="importFile" type="file" accept=".json" style="display:none" onchange="importData(event)" /></div>
+          <div style="flex:0 0 auto"><button class="btn danger" onclick="resetData()">Reset all local data</button></div>
+        </div>
+        <p class="small" style="margin-top:8px">Export/Import covers moving between devices when Firebase isn't configured.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* =================================================================
+   ModernFlow AI — Command Center
+   Single-file app. State in localStorage; optional real-time team
+   sync via Firebase Realtime Database REST (EventSource streaming).
+   ================================================================= */
+
+const GOAL_MRR = 3000;
+const LS_KEY = "mfai_cc_v1";
+const TIERS = {
+  starter:    { label: "Starter",          mrr: 97,  setup: 1000 },
+  growth:     { label: "Growth",           mrr: 297, setup: 2000 },
+  growthplus: { label: "Growth+ Founding", mrr: 497, setup: 0    },
+  elite:      { label: "Elite",            mrr: 697, setup: 3000 },
+  custom:     { label: "Custom",           mrr: 0,   setup: 0    },
+};
+
+/* ---------------- sprint data ---------------- */
+/* who: D = Darius, R = Ryan, B = Both */
+const SPRINT = [
+  { week: 1, title: "WEEK 1 — FOUNDATION", sub: "Niche, list, scripts, systems. Ready to blitz by day 8.", days: [
+    { d: 1, tasks: [
+      ["B","Pick the niche (one trade) + service area (one metro)"],
+      ["B","Agree the founding offer: Growth+ $497/mo, $0 setup, 3-month minimum"],
+      ["D","Set sprint start date + Firebase sync in this app"],
+    ]},
+    { d: 2, tasks: [
+      ["R","Start the lead list: 50 businesses from Google Maps (name, phone, site state, reviews)"],
+      ["D","Set up GHL agency pipeline stages + Calendly/GHL booking link"],
+    ]},
+    { d: 3, tasks: [
+      ["R","Lead list to 100 (add Yelp, FB local groups, Nextdoor)"],
+      ["D","Build demo automation: missed-call text-back on a test number"],
+    ]},
+    { d: 4, tasks: [
+      ["R","Lead list to 150; mark the 30 best (high tickets, weak web presence)"],
+      ["D","Verify ModernFlow site, Google Business Profile, founding-offer one-pager"],
+    ]},
+    { d: 5, tasks: [
+      ["R","Rehearse cold-call + audit scripts out loud; record once, fix the rough parts"],
+      ["D","Prepare Missed Lead Audit checklist (call after hours, text, form-fill, time the responses)"],
+    ]},
+    { d: 6, tasks: [
+      ["B","Soft launch: 20 warm-network messages EACH ('who do you know that runs a trade business?')"],
+    ]},
+    { d: 7, tasks: [
+      ["B","Week-1 review: list ready? scripts ready? demo works? Book week-2 calendar blocks"],
+    ]},
+  ]},
+  { week: 2, title: "WEEK 2 — OUTREACH BLITZ", sub: "30–40 touches/day combined. Target: 10+ strategy calls booked.", days: [
+    { d: 8,  tasks: [["R","30+ touches (calls 9–11a & 4–6p, SMS/DM mid-day) — log every one"],["D","5–10 touches (FB groups / supplier counter); run audits for tomorrow's calls"]] },
+    { d: 9,  tasks: [["R","30+ touches + Day-2 bumps on every prior conversation"],["D","Audits for booked calls; keep demo sharp"]] },
+    { d: 10, tasks: [["R","30+ touches; 2 in-person stops (supply house / job site)"],["D","5–10 touches; prep case one-pager template"]] },
+    { d: 11, tasks: [["R","30+ touches + follow-up cadence (Day 0/2/5)"],["B","First strategy calls — run the audit reveal + live demo"]] },
+    { d: 12, tasks: [["R","30+ touches; confirm all next-week calls (reminder texts)"],["D","Audits for every booked call"]] },
+    { d: 13, tasks: [["B","Light day: 15 touches each; review what messaging is landing, adjust scripts"]] },
+    { d: 14, tasks: [["B","Week-2 scoreboard: touches, convos, calls booked vs. 10+ target. Adjust channel if reply rate <10%"]] },
+  ]},
+  { week: 3, title: "WEEK 3 — CLOSE & DELIVER", sub: "First 2–3 closes. Onboard within 48h, live within 7 days.", days: [
+    { d: 15, tasks: [["R","Strategy calls — close on the call (card on file, 3-mo minimum)"],["R","30 touches — pipeline never pauses"]] },
+    { d: 16, tasks: [["D","FIRST CLOSE → onboarding call within 48h; start A2P registration day 1"],["R","30 touches + cadence"]] },
+    { d: 17, tasks: [["D","Clone tier snapshot into client sub-account; connect phone/email/calendar"],["R","30 touches; book week-4 calls"]] },
+    { d: 18, tasks: [["D","Client automations tested end-to-end (missed-call, lead response, reviews)"],["R","Strategy calls + closes"]] },
+    { d: 19, tasks: [["D","Client site/funnel pages live"],["R","30 touches + Day-5 proof messages"]] },
+    { d: 20, tasks: [["B","Capture first before/after numbers (response time, calls captured)"]] },
+    { d: 21, tasks: [["B","Week-3 review: closes vs. target (2–3), MRR on the board, delivery on schedule?"]] },
+  ]},
+  { week: 4, title: "WEEK 4 — DOUBLE DOWN", sub: "Referrals + case study + push to $3k MRR by day 30.", days: [
+    { d: 22, tasks: [["D","Client #1 launch call — walk owner through app, set expectations"],["R","30 touches; referral ask script ready"]] },
+    { d: 23, tasks: [["R","Referral ask to every live client: 'two other owners like you' (free month per close)"],["R","30 touches"]] },
+    { d: 24, tasks: [["D","Publish mini case study; add to outreach messages"],["R","30 touches with case study attached"]] },
+    { d: 25, tasks: [["R","Strategy calls + closes"],["D","Onboard new closes within 48h"]] },
+    { d: 26, tasks: [["R","30 touches + full cadence sweep (no conversation left un-followed-up)"]] },
+    { d: 27, tasks: [["B","Pipeline scrub: every lead staged correctly, dead ones marked lost"]] },
+    { d: 28, tasks: [["R","Final push: prioritize hottest 10 leads, takeaway message ('founding spots closing')"]] },
+    { d: 29, tasks: [["B","Strategy calls + closes; book overflow into month 2"]] },
+    { d: 30, tasks: [["B","Day-30 review: MRR vs. $3,000, funnel conversion vs. assumptions, set month-2 targets"]] },
+  ]},
+];
+SPRINT.forEach(w => w.days.forEach(day => {
+  day.tasks = day.tasks.map(([who, t], i) => ({ id: `d${day.d}_${i}`, d: day.d, who, t }));
+}));
+const ALL_TASKS = SPRINT.flatMap(w => w.days.flatMap(d => d.tasks));
+
+/* ---------------- scripts data ---------------- */
+const SCRIPTS = [
+  { title: "Cold call opener", body:
+`Hey, is this [Name]? This is [Ryan] with ModernFlow — real quick, I'm not selling anything on this call.
+
+We work with [trade]s around [city], and we ran a quick check: when people call your business after hours or while you're on a job, what happens to those calls?
+
+...That's actually why I called — we ran a test and [X] of your channels never responded. Want me to show you what that's costing you? Takes 15 minutes.` },
+  { title: "SMS / DM", body:
+`Hey [Name] — [Ryan] here, local company. Quick heads up: I tried reaching [Business] [yesterday] as a customer would and never got a response. That's jobs walking to the next guy on Google.
+
+We fix exactly that for [trade]s — instant text-back, automated follow-up, more booked jobs. Worth a 15-min look at what you're missing? No charge for the audit.` },
+  { title: "Email", body:
+`Subject: tried to hire you, couldn't reach you
+
+Hi [Name] — I reached out to [Business] like a customer would and got no response within a day. Most [trade] owners we test lose 3–5 jobs a month this way — that's $2–10k walking away.
+
+We're ModernFlow AI. We install a system that answers every lead in under 5 minutes, follows up automatically, and books the job — fully done for you.
+
+Want the free 15-minute audit of where your leads leak? Two slots this week: [booking link]` },
+  { title: "Follow-up cadence (after any conversation)", body:
+`Day 0 — recap + one specific finding from their audit.
+Day 2 — bump: "any thoughts?" + one-line value reminder.
+Day 5 — proof: case study / before-after numbers.
+Day 10 — takeaway: "closing founding spots this month, want yours?"` },
+  { title: "Strategy call agenda (20 min)", body:
+`1. Their numbers (5 min): jobs/month, average ticket, where leads come from.
+2. Audit reveal (5 min): what we found trying to reach them + math on lost jobs.
+3. Live demo (5 min): missed-call text-back firing in real time.
+4. Founding offer + close (5 min): $497/mo, $0 setup, 3-month minimum, live in 7 days. Card on file today.` },
+  { title: "Objection: 'Too expensive'", body:
+`"One saved job pays for 1–3 months of this. The audit showed you're losing more than that EVERY month right now. The question isn't whether you can afford it — it's whether you can keep affording the leak."` },
+  { title: "Objection: 'I already have a website / CRM'", body:
+`"Great — this isn't a website. It's the response system behind it. Your site collected the lead; nobody answered it in 5 minutes. That's the gap we close."` },
+  { title: "Objection: 'I need to think about it'", body:
+`"Totally fair. What specifically — the money, or whether it'll work?
+
+...The founding offer has 10 spots and [N] are left. The 3-month minimum is exactly so you can judge it on results, not promises."` },
+  { title: "Objection: 'I'm not techy'", body:
+`"That's the point — you never touch it. We build it, run it, and maintain it. You just see more booked jobs in your calendar."` },
+  { title: "Referral ask (at client launch)", body:
+`"You know how this started for you — who are two other owners like you that are probably losing jobs the same way? If either signs up, you get a free month. I'll mention you sent me, that's it."` },
+];
+
+/* ---------------- plan content ---------------- */
+const PLAN_HTML = `
+<div class="callout"><b>The goal, precisely:</b> $3,000/month in <b>recurring</b> revenue within 30 days. One-time setup fees are <b>excluded</b> — tracked separately as cash collected. Same definition applies to the 12-month $10k target.</div>
+
+<h2>1 · What we sell & to whom</h2>
+<p>Done-for-you AI automation for local service businesses (plumbers, HVAC, electricians, roofers): instant AI lead response, smart CRM pipeline, automated follow-up & booking, reputation management — built on GoHighLevel, fully managed by us. Target: owner-operated businesses doing $50k–$500k/yr that miss calls daily. Wedge: <i>"We make sure you never lose another job to a missed call."</i></p>
+
+<h2>2 · Offer & pricing</h2>
+<table><tr><th>TIER</th><th>MRR (counts)</th><th>SETUP (doesn't count)</th></tr>
+<tr><td>Starter</td><td>$97/mo</td><td>$1,000</td></tr>
+<tr><td>Growth ⭐</td><td>$297/mo</td><td>$2,000</td></tr>
+<tr><td><b>Growth+ Founding</b> (first 10 clients)</td><td><b>$497/mo</b></td><td><b>$0</b> · 3-mo minimum · testimonial rights</td></tr>
+<tr><td>Elite</td><td>$697/mo</td><td>$3,000</td></tr></table>
+<p>Lead offer: <b>free 15-min Missed Lead Audit</b> — we contact their business like a customer would, time the (non-)responses, and show them the leak on a strategy call.</p>
+
+<h2>3 · The $3k MRR math</h2>
+<ul>
+<li>10 × Growth ($297) = $2,970 · or 4 Elite + 1 Growth = $3,085 · or <b>6 × Growth+ ($497) + 1 Starter = $3,079 ← recommended</b></li>
+<li>Funnel: touch → conversation ~15% → call booked ~30% → held ~70% → closed ~30% ⇒ <b>~1 close per 100 touches</b></li>
+<li>7 closes ⇒ ~700 touches over 22 working days ⇒ <b>30–40 touches/day combined</b> (Ryan 25–35, Darius 5–10)</li>
+</ul>
+
+<h2>4 · 30-day sprint</h2>
+<ul>
+<li><b>Week 1 — Foundation:</b> niche + area, 150-business lead list, scripts, GHL pipeline, demo automation, warm-network soft launch.</li>
+<li><b>Week 2 — Blitz:</b> full outreach volume, follow-up cadence (Day 0/2/5/10), 10+ strategy calls booked, audits before every call.</li>
+<li><b>Week 3 — Close & deliver:</b> first 2–3 closes, onboard within 48h, live within 7 days, first before/after numbers.</li>
+<li><b>Week 4 — Double down:</b> referral asks, first case study, push to 6–8 closes / $3k MRR by day 30.</li>
+</ul>
+
+<h2>5 · KPIs</h2>
+<table><tr><th>METRIC</th><th>CADENCE</th><th>TARGET</th></tr>
+<tr><td>Outreach touches</td><td>daily</td><td>30–40 combined</td></tr>
+<tr><td>Conversations</td><td>daily</td><td>4–6</td></tr>
+<tr><td>Calls booked</td><td>weekly</td><td>10+ (wk 2 on)</td></tr>
+<tr><td>Closes</td><td>weekly</td><td>1–2</td></tr>
+<tr><td><b>MRR</b></td><td>always</td><td><b>$3,000 by day 30</b></td></tr>
+<tr><td>Churn</td><td>monthly</td><td>&lt;5%</td></tr></table>
+
+<h2>6 · Costs</h2>
+<p>GHL $97–297/mo · domain/email ~$15 · Claude API ~$1–5 · Firebase + hosting $0 ⇒ <b>≈$120–320/mo overhead, ~90% gross margin.</b> The constraint is hours, not dollars.</p>
+
+<h2>7 · Risks & contingencies</h2>
+<ul>
+<li>Reply rate &lt;10% by day 14 → switch channel first, then niche. Offer stays.</li>
+<li>No-shows → confirm at booking, remind 1h before, instant rebook link.</li>
+<li>Slow A2P/SMS registration → start day 1; use email + Messenger automations meanwhile.</li>
+<li>Scope creep → everything off the tier sheet is a quoted add-on.</li>
+<li>Churn → monthly numbers email is non-negotiable; clients cancel what they can't see.</li>
+</ul>
+
+<h2>8 · Scaling to $10k MRR in 12 months</h2>
+<p><b>Same definition: recurring only, setup fees excluded.</b> Low overhead means each client adds $100–700 MRR at near-zero marginal cost — growth is bounded by sales activity and delivery hours.</p>
+<ul>
+<li><b>Q1 (mo 1–3):</b> founder-led sales → $3k MRR base (~6–10 clients) → ~$5k; delivery templated into per-tier GHL snapshots (≤6h/launch); 2–3 case studies.</li>
+<li><b>Q2 (mo 4–6):</b> referral engine + case studies; founding pricing ends — new clients at $497+ standard; churn defense live (monthly report emails, quarterly check-ins) → ~$6.5k MRR.</li>
+<li><b>Q3 (mo 7–9):</b> ONE leveraged channel (local SEO, supplier/association partnerships, or paid ads with our own product as demo); first hire: onboarding VA ~$500–1k/mo → ~$8k MRR.</li>
+<li><b>Q4 (mo 10–12):</b> <b>$10k MRR</b> — ~20–30 clients depending on mix (~20 at a $497 standard). Churn at 5%/mo baked in (≈3 closes/month net). Capacity ~60h/mo delivery → hire part-time builder only when MRR covers it 3×.</li>
+</ul>
+<p>Year-end: $10k MRR ≈ $120k ARR run-rate at ~85% margin, with setup-fee cash on top.</p>
+`;
+
+/* =================== state =================== */
+let state = {
+  settings: { startDate: "", author: "", firebaseUrl: "", anthropicKey: "" },
+  shared: { checks: {}, leads: {}, deals: {}, notes: {} },
+};
+let es = null;            // EventSource
+let fbConnected = false;
+let chatHistory = [];
+
+function load() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      state.settings = Object.assign(state.settings, saved.settings || {});
+      state.shared = Object.assign(state.shared, saved.shared || {});
+      ["checks","leads","deals","notes"].forEach(k => { if (!state.shared[k]) state.shared[k] = {}; });
+    }
+  } catch (e) { console.warn("load failed", e); }
+}
+function save() { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+function money(n) { return "$" + Number(n || 0).toLocaleString(); }
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._h); toast._h = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+/* ============ firebase sync (REST + EventSource) ============ */
+function fbBase() {
+  let u = (state.settings.firebaseUrl || "").trim();
+  if (!u) return null;
+  if (!/^https?:\/\//.test(u)) u = "https://" + u;
+  return u.replace(/\/+$/, "");
+}
+function fbWrite(path, data) {
+  const base = fbBase();
+  if (!base) return;
+  fetch(`${base}/team${path ? "/" + path : ""}.json`, {
+    method: data === null ? "DELETE" : "PUT",
+    body: data === null ? undefined : JSON.stringify(data),
+  }).catch(() => toast("⚠ Sync write failed — change saved locally"));
+}
+function setSyncUi(live) {
+  fbConnected = live;
+  document.getElementById("syncDot").className = "dot" + (live ? " live" : "");
+  document.getElementById("syncLabel").textContent = live ? "team sync live" : "local only";
+  const fs = document.getElementById("fbStatus");
+  if (fs) fs.textContent = live ? "✓ Connected — notes, pipeline, sprint and revenue sync in real time." :
+    (state.settings.firebaseUrl ? "Not connected — check the URL and database rules." : "");
+}
+function applyRemote(path, data) {
+  // path like "/", "/notes/abc", "/checks/d1_0"
+  const segs = path.split("/").filter(Boolean);
+  if (segs.length === 0) {
+    state.shared = Object.assign({ checks: {}, leads: {}, deals: {}, notes: {} }, data || {});
+    ["checks","leads","deals","notes"].forEach(k => { if (!state.shared[k]) state.shared[k] = {}; });
+  } else {
+    let node = state.shared;
+    for (let i = 0; i < segs.length - 1; i++) {
+      if (typeof node[segs[i]] !== "object" || node[segs[i]] === null) node[segs[i]] = {};
+      node = node[segs[i]];
+    }
+    const last = segs[segs.length - 1];
+    if (data === null) delete node[last]; else node[last] = data;
+  }
+  save();
+  renderAll();
+}
+function connectFirebase() {
+  const input = document.getElementById("setFirebase");
+  if (input) state.settings.firebaseUrl = input.value.trim();
+  save();
+  if (es) { es.close(); es = null; }
+  const base = fbBase();
+  if (!base) { setSyncUi(false); return; }
+  try {
+    es = new EventSource(`${base}/team.json`);
+    es.addEventListener("put",   e => { const m = JSON.parse(e.data); applyRemote(m.path, m.data); if (!fbConnected) { setSyncUi(true); pushLocalToRemoteIfEmpty(m); } });
+    es.addEventListener("patch", e => { const m = JSON.parse(e.data); applyRemote(m.path, m.data); });
+    es.onerror = () => setSyncUi(false);
+  } catch (e) { setSyncUi(false); toast("Could not connect to Firebase"); }
+}
+function pushLocalToRemoteIfEmpty(firstMsg) {
+  // If the remote DB is empty but we have local data, seed it once.
+  if (firstMsg.path === "/" && firstMsg.data === null) {
+    const hasLocal = Object.keys(state.shared.checks).length || Object.keys(state.shared.leads).length ||
+                     Object.keys(state.shared.deals).length || Object.keys(state.shared.notes).length;
+    if (hasLocal) fbWrite("", state.shared);
+  }
+}
+
+/* =================== tabs =================== */
+function switchTab(tab) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  const page = document.getElementById("page-" + tab);
+  if (page) page.classList.add("active");
+  if (location.hash !== "#" + tab) history.replaceState(null, "", "#" + tab);
+}
+document.querySelectorAll(".nav-btn").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.tab)));
+
+/* =================== derived =================== */
+function dealsArr() { return Object.values(state.shared.deals).sort((a, b) => b.at - a.at); }
+function leadsArr() { return Object.values(state.shared.leads).sort((a, b) => b.at - a.at); }
+function notesArr() { return Object.values(state.shared.notes).sort((a, b) => b.at - a.at); }
+function totalMrr()  { return dealsArr().reduce((s, d) => s + Number(d.mrr || 0), 0); }
+function totalCash() { return dealsArr().reduce((s, d) => s + Number(d.setup || 0), 0); }
+function sprintDay() {
+  if (!state.settings.startDate) return null;
+  const start = new Date(state.settings.startDate + "T00:00:00");
+  const diff = Math.floor((Date.now() - start.getTime()) / 86400000) + 1;
+  return diff;
+}
+
+/* =================== renders =================== */
+function renderDashboard() {
+  const mrr = totalMrr(), cash = totalCash();
+  const pct = Math.min(100, Math.round(mrr / GOAL_MRR * 100));
+  document.getElementById("mrrBar").style.width = pct + "%";
+  document.getElementById("mrrFraction").textContent = `${money(mrr)} / ${money(GOAL_MRR)} MRR (${pct}%)`;
+  const gap = Math.max(0, GOAL_MRR - mrr);
+  document.getElementById("mrrGap").innerHTML = gap > 0
+    ? `Gap: <b>${money(gap)}/mo</b> — that's <b>${Math.ceil(gap / TIERS.growthplus.mrr)}× Growth+</b>, ${Math.ceil(gap / TIERS.growth.mrr)}× Growth, or ${Math.ceil(gap / TIERS.elite.mrr)}× Elite.`
+    : `🎉 <b>GOAL HIT.</b> $3k recurring is on the board — protect it (churn defense) and keep stacking.`;
+  document.getElementById("statMrr").textContent = money(mrr);
+  document.getElementById("statCash").textContent = money(cash);
+  document.getElementById("statClients").textContent = dealsArr().length;
+
+  const day = sprintDay();
+  const sd = document.getElementById("statDay"), sh = document.getElementById("statDayHint");
+  if (day === null) { sd.textContent = "—"; sh.textContent = "set start date in Settings"; }
+  else if (day < 1) { sd.textContent = `T−${1 - day}`; sh.textContent = "sprint starts soon"; }
+  else if (day > 30) { sd.textContent = "DONE"; sh.textContent = `day ${day} — sprint complete`; }
+  else { sd.textContent = `Day ${day}`; sh.textContent = `${30 - day} days remaining`; }
+
+  // today's tasks
+  const list = document.getElementById("todayTasks");
+  document.getElementById("todayTitle").textContent = day && day >= 1 && day <= 30 ? `Today's tasks — Day ${day}` : "Today's tasks";
+  list.innerHTML = renderTaskChecklist(day, null) || `<p class="empty">No sprint day active. Set the start date in Settings.</p>`;
+  if (day && day >= 8 && day <= 30) list.innerHTML += `<p class="small" style="margin-top:8px">+ daily non-negotiable: <b>30–40 outreach touches combined</b>.</p>`;
+
+  // pipeline snapshot
+  const stages = ["New","Contacted","Call Booked","Proposal","Closed Won","Closed Lost"];
+  const counts = {}; leadsArr().forEach(l => counts[l.stage] = (counts[l.stage] || 0) + 1);
+  document.getElementById("pipeSnapshot").innerHTML = stages.map(s =>
+    `<span class="pill" style="margin:0 6px 6px 0">${esc(s)}: ${counts[s] || 0}</span>`).join("");
+
+  const ns = notesArr();
+  document.getElementById("latestNote").innerHTML = ns.length
+    ? `<b>${esc(ns[0].author)}:</b> ${esc(ns[0].text.slice(0, 140))}${ns[0].text.length > 140 ? "…" : ""}`
+    : "No notes yet.";
+}
+
+function renderTaskChecklist(day, who) {
+  if (!day || day < 1 || day > 30) return "";
+  let tasks = ALL_TASKS.filter(t => t.d === day);
+  if (who) tasks = tasks.filter(t => t.who === who || t.who === "B");
+  if (!tasks.length) return `<p class="empty">Nothing scheduled.</p>`;
+  return tasks.map(t => taskRow(t)).join("");
+}
+function taskRow(t) {
+  const done = !!state.shared.checks[t.id];
+  return `<div class="task ${done ? "done" : ""}">
+    <input type="checkbox" ${done ? "checked" : ""} onchange="toggleTask('${t.id}')" />
+    <span class="who ${t.who}">${t.who === "B" ? "BOTH" : t.who === "D" ? "DARIUS" : "RYAN"}</span>
+    <span class="t">${esc(t.t)}</span>
+  </div>`;
+}
+function toggleTask(id) {
+  if (state.shared.checks[id]) { delete state.shared.checks[id]; fbWrite("checks/" + id, null); }
+  else { state.shared.checks[id] = { by: state.settings.author || "?", at: Date.now() }; fbWrite("checks/" + id, state.shared.checks[id]); }
+  save(); renderAll();
+}
+
+function renderSprint() {
+  const day = sprintDay();
+  document.getElementById("sprintList").innerHTML = SPRINT.map(w => `
+    <div class="week-h">// ${w.title}</div>
+    <div class="week-sub">${esc(w.sub)}</div>
+    ${w.days.map(d => {
+      const doneCount = d.tasks.filter(t => state.shared.checks[t.id]).length;
+      const isToday = day === d.d;
+      return `<details class="day ${isToday ? "today" : ""}" ${isToday ? "open" : ""}>
+        <summary>Day ${d.d}${isToday ? ' <span class="pill">TODAY</span>' : ""}<span class="prog">${doneCount}/${d.tasks.length}</span></summary>
+        ${d.tasks.map(t => taskRow(t)).join("")}
+      </details>`;
+    }).join("")}
+  `).join("");
+}
+
+const STAGES = ["New","Contacted","Call Booked","Proposal","Closed Won","Closed Lost"];
+function addLead() {
+  const name = document.getElementById("leadName").value.trim();
+  if (!name) { toast("Lead needs a name"); return; }
+  const lead = {
+    id: uid(), name,
+    trade: document.getElementById("leadTrade").value.trim(),
+    phone: document.getElementById("leadPhone").value.trim(),
+    notes: document.getElementById("leadNotes").value.trim(),
+    stage: "New", at: Date.now(),
+  };
+  state.shared.leads[lead.id] = lead;
+  fbWrite("leads/" + lead.id, lead);
+  ["leadName","leadTrade","leadPhone","leadNotes"].forEach(id => document.getElementById(id).value = "");
+  save(); renderAll(); toast("Lead added");
+}
+function moveLead(id, dir) {
+  const l = state.shared.leads[id]; if (!l) return;
+  const i = STAGES.indexOf(l.stage);
+  const ni = Math.max(0, Math.min(STAGES.length - 1, i + dir));
+  l.stage = STAGES[ni];
+  fbWrite("leads/" + id, l);
+  save(); renderAll();
+  if (l.stage === "Closed Won") {
+    document.getElementById("dealClient").value = l.name;
+    switchTab("revenue");
+    toast("🎉 Closed won! Log the deal to count its MRR.");
+  }
+}
+function markLost(id) {
+  const l = state.shared.leads[id]; if (!l) return;
+  l.stage = "Closed Lost"; fbWrite("leads/" + id, l); save(); renderAll();
+}
+function delLead(id) {
+  if (!confirm("Delete this lead?")) return;
+  delete state.shared.leads[id]; fbWrite("leads/" + id, null); save(); renderAll();
+}
+function renderPipeline() {
+  const board = document.getElementById("pipeBoard");
+  const leads = leadsArr();
+  board.innerHTML = STAGES.map(stage => {
+    const items = leads.filter(l => l.stage === stage);
+    return `<div class="stage-col">
+      <h4>// ${esc(stage.toUpperCase())} (${items.length})</h4>
+      ${items.map(l => `<div class="lead">
+        <b>${esc(l.name)}</b>
+        <div class="meta">${esc([l.trade, l.phone].filter(Boolean).join(" · "))}${l.notes ? "\n" + esc(l.notes) : ""}</div>
+        <div class="acts">
+          ${stage !== "New" && stage !== "Closed Lost" ? `<button class="btn tiny ghost" onclick="moveLead('${l.id}',-1)">◂ back</button>` : ""}
+          ${stage !== "Closed Won" && stage !== "Closed Lost" ? `<button class="btn tiny" onclick="moveLead('${l.id}',1)">advance ▸</button>` : ""}
+          ${stage !== "Closed Won" && stage !== "Closed Lost" ? `<button class="btn tiny danger" onclick="markLost('${l.id}')">lost</button>` : `<button class="btn tiny danger" onclick="delLead('${l.id}')">delete</button>`}
+        </div>
+      </div>`).join("") || `<p class="empty">—</p>`}
+    </div>`;
+  }).join("");
+}
+
+function tierAutofill() {
+  const t = TIERS[document.getElementById("dealTier").value];
+  if (!t) return;
+  if (document.getElementById("dealTier").value !== "custom") {
+    document.getElementById("dealMrr").value = t.mrr;
+    document.getElementById("dealSetup").value = t.setup;
+  }
+}
+function addDeal() {
+  const client = document.getElementById("dealClient").value.trim();
+  if (!client) { toast("Deal needs a client name"); return; }
+  const tierKey = document.getElementById("dealTier").value;
+  const deal = {
+    id: uid(), client, tier: TIERS[tierKey].label,
+    mrr: Number(document.getElementById("dealMrr").value || 0),
+    setup: Number(document.getElementById("dealSetup").value || 0),
+    at: Date.now(),
+  };
+  state.shared.deals[deal.id] = deal;
+  fbWrite("deals/" + deal.id, deal);
+  document.getElementById("dealClient").value = "";
+  save(); renderAll();
+  toast(totalMrr() >= GOAL_MRR ? "🏆 $3k MRR GOAL HIT!" : `Deal logged — +${money(deal.mrr)}/mo MRR`);
+}
+function delDeal(id) {
+  if (!confirm("Remove this deal?")) return;
+  delete state.shared.deals[id]; fbWrite("deals/" + id, null); save(); renderAll();
+}
+function renderRevenue() {
+  const mrr = totalMrr(), cash = totalCash(), gap = Math.max(0, GOAL_MRR - mrr);
+  document.getElementById("revMrr").textContent = money(mrr);
+  document.getElementById("revCash").textContent = money(cash);
+  document.getElementById("revGap").textContent = money(gap);
+  document.getElementById("revGapHint").textContent = gap > 0
+    ? `≈ ${Math.ceil(gap / TIERS.growthplus.mrr)} Growth+ · ${Math.ceil(gap / TIERS.growth.mrr)} Growth · ${Math.ceil(gap / TIERS.elite.mrr)} Elite`
+    : "goal hit — now defend it";
+  const deals = dealsArr();
+  document.getElementById("dealsTable").innerHTML = deals.length
+    ? `<table><tr><th>CLIENT</th><th>TIER</th><th>MRR</th><th>SETUP (SEPARATE)</th><th>DATE</th><th></th></tr>
+       ${deals.map(d => `<tr>
+         <td>${esc(d.client)}</td><td>${esc(d.tier)}</td>
+         <td style="color:var(--accent);font-weight:700">${money(d.mrr)}/mo</td>
+         <td>${money(d.setup)}</td>
+         <td class="small">${new Date(d.at).toLocaleDateString()}</td>
+         <td><button class="btn tiny danger" onclick="delDeal('${d.id}')">×</button></td>
+       </tr>`).join("")}</table>`
+    : `<p class="empty">No deals yet. First close changes everything — go get it.</p>`;
+}
+
+function renderScripts() {
+  document.getElementById("scriptList").innerHTML = SCRIPTS.map((s, i) => `
+    <div class="card script">
+      <div class="head"><h3 style="margin:0">${esc(s.title)}</h3>
+        <button class="btn tiny ghost" onclick="copyScript(${i}, this)">copy</button></div>
+      <pre>${esc(s.body)}</pre>
+    </div>`).join("");
+}
+function copyScript(i, btn) {
+  navigator.clipboard.writeText(SCRIPTS[i].body).then(() => {
+    btn.textContent = "copied ✓"; setTimeout(() => btn.textContent = "copy", 1500);
+  }).catch(() => toast("Copy failed — select the text manually"));
+}
+
+function renderRoles() {
+  const day = sprintDay();
+  document.getElementById("todayD").innerHTML = renderTaskChecklist(day, "D") || `<p class="empty">No sprint day active.</p>`;
+  document.getElementById("todayR").innerHTML = renderTaskChecklist(day, "R") || `<p class="empty">No sprint day active.</p>`;
+}
+
+function renderNotes() {
+  const sel = document.getElementById("noteAuthor");
+  if (state.settings.author && !sel.value) sel.value = state.settings.author;
+  const ns = notesArr();
+  document.getElementById("notesFeed").innerHTML = ns.length
+    ? ns.map(n => `<div class="note">
+        <div class="nh"><b style="color:${n.author === "Darius" ? "var(--blue)" : "var(--amber)"}">${esc(n.author)}</b>
+        <span class="tag">${new Date(n.at).toLocaleString()}</span></div>
+        <p>${esc(n.text)}</p>
+      </div>`).join("")
+    : `<p class="empty">No notes yet. Post the first one.</p>`;
+  document.getElementById("notesSub").innerHTML = fbConnected
+    ? `Shared notes between Darius and Ryan — <b style="color:var(--accent)">real-time sync is live</b>.`
+    : `Shared notes between Darius and Ryan. <b>Configure Firebase in Settings to enable real-time sync</b> — right now notes are saved on this device only.`;
+}
+function addNote() {
+  const author = document.getElementById("noteAuthor").value;
+  const text = document.getElementById("noteText").value.trim();
+  if (!author) { toast("Pick who's posting"); return; }
+  if (!text) { toast("Write something first"); return; }
+  if (!state.settings.author) { state.settings.author = author; }
+  const note = { id: uid(), author, text, at: Date.now() };
+  state.shared.notes[note.id] = note;
+  fbWrite("notes/" + note.id, note);
+  document.getElementById("noteText").value = "";
+  save(); renderAll();
+  toast(fbConnected ? "Posted — synced live" : "Posted (local only — set up Firebase for live sync)");
+}
+
+/* =================== Ask AI (Claude Haiku 4.5) =================== */
+function aiContext() {
+  const day = sprintDay();
+  const mrr = totalMrr();
+  const stages = {}; leadsArr().forEach(l => stages[l.stage] = (stages[l.stage] || 0) + 1);
+  return `You are the ModernFlow AI Command Center assistant for a two-person AI-automation agency.
+
+TEAM: Darius (developer/delivery: GHL builds, onboarding within 48h of close, launch in 7 days, monthly client reports, 5-10 outreach touches/day) and Ryan (sales: owns pipeline, 25-35 outreach touches/day, strategy calls, closes, follow-up cadence Day 0/2/5/10, referral asks).
+
+GOAL: $3,000/month in RECURRING revenue (MRR) within a 30-day sprint. One-time setup fees DO NOT count toward the goal (tracked separately as cash collected). 12-month goal: $10,000 MRR, same definition.
+
+OFFER: done-for-you AI automation for local service businesses (plumbers/HVAC/electricians/roofers): instant lead response, missed-call text-back, CRM, follow-up, booking, reviews — on GoHighLevel. Tiers: Starter $97/mo (+$1000 setup), Growth $297/mo (+$2000), Elite $697/mo (+$3000), and the recommended Growth+ Founding offer: $497/mo, $0 setup, 3-month minimum, first 10 clients. Lead offer: free 15-min Missed Lead Audit.
+
+MATH: ~1 close per 100 outreach touches (touch→convo 15%, convo→call 30%, call held 70%, close 30%). 7 closes ≈ 700 touches ≈ 30-40/day combined. 6 Growth+ + 1 Starter = $3,079 MRR.
+
+SPRINT: Wk1 foundation (niche, 150-lead list, scripts, GHL, demo). Wk2 outreach blitz (10+ calls booked). Wk3 close & deliver (2-3 closes). Wk4 double down (referrals, case study, $3k).
+
+LIVE STATE: ${day ? `sprint day ${day} of 30` : "sprint not started"}. MRR: $${mrr} of $3000 (gap $${Math.max(0, 3000 - mrr)}). Clients: ${dealsArr().length}. Cash collected (setup fees, separate): $${totalCash()}. Pipeline: ${JSON.stringify(stages)}.
+
+Be concise, concrete, and action-oriented. Push toward daily outreach volume and MRR. When asked "what should X do today", use the sprint week/day and their role.`;
+}
+function saveAiKey() {
+  const v = document.getElementById("aiKeyInput").value.trim();
+  if (!v) { toast("Paste a key first"); return; }
+  state.settings.anthropicKey = v; save();
+  document.getElementById("setAiKey").value = v;
+  renderAiSetup(); toast("Key saved (this browser only)");
+}
+function renderAiSetup() {
+  const has = !!state.settings.anthropicKey;
+  document.getElementById("aiSetup").style.display = has ? "none" : "block";
+}
+function appendMsg(cls, text) {
+  const box = document.getElementById("chatBox");
+  const div = document.createElement("div");
+  div.className = "msg " + cls;
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  return div;
+}
+async function askAi() {
+  const input = document.getElementById("chatInput");
+  const q = input.value.trim();
+  if (!q) return;
+  if (!state.settings.anthropicKey) { renderAiSetup(); toast("Add your Anthropic API key first"); return; }
+  input.value = "";
+  appendMsg("user", q);
+  chatHistory.push({ role: "user", content: q });
+  const btn = document.getElementById("askBtn");
+  btn.disabled = true; btn.textContent = "…";
+  const thinking = appendMsg("ai", "thinking…");
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": state.settings.anthropicKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5",
+        max_tokens: 1024,
+        system: aiContext(),
+        messages: chatHistory.slice(-12),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
+    const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("\n").trim() || "(empty response)";
+    thinking.textContent = text;
+    chatHistory.push({ role: "assistant", content: text });
+  } catch (e) {
+    thinking.className = "msg err";
+    thinking.textContent = "Error: " + e.message + (String(e.message).includes("authentication") ? " — check your API key in Settings." : "");
+    chatHistory.pop();
+  } finally {
+    btn.disabled = false; btn.textContent = "Ask";
+  }
+}
+
+/* =================== settings =================== */
+function saveSettingsForm() {
+  state.settings.startDate = document.getElementById("setStart").value;
+  state.settings.author = document.getElementById("setAuthor").value;
+  state.settings.anthropicKey = document.getElementById("setAiKey").value.trim();
+  save(); renderAll(); renderAiSetup();
+}
+function fillSettingsForm() {
+  document.getElementById("setStart").value = state.settings.startDate || "";
+  document.getElementById("setAuthor").value = state.settings.author || "";
+  document.getElementById("setFirebase").value = state.settings.firebaseUrl || "";
+  document.getElementById("setAiKey").value = state.settings.anthropicKey || "";
+}
+function exportData() {
+  const blob = new Blob([JSON.stringify({ shared: state.shared, settings: { startDate: state.settings.startDate } }, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `modernflow-command-center-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  toast("Exported");
+}
+function importData(ev) {
+  const file = ev.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (data.shared) {
+        state.shared = Object.assign({ checks: {}, leads: {}, deals: {}, notes: {} }, data.shared);
+        if (data.settings?.startDate) state.settings.startDate = data.settings.startDate;
+        save(); renderAll(); fillSettingsForm();
+        if (fbConnected) fbWrite("", state.shared);
+        toast("Imported" + (fbConnected ? " + synced" : ""));
+      } else toast("Not a Command Center export");
+    } catch { toast("Invalid JSON file"); }
+  };
+  reader.readAsText(file);
+  ev.target.value = "";
+}
+function resetData() {
+  if (!confirm("Reset ALL local data (tasks, leads, deals, notes, settings)? This does not delete the Firebase copy.")) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
+}
+
+/* =================== boot =================== */
+function renderAll() {
+  renderDashboard(); renderSprint(); renderPipeline(); renderRevenue(); renderRoles(); renderNotes();
+}
+load();
+document.getElementById("planDoc").innerHTML = PLAN_HTML;
+renderScripts();
+fillSettingsForm();
+renderAiSetup();
+renderAll();
+if (state.settings.firebaseUrl) connectFirebase(); else setSyncUi(false);
+const initTab = location.hash.slice(1) || "dashboard";
+switchTab(/^(dashboard|sprint|pipeline|revenue|scripts|plan|roles|ai|notes|settings)$/.test(initTab) ? initTab : "dashboard");
+</script>
+</body>
+</html>
