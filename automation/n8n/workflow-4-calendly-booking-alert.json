@@ -1,0 +1,89 @@
+{
+  "name": "ModernFlow 4 — Calendly Booking → Slack Alert",
+  "nodes": [
+    {
+      "id": "webhook",
+      "name": "Calendly Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "calendly-booking",
+        "options": {}
+      }
+    },
+    {
+      "id": "extract-invitee",
+      "name": "Extract Invitee",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 0],
+      "parameters": {
+        "jsCode": "// Calendly sends { event: 'invitee.created', payload: {...} }\nconst body = $input.first().json.body || $input.first().json;\nif (body.event && body.event !== 'invitee.created') return [];\nconst p = body.payload || {};\nconst email = (p.email || '').toLowerCase();\nif (!email) return [];\nreturn [{\n  json: {\n    email,\n    name: p.name || '',\n    event_start: (p.scheduled_event && p.scheduled_event.start_time) || '',\n    event_name: (p.scheduled_event && p.scheduled_event.name) || 'Strategy Call'\n  }\n}];"
+      }
+    },
+    {
+      "id": "mark-booked",
+      "name": "Mark Lead BOOKED",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [400, 0],
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": ["email"],
+          "value": {
+            "email": "={{ $json.email }}",
+            "status": "BOOKED",
+            "interest_score": "10",
+            "last_contact_at": "={{ new Date().toISOString() }}"
+          },
+          "schema": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "slack-booked",
+      "name": "Slack — Booked Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [600, 0],
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#modernflow-leads"
+        },
+        "text": "=🔥🔥🔥📅 *MEETING BOOKED!*\n*{{ $('Extract Invitee').item.json.name }}* ({{ $('Extract Invitee').item.json.email }})\nEvent: {{ $('Extract Invitee').item.json.event_name }}\nWhen: {{ $('Extract Invitee').item.json.event_start }}",
+        "otherOptions": {}
+      }
+    }
+  ],
+  "connections": {
+    "Calendly Webhook": {
+      "main": [[{ "node": "Extract Invitee", "type": "main", "index": 0 }]]
+    },
+    "Extract Invitee": {
+      "main": [[{ "node": "Mark Lead BOOKED", "type": "main", "index": 0 }]]
+    },
+    "Mark Lead BOOKED": {
+      "main": [[{ "node": "Slack — Booked Alert", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

@@ -1,0 +1,168 @@
+{
+  "name": "ModernFlow 1 — Apollo Lead Sourcing → Google Sheets",
+  "nodes": [
+    {
+      "id": "manual-trigger",
+      "name": "Run Manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "parameters": {}
+    },
+    {
+      "id": "build-pages",
+      "name": "Build Search Pages",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 0],
+      "parameters": {
+        "jsCode": "// 5 pages x 100 results = ~500 leads\nreturn [1, 2, 3, 4, 5].map(page => ({ json: { page } }));"
+      }
+    },
+    {
+      "id": "apollo-search",
+      "name": "Apollo People Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [400, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apollo.io/api/v1/mixed_people/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ page: $json.page, per_page: 100, person_titles: ['Owner', 'Founder', 'CEO', 'President', 'General Manager'], person_locations: ['United States'], organization_num_employees_ranges: ['1,10', '11,50', '51,200'], q_organization_keyword_tags: ['plumbing', 'hvac', 'electrical', 'roofing', 'landscaping', 'general contractor', 'home services'], contact_email_status: ['verified'] }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "flatten-people",
+      "name": "Flatten People",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [600, 0],
+      "parameters": {
+        "jsCode": "// Collect people from all 5 search pages into one flat list of items\nconst out = [];\nfor (const item of $input.all()) {\n  const people = item.json.people || [];\n  for (const p of people) {\n    if (!p || !p.id) continue;\n    out.push({ json: { apollo_id: p.id } });\n  }\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "chunk-enrich",
+      "name": "Chunk for Enrichment",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [800, 0],
+      "parameters": {
+        "batchSize": 10,
+        "options": {}
+      }
+    },
+    {
+      "id": "aggregate-batch",
+      "name": "Aggregate Batch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 150],
+      "parameters": {
+        "jsCode": "// Bulk-match accepts up to 10 people per call\nconst ids = $input.all().map(i => i.json.apollo_id);\nreturn [{ json: { details: ids.map(id => ({ id })) } }];"
+      }
+    },
+    {
+      "id": "apollo-enrich",
+      "name": "Apollo Bulk Enrich",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1200, 150],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apollo.io/api/v1/people/bulk_match",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ details: $json.details, reveal_personal_emails: false }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse-matches",
+      "name": "Parse Matches",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1400, 150],
+      "parameters": {
+        "jsCode": "const res = $input.first().json;\nconst matches = res.matches || [];\nreturn matches\n  .filter(m => m && m.email)\n  .map(m => ({\n    json: {\n      apollo_id: m.id || '',\n      first_name: m.first_name || '',\n      last_name: m.last_name || '',\n      title: m.title || '',\n      company: (m.organization && m.organization.name) || '',\n      industry: (m.organization && m.organization.industry) || '',\n      email: m.email,\n      linkedin_url: m.linkedin_url || '',\n      website: (m.organization && m.organization.website_url) || '',\n      city: m.city || '',\n      state: m.state || '',\n      status: 'NEW',\n      thread_id: '',\n      interest_score: '',\n      last_contact_at: '',\n      notes: ''\n    }\n  }));"
+      }
+    },
+    {
+      "id": "dedupe",
+      "name": "Filter & Dedupe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, -150],
+      "parameters": {
+        "jsCode": "// Dedupe by email and cap the list at 500\nconst seen = new Set();\nconst out = [];\nfor (const item of $input.all()) {\n  const email = (item.json.email || '').toLowerCase().trim();\n  if (!email || seen.has(email)) continue;\n  seen.add(email);\n  out.push(item);\n  if (out.length >= 500) break;\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "sheets-append",
+      "name": "Append Leads to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1200, -150],
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Run Manually": {
+      "main": [[{ "node": "Build Search Pages", "type": "main", "index": 0 }]]
+    },
+    "Build Search Pages": {
+      "main": [[{ "node": "Apollo People Search", "type": "main", "index": 0 }]]
+    },
+    "Apollo People Search": {
+      "main": [[{ "node": "Flatten People", "type": "main", "index": 0 }]]
+    },
+    "Flatten People": {
+      "main": [[{ "node": "Chunk for Enrichment", "type": "main", "index": 0 }]]
+    },
+    "Chunk for Enrichment": {
+      "main": [
+        [{ "node": "Filter & Dedupe", "type": "main", "index": 0 }],
+        [{ "node": "Aggregate Batch", "type": "main", "index": 0 }]
+      ]
+    },
+    "Aggregate Batch": {
+      "main": [[{ "node": "Apollo Bulk Enrich", "type": "main", "index": 0 }]]
+    },
+    "Apollo Bulk Enrich": {
+      "main": [[{ "node": "Parse Matches", "type": "main", "index": 0 }]]
+    },
+    "Parse Matches": {
+      "main": [[{ "node": "Chunk for Enrichment", "type": "main", "index": 0 }]]
+    },
+    "Filter & Dedupe": {
+      "main": [[{ "node": "Append Leads to Sheet", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

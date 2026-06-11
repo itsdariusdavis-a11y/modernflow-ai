@@ -1,0 +1,315 @@
+{
+  "name": "ModernFlow 3 — AI Reply Handler + Interest Scoring → Slack",
+  "nodes": [
+    {
+      "id": "gmail-trigger",
+      "name": "Gmail Trigger (New Reply)",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0],
+      "parameters": {
+        "pollTimes": {
+          "item": [{ "mode": "everyMinute" }]
+        },
+        "simple": true,
+        "filters": {
+          "labelIds": ["INBOX"]
+        }
+      }
+    },
+    {
+      "id": "extract-sender",
+      "name": "Extract Sender + Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 0],
+      "parameters": {
+        "jsCode": "const OUR_ADDRESS = 'you@yourdomain.com'; // <-- EDIT: the Gmail address sending the outreach\n\nconst j = $input.first().json;\nconst fromRaw = (j.from && j.from.value && j.from.value[0] && j.from.value[0].address)\n  || j.From || (j.headers && j.headers.from) || '';\nconst match = String(fromRaw).match(/[\\w.+-]+@[\\w-]+\\.[\\w.-]+/);\nconst senderEmail = match ? match[0].toLowerCase() : '';\n\nif (!senderEmail || senderEmail === OUR_ADDRESS.toLowerCase()) {\n  return []; // ignore our own messages / unparseable senders\n}\n\nconst body = j.text || j.textPlain || j.snippet || '';\nreturn [{\n  json: {\n    sender_email: senderEmail,\n    message_id: j.id,\n    thread_id: j.threadId || '',\n    inbound_text: String(body).slice(0, 4000)\n  }\n}];"
+      }
+    },
+    {
+      "id": "find-lead",
+      "name": "Find Lead in Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [400, 0],
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "email",
+              "lookupValue": "={{ $json.sender_email }}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "build-reply-request",
+      "name": "Build Claude Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [600, 0],
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\nif (!lead || !lead.email) return []; // not one of our leads -> stop\nif (lead.status === 'UNSUBSCRIBED' || lead.status === 'BOOKED') return [];\n\nconst inbound = $('Extract Sender + Message').first().json;\n\nconst SENDER_NAME = 'Ryan'; // <-- EDIT: your name\nconst CALENDLY_URL = 'https://calendly.com/ryan-modernflowai/30min';\n\nconst system = `You are ${SENDER_NAME} from ModernFlow AI, a done-for-you AI automation agency for service businesses (contractors, plumbers, HVAC, electricians). You previously sent this lead a cold outreach email offering AI automation: a 24/7 AI assistant for missed calls, automated booking, CRM follow-up, and review automation. The lead has now replied, and your job is to continue the email conversation naturally.\\n\\nYour goals, in order:\\n1. Answer their questions honestly and specifically. Never invent case studies, client names, or statistics.\\n2. Qualify them: when natural, ask ONE smart discovery question (call volume, how they handle missed calls today, booking process, team size).\\n3. Drive toward booking a free 30-minute strategy call. If their interest is moderate or higher, or they ask about next steps or pricing, include this exact link once: ${CALENDLY_URL}. Pricing specifics are discussed on the call.\\n4. Match their tone and length. Plain text, no emojis, sign off as ${SENDER_NAME}.\\n\\nAlso SCORE their interest from 1-10:\\n- 1-2: explicit not interested / hostile\\n- 3-4: polite brush-off, vague \\\"maybe later\\\"\\n- 5-6: curious, asking general questions\\n- 7-8: asking specifics (how it works, pricing, timeline, their use case)\\n- 9-10: wants to talk, asks to schedule, ready to move\\n\\nSet wants_unsubscribe true if they ask to stop emailing, unsubscribe, or say a firm no. In that case should_reply is false (one short polite acknowledgement is allowed only if they asked a question while declining).\\nSet booking_intent true if they explicitly want to schedule a call or say they will book.`;\n\nconst userMsg = `Lead record:\\n- Name: ${lead.first_name} ${lead.last_name}\\n- Title: ${lead.title}\\n- Company: ${lead.company} (${lead.industry})\\n- Location: ${lead.city}, ${lead.state}\\n- Current status: ${lead.status}\\n- Previous interest score: ${lead.interest_score || 'none'}\\n- Notes from earlier in the conversation: ${lead.notes || 'none'}\\n\\nTheir new reply:\\n\\\"\\\"\\\"\\n${inbound.inbound_text}\\n\\\"\\\"\\\"\\n\\nScore their interest and write your reply.`;\n\nreturn [{\n  json: {\n    model: 'claude-opus-4-8',\n    max_tokens: 2000,\n    system,\n    messages: [{ role: 'user', content: userMsg }],\n    output_config: {\n      format: {\n        type: 'json_schema',\n        schema: {\n          type: 'object',\n          properties: {\n            interest_score: { type: 'integer', description: 'Interest level 1-10' },\n            should_reply: { type: 'boolean', description: 'Whether to send the reply' },\n            reply_body: { type: 'string', description: 'Plain-text reply email body with signature' },\n            lead_summary: { type: 'string', description: 'One or two sentences: where this lead stands and what they care about' },\n            wants_unsubscribe: { type: 'boolean', description: 'Lead asked to stop being contacted' },\n            booking_intent: { type: 'boolean', description: 'Lead explicitly wants to book or schedule a call' }\n          },\n          required: ['interest_score', 'should_reply', 'reply_body', 'lead_summary', 'wants_unsubscribe', 'booking_intent'],\n          additionalProperties: false\n        }\n      }\n    }\n  }\n}];"
+      }
+    },
+    {
+      "id": "claude-reply",
+      "name": "Claude — Score & Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [800, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse-reply",
+      "name": "Parse Score + Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 0],
+      "parameters": {
+        "jsCode": "const res = $input.first().json;\nif (res.stop_reason === 'refusal') {\n  throw new Error('Claude declined this reply — review the inbound message manually.');\n}\nconst textBlock = (res.content || []).find(b => b.type === 'text');\nif (!textBlock) throw new Error('No text block in Claude response');\nconst ai = JSON.parse(textBlock.text);\nconst lead = $('Find Lead in Sheet').first().json;\nconst inbound = $('Extract Sender + Message').first().json;\nreturn [{\n  json: {\n    ...ai,\n    email: lead.email,\n    first_name: lead.first_name,\n    last_name: lead.last_name,\n    company: lead.company,\n    title: lead.title,\n    message_id: inbound.message_id,\n    thread_id: inbound.thread_id\n  }\n}];"
+      }
+    },
+    {
+      "id": "if-unsubscribe",
+      "name": "Unsubscribe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1200, 0],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.wants_unsubscribe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "mark-unsubscribed",
+      "name": "Mark UNSUBSCRIBED",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1400, -180],
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": ["email"],
+          "value": {
+            "email": "={{ $json.email }}",
+            "status": "UNSUBSCRIBED",
+            "interest_score": "={{ $json.interest_score }}",
+            "notes": "={{ $json.lead_summary }}"
+          },
+          "schema": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "if-should-reply",
+      "name": "Should Reply?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1400, 120],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.should_reply }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "gmail-reply",
+      "name": "Send Gmail Reply",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1600, 60],
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $json.message_id }}",
+        "emailType": "text",
+        "message": "={{ $json.reply_body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    },
+    {
+      "id": "update-lead",
+      "name": "Update Lead Score",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1800, 120],
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": ["email"],
+          "value": {
+            "email": "={{ $('Parse Score + Reply').item.json.email }}",
+            "status": "={{ $('Parse Score + Reply').item.json.interest_score >= 8 ? 'HOT' : 'ENGAGED' }}",
+            "interest_score": "={{ $('Parse Score + Reply').item.json.interest_score }}",
+            "notes": "={{ $('Parse Score + Reply').item.json.lead_summary }}",
+            "last_contact_at": "={{ new Date().toISOString() }}"
+          },
+          "schema": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "build-slack",
+      "name": "Build Slack Alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2000, 120],
+      "parameters": {
+        "jsCode": "const d = $('Parse Score + Reply').first().json;\nconst score = Number(d.interest_score) || 0;\n\nconst scale = {\n  1: '🧊', 2: '🧊', 3: '😐', 4: '😐', 5: '🙂',\n  6: '👀', 7: '⚡', 8: '🔥', 9: '🔥🔥', 10: '🔥🔥🔥'\n};\nconst emoji = scale[score] || '🙂';\n\nlet headline;\nif (score >= 9) headline = `${emoji} *CALL IMMEDIATELY* — interest ${score}/10`;\nelse if (score >= 7) headline = `${emoji} *Hot lead* — interest ${score}/10`;\nelse if (score >= 5) headline = `${emoji} Warming up — interest ${score}/10`;\nelse headline = `${emoji} Low interest — ${score}/10`;\n\nconst booking = d.booking_intent ? '\\n📅 *Wants to book a call!*' : '';\n\nconst text = `${headline}${booking}\\n*${d.first_name} ${d.last_name}* — ${d.title} at *${d.company}*\\n✉️ ${d.email}\\n📝 ${d.lead_summary}`;\n\nreturn [{ json: { slack_text: text } }];"
+      }
+    },
+    {
+      "id": "slack-notify",
+      "name": "Notify Team on Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [2200, 120],
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#modernflow-leads"
+        },
+        "text": "={{ $json.slack_text }}",
+        "otherOptions": {}
+      }
+    }
+  ],
+  "connections": {
+    "Gmail Trigger (New Reply)": {
+      "main": [[{ "node": "Extract Sender + Message", "type": "main", "index": 0 }]]
+    },
+    "Extract Sender + Message": {
+      "main": [[{ "node": "Find Lead in Sheet", "type": "main", "index": 0 }]]
+    },
+    "Find Lead in Sheet": {
+      "main": [[{ "node": "Build Claude Request", "type": "main", "index": 0 }]]
+    },
+    "Build Claude Request": {
+      "main": [[{ "node": "Claude — Score & Reply", "type": "main", "index": 0 }]]
+    },
+    "Claude — Score & Reply": {
+      "main": [[{ "node": "Parse Score + Reply", "type": "main", "index": 0 }]]
+    },
+    "Parse Score + Reply": {
+      "main": [[{ "node": "Unsubscribe?", "type": "main", "index": 0 }]]
+    },
+    "Unsubscribe?": {
+      "main": [
+        [{ "node": "Mark UNSUBSCRIBED", "type": "main", "index": 0 }],
+        [{ "node": "Should Reply?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Should Reply?": {
+      "main": [
+        [{ "node": "Send Gmail Reply", "type": "main", "index": 0 }],
+        [{ "node": "Update Lead Score", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Gmail Reply": {
+      "main": [[{ "node": "Update Lead Score", "type": "main", "index": 0 }]]
+    },
+    "Update Lead Score": {
+      "main": [[{ "node": "Build Slack Alert", "type": "main", "index": 0 }]]
+    },
+    "Build Slack Alert": {
+      "main": [[{ "node": "Notify Team on Slack", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
