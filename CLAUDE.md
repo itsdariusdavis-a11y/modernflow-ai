@@ -76,6 +76,33 @@ These systems touch real customers and money. Therefore:
 - **PII:** keep lead/client data inside the connected tools. Do not paste it into
   commits, code, or public artifacts.
 
+## Working principles (all agents)
+
+Behavioral baseline derived from Andrej Karpathy's observations on LLM coding pitfalls
+([andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills), MIT).
+Always-on — no invocation needed.
+
+### Think before coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.** Before implementing:
+
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them — don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+### Goal-driven execution
+
+**Define success criteria. Loop until verified.** Turn tasks into verifiable goals:
+
+- "Add validation" → "Write tests for invalid inputs, then make them pass."
+- "Fix the bug" → "Write a test that reproduces it, then make it pass."
+- "Refactor X" → "Ensure tests pass before and after."
+
+For multi-step tasks, state a brief plan, each step paired with how you'll verify it.
+Strong success criteria let you loop independently; weak criteria ("make it work")
+require constant clarification.
+
 ## Quick index
 
 - Process SOPs: `docs/sops/`
