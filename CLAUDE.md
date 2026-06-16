@@ -11,13 +11,18 @@ follow-up automation, online booking, and review/reputation automation. Revenue 
 setup fee + monthly retainer across three tiers (Starter $1k+$97/mo, Growth
 $2k+$297/mo, Elite $3k+$697/mo).
 
-This repository holds two software products plus the operating layer for the agency:
+This repository holds the ModernFlow AI marketing site plus the operating layer for
+the agency:
 
 | Area | What it is | Where |
 | --- | --- | --- |
 | Marketing site | React 19 + tRPC + Express site that sells the agency | `client/`, `server/`, `shared/` |
-| MLB dashboard | Static + React MLB matchup analytics app (side project) | `sports/` |
 | Operating layer | Agents, skills, and SOPs that run the business | `.claude/`, `docs/sops/` |
+
+> **`sports/` is OUT OF SCOPE.** The `sports/` directory is a standalone MLB analytics
+> side project with **no connection to ModernFlow AI**. Disregard it entirely when doing
+> ModernFlow work — don't touch it, report on it, or include it in deploys, reviews, or
+> reports. Only work in `sports/` if a request is explicitly and exclusively about it.
 
 ## How work is organized (read this before starting anything)
 
@@ -48,7 +53,7 @@ specialists. For a single-process request, invoke that specialist (or its skill)
 
 ## Engineering conventions (for `web-eng-agent` and anyone touching code)
 
-- **Package manager:** `pnpm` (root site). `sports/` can use `npm` or `pnpm`.
+- **Package manager:** `pnpm` (root site).
 - **Before pushing code, run:** `pnpm check` (typecheck), `pnpm test` (vitest),
   and `pnpm format`. All three must pass. See `docs/sops/07-web-engineering.md`.
 - **Branch:** never commit to `main`. Use a feature branch and open a PR only when asked.

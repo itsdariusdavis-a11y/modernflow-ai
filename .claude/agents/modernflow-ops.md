@@ -17,7 +17,7 @@ and synthesize**. Read `CLAUDE.md` and the relevant files in `docs/sops/` for co
 | `scheduling-agent` | Calendar + booking | Anything time/meeting related |
 | `meeting-intel-agent` | Fireflies recaps | A call happened and needs follow-up |
 | `content-marketing-agent` | Decks, posts, media | You need a deliverable or marketing asset |
-| `web-eng-agent` | This codebase + deploys | Code, the website, or the sports app |
+| `web-eng-agent` | Marketing site + deploys | Code or the website (not `sports/`) |
 | `comms-agent` | Slack + email triage | Internal updates or inbox triage |
 | `reporting-agent` | KPIs across all systems | Someone wants numbers/status |
 

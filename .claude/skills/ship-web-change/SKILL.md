@@ -1,6 +1,6 @@
 ---
 name: ship-web-change
-description: Make a change to the ModernFlow website or sports app and ship it through the quality gate. Use for any code edit, bug fix, new section, or content update to client/server/sports. Enforces typecheck + test + format (and the sports build) before pushing to a feature branch.
+description: Make a change to the ModernFlow AI marketing website and ship it through the quality gate. Use for any code edit, bug fix, new section, or content update to client/server/shared. Enforces typecheck + test + format before pushing to a feature branch. Does NOT cover the unrelated sports/ MLB project.
 ---
 
 # Ship a web change
@@ -19,7 +19,7 @@ The safe path for code changes. Fast path for `web-eng-agent` / `docs/sops/07-we
    pnpm test      # vitest
    pnpm format    # prettier
    ```
-   If `sports/` changed, also: `cd sports && pnpm build`.
+   (`sports/` is a separate MLB project — out of scope; never include it.)
 4. **Commit** on the working feature branch with a clear message. Push with
    `git push -u origin <branch>` (retry on network errors with backoff).
 5. **PR only if asked.** After creating a PR, offer to watch it for CI/review.

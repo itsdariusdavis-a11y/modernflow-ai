@@ -4,16 +4,16 @@
 
 ## Goal
 
-Ship correct, on-brand, well-tested changes to the marketing site and the sports app.
+Ship correct, on-brand, well-tested changes to the ModernFlow AI marketing site.
 
-## The products
+## Scope
 
-- **Marketing site** — React 19 + TS + Vite (`client/`), Express + tRPC 11 (`server/`),
-  shared types (`shared/`), MySQL/TiDB via Drizzle (`drizzle/`). Package manager `pnpm`.
-  Contact form → GoHighLevel (`server/routers.ts`) + owner notification; keep both intact.
-- **MLB dashboard** (`sports/`) — React 19 + Vite static SPA on the public MLB Stats API,
-  plus self-contained `live/index.html` deployed to GitHub Pages by
-  `.github/workflows/deploy-sports.yml`.
+- **In scope — the marketing site** — React 19 + TS + Vite (`client/`), Express + tRPC 11
+  (`server/`), shared types (`shared/`), MySQL/TiDB via Drizzle (`drizzle/`). Package
+  manager `pnpm`. Contact form → GoHighLevel (`server/routers.ts`) + owner notification;
+  keep both intact.
+- **OUT OF SCOPE — `sports/`** — a standalone MLB analytics side project, unrelated to
+  ModernFlow AI. Don't touch, build, deploy, or review it as part of ModernFlow work.
 
 ## The quality gate (run before every push)
 
@@ -23,7 +23,7 @@ pnpm test      # vitest run — must pass
 pnpm format    # prettier --write .
 ```
 
-If `sports/` changed: also `cd sports && pnpm build`. **Do not push if the gate fails.**
+**Do not push if the gate fails.**
 
 ## Procedure
 
