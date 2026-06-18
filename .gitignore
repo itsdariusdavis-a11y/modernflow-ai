@@ -11,6 +11,9 @@ build/
 .env
 .env.local
 .env.development.local
+
+# Claude Code local settings (contains the DeepSeek API key — never commit)
+.claude/settings.local.json
 .env.test.local
 .env.production.local
 
