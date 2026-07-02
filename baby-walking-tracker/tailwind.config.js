@@ -22,10 +22,15 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(12px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        confettiFall: {
+          '0%': { transform: 'translateY(0) rotate(0deg)', opacity: '1' },
+          '100%': { transform: 'translateY(320px) rotate(var(--confetti-rotate, 360deg))', opacity: '0' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.4s ease-out',
         slideIn: 'slideIn 0.3s ease-out',
+        confettiFall: 'confettiFall linear forwards',
       },
     },
   },
