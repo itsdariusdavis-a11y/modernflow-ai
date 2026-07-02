@@ -539,7 +539,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FAF8F5] via-[#FFFDFB] to-[#FFF9F2] text-stone-800 font-sans antialiased selection:bg-amber-150">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#FAF8F5] via-[#FFFDFB] to-[#FFF9F2] text-stone-800 font-sans antialiased selection:bg-amber-150 overflow-x-hidden">
+      {/* ambient decorative glow accents */}
+      <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 bg-amber-200/30 rounded-full blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute top-40 -right-32 w-[28rem] h-[28rem] bg-orange-200/20 rounded-full blur-3xl" aria-hidden="true" />
+
       {showToast && (
         <div className="fixed bottom-6 right-6 z-50 max-w-sm bg-stone-900 text-white text-xs px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-slideIn" role="status" aria-live="polite">
           <div className="w-2.5 h-2.5 bg-amber-400 rounded-full animate-ping shrink-0" />
@@ -550,10 +554,11 @@ export default function App() {
       {celebration && <ConfettiBurst key={celebration} />}
 
       {/* --- HEADER --- */}
-      <header className="border-b border-stone-200/50 bg-white/70 backdrop-blur-xl sticky top-0 z-40 px-4 py-3.5">
+      <header className="relative border-b border-stone-200/60 bg-white/75 backdrop-blur-xl sticky top-0 z-40 px-4 py-3.5 shadow-[0_1px_0_rgba(255,255,255,0.8),0_4px_20px_-8px_rgba(120,80,40,0.15)]">
+        <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400" />
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4 w-full lg:w-auto">
-            <div className="p-3 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl text-amber-800 shadow-md transform hover:rotate-12 transition-transform shrink-0">
+            <div className="p-3 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl text-amber-800 shadow-glow transform hover:rotate-12 transition-transform shrink-0">
               <FootprintIcon />
             </div>
             <div className="flex-1">
@@ -577,7 +582,7 @@ export default function App() {
                     </button>
                   </div>
                 ) : (
-                  <h1 className="text-lg sm:text-2xl font-black text-stone-900 tracking-tight flex items-center gap-2">
+                  <h1 className="font-display text-lg sm:text-2xl font-extrabold text-stone-900 tracking-tight flex items-center gap-2">
                     {babyName}&rsquo;s Steps
                     <button
                       onClick={() => setIsEditingName(true)}
@@ -601,7 +606,7 @@ export default function App() {
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
             <button
               onClick={generateShareLink}
-              className="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 px-5 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-100/30 cursor-pointer active:scale-95 transition-all"
+              className="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 px-5 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-glow hover:shadow-[0_10px_28px_-6px_rgba(242,154,76,0.6)] cursor-pointer active:scale-95 hover:-translate-y-0.5 transition-all"
             >
               <ShareIcon /> Copy Shareable Progress Link
             </button>
@@ -610,7 +615,7 @@ export default function App() {
       </header>
 
       {shareUrl && (
-        <div className="max-w-7xl mx-auto m-4 p-4 rounded-3xl bg-teal-50/50 border border-teal-100 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm animate-fadeIn">
+        <div className="max-w-7xl mx-auto m-4 p-4 rounded-3xl bg-teal-50/50 border border-teal-100 flex flex-col md:flex-row items-center justify-between gap-4 shadow-card animate-fadeIn">
           <div className="flex items-center gap-3">
             <span className="text-2xl shrink-0">👪</span>
             <div>
@@ -637,9 +642,9 @@ export default function App() {
       )}
 
       {/* --- MAIN GRID --- */}
-      <main className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="relative max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 flex flex-col gap-6">
-          <div className="bg-white rounded-3xl p-2.5 shadow-md border border-stone-150/60 flex flex-wrap gap-2">
+          <div className="bg-white rounded-3xl p-2.5 shadow-card border border-stone-150/60 flex flex-wrap gap-2">
             {[1, 2, 3, 4].map((wk) => (
               <button
                 key={wk}
@@ -647,8 +652,8 @@ export default function App() {
                 aria-pressed={activeWeek === wk}
                 className={`flex-1 min-w-[80px] py-3 px-3 rounded-2xl text-center transition-all cursor-pointer ${
                   activeWeek === wk
-                    ? 'bg-gradient-to-r from-orange-400 to-amber-500 text-white shadow-md shadow-orange-100/40 transform scale-[1.01]'
-                    : 'text-stone-500 hover:bg-stone-50'
+                    ? 'bg-gradient-to-r from-orange-400 to-amber-500 text-white shadow-glow transform scale-[1.02]'
+                    : 'text-stone-500 hover:bg-stone-50 hover:-translate-y-0.5'
                 }`}
               >
                 <span className="block text-[9px] uppercase tracking-widest font-black opacity-85">Week</span>
@@ -657,12 +662,12 @@ export default function App() {
             ))}
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/50 flex flex-col gap-4">
+          <div className="bg-white rounded-3xl p-6 shadow-card border border-stone-200/50 flex flex-col gap-4">
             <div className="flex items-center gap-2">
               <span className="p-1.5 bg-orange-100 rounded-lg text-orange-600">
                 <CalendarIcon />
               </span>
-              <h2 className="text-xl font-black text-stone-900">
+              <h2 className="font-display text-xl font-bold text-stone-900">
                 Stage {activeWeek}: {currentWeekData.title}
               </h2>
             </div>
@@ -687,7 +692,9 @@ export default function App() {
                     onClick={() => selectActivity(idx)}
                     aria-pressed={selectedActivity === idx}
                     className={`p-4 rounded-2xl text-left border-2 transition-all cursor-pointer ${
-                      selectedActivity === idx ? 'border-orange-400 bg-orange-50/20 shadow-inner' : 'border-stone-150 bg-white hover:border-stone-200'
+                      selectedActivity === idx
+                        ? 'border-orange-400 bg-orange-50/30 shadow-card'
+                        : 'border-stone-150 bg-white hover:border-stone-200 hover:-translate-y-0.5 hover:shadow-card'
                     }`}
                   >
                     <span className="text-[9px] font-black text-orange-500 uppercase tracking-wider block mb-0.5">Option 0{idx + 1}</span>
@@ -701,11 +708,11 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-md border border-stone-150 flex flex-col gap-6">
+          <div className="bg-white rounded-3xl p-6 shadow-card-lg border border-stone-150 flex flex-col gap-6">
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-4 border-b border-stone-100">
               <div>
                 <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block">Active Dynamic Workshop</span>
-                <h3 className="text-2xl font-black text-stone-950 mt-1">{activeActivity.name}</h3>
+                <h3 className="font-display text-2xl sm:text-3xl font-bold text-stone-950 mt-1">{activeActivity.name}</h3>
                 <div className="flex flex-wrap gap-2 mt-2">
                   <span className="text-xs bg-stone-100 px-3 py-1 rounded-full text-stone-600 font-bold">Goal: {activeActivity.focus}</span>
                   <span className="text-xs bg-stone-100 px-3 py-1 rounded-full text-stone-600 font-bold">Cycle: {activeActivity.frequency}</span>
@@ -746,8 +753,8 @@ export default function App() {
 
                     <button
                       onClick={() => setTimerRunning(!timerRunning)}
-                      className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                        timerRunning ? 'bg-rose-500 hover:bg-rose-600 text-white' : 'bg-amber-400 hover:bg-amber-500 text-stone-900'
+                      className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer hover:-translate-y-0.5 ${
+                        timerRunning ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-[0_6px_16px_-4px_rgba(244,63,94,0.5)]' : 'bg-amber-400 hover:bg-amber-500 text-stone-900 shadow-[0_6px_16px_-4px_rgba(251,191,36,0.5)]'
                       }`}
                     >
                       {timerRunning ? 'Pause' : 'Start'}
@@ -772,7 +779,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center justify-center border-2 border-dashed border-stone-250 rounded-3xl p-5 bg-[#FDFCFB] relative min-h-[300px]">
+              <div className="flex flex-col items-center justify-center border border-stone-100 rounded-3xl p-5 bg-gradient-to-b from-[#FDFCFB] to-stone-50 shadow-card relative min-h-[300px]">
                 <div key={activeActivity.id} className="w-full animate-fadeIn">
                   <ActivityIllustration activityId={activeActivity.id} />
                 </div>
@@ -781,9 +788,9 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/50 flex flex-col gap-4">
+          <div className="bg-white rounded-3xl p-6 shadow-card border border-stone-200/50 flex flex-col gap-4">
             <div>
-              <h3 className="text-lg font-black text-stone-900 flex items-center gap-1.5">
+              <h3 className="font-display text-lg font-bold text-stone-900 flex items-center gap-1.5">
                 <span>🗓️</span> Timeline Adjusted Age Advisor
               </h3>
               <p className="text-xs text-stone-500">Calculate correct developmental stages matching pediatric adjusted gestational guidelines.</p>
@@ -841,8 +848,8 @@ export default function App() {
 
         {/* --- RIGHT COLUMN --- */}
         <div className="lg:col-span-4 flex flex-col gap-6">
-          <div className="bg-white rounded-3xl p-6 shadow-md border border-stone-150">
-            <h3 className="text-lg font-black text-stone-900 mb-1 flex items-center gap-1.5">
+          <div className="bg-white rounded-3xl p-6 shadow-card-lg border border-stone-150">
+            <h3 className="font-display text-lg font-bold text-stone-900 mb-1 flex items-center gap-1.5">
               <span>📊</span> Neuromotor Diagnostics
             </h3>
             <p className="text-xs text-stone-500 mb-4">Live muscle-group recruitment strength computed directly from completed milestone nodes.</p>
@@ -856,7 +863,7 @@ export default function App() {
                   </div>
                   <div className="w-full bg-stone-100 rounded-full h-2.5 overflow-hidden border border-stone-200/50">
                     <div
-                      className="bg-gradient-to-r from-orange-400 to-amber-500 h-full rounded-full transition-all duration-500"
+                      className="bg-gradient-to-r from-orange-400 to-amber-500 h-full rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(242,154,76,0.6)]"
                       style={{ width: `${skill.percentage}%` }}
                     />
                   </div>
@@ -865,8 +872,8 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/50">
-            <h3 className="text-lg font-black text-stone-900 mb-1 flex items-center gap-1.5">
+          <div className="bg-white rounded-3xl p-6 shadow-card border border-stone-200/50">
+            <h3 className="font-display text-lg font-bold text-stone-900 mb-1 flex items-center gap-1.5">
               <span>🏅</span> Milestone Accomplishments
             </h3>
             <p className="text-xs text-stone-500 mb-4">Tap milestones as your baby achieves them to power the diagnostics above.</p>
@@ -878,7 +885,7 @@ export default function App() {
                   key={m.id}
                   onClick={() => toggleMilestone(m.id)}
                   aria-pressed={completedMilestones[m.id]}
-                  className={`w-full p-3 rounded-2xl border transition-all flex items-start gap-3 select-none cursor-pointer text-left ${
+                  className={`w-full p-3 rounded-2xl border transition-all flex items-start gap-3 select-none cursor-pointer text-left hover:-translate-y-0.5 hover:shadow-card ${
                     completedMilestones[m.id] ? 'border-emerald-200 bg-emerald-50/20' : 'border-stone-150 hover:border-stone-250 bg-[#FDFDFC]'
                   }`}
                 >
@@ -904,9 +911,9 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/50 flex flex-col gap-4">
+          <div className="bg-white rounded-3xl p-6 shadow-card border border-stone-200/50 flex flex-col gap-4">
             <div>
-              <h3 className="text-lg font-black text-stone-900 flex items-center gap-1.5">
+              <h3 className="font-display text-lg font-bold text-stone-900 flex items-center gap-1.5">
                 <span>💬</span> Family Log
               </h3>
               <p className="text-xs text-stone-500">Jot down wins and sessions. Saved on this device, and included in shared snapshot links.</p>
@@ -961,8 +968,8 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/50">
-            <h3 className="text-lg font-black text-stone-900 mb-1 flex items-center gap-1.5">
+          <div className="bg-white rounded-3xl p-6 shadow-card border border-stone-200/50">
+            <h3 className="font-display text-lg font-bold text-stone-900 mb-1 flex items-center gap-1.5">
               <span>📚</span> Clinical Wisdom Board
             </h3>
             <p className="text-xs text-stone-500 mb-4">Science facts supporting safe infant locomotion.</p>
