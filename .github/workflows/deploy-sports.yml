@@ -1,10 +1,14 @@
-name: MLB dashboard — daily snapshot & Pages deploy
+name: Pages deploy — MLB dashboard & Baby's Steps tracker
 
-# Builds a fresh data snapshot from the MLB Stats API and publishes the
-# self-contained dashboard (sports/live/) to GitHub Pages.
+# Builds a fresh MLB data snapshot and publishes it to GitHub Pages at the
+# site root, alongside the standalone Baby's Steps walking tracker app
+# (baby-walking-tracker/) published at the /baby-walking-tracker/ subpath.
+# GitHub Pages only serves one deployed artifact per repo, so both static
+# sites are combined into a single artifact here; their source code and
+# logic remain fully independent.
 #
-# - Runs on a daily schedule so the live page always reflects the current slate.
-# - The snapshot is baked into the Pages artifact (not committed), so the repo
+# - Runs on a daily schedule so the live MLB page always reflects the current slate.
+# - The MLB snapshot is baked into the Pages artifact (not committed), so the repo
 #   stays clean and every deploy is fresh.
 # - configure-pages enables Pages automatically (no manual Settings toggle).
 #
@@ -18,10 +22,11 @@ on:
     - cron: "30 17 * * *" # ~1:30pm ET
     - cron: "30 22 * * *" # ~6:30pm ET
   push:
-    branches: [main]
+    branches: [main, claude/baby-walking-tracker-app-atdt0q]
     paths:
       - "sports/live/**"
       - "sports/scripts/**"
+      - "baby-walking-tracker/**"
       - ".github/workflows/deploy-sports.yml"
       - "!sports/live/today.json" # avoid a commit loop from the step below
       - "!sports/live/data/**"
@@ -69,6 +74,22 @@ jobs:
             git push origin HEAD:main && echo "✅ snapshot committed" || echo "⚠️ snapshot push blocked"
           fi
 
+      - name: Build Baby's Steps walking tracker
+        working-directory: baby-walking-tracker
+        env:
+          GH_PAGES: "true"
+        run: |
+          npm ci
+          npm run build
+
+      - name: Combine both static sites into one Pages artifact
+        run: |
+          rm -rf pages-root
+          mkdir -p pages-root
+          cp -r sports/live/. pages-root/
+          mkdir -p pages-root/baby-walking-tracker
+          cp -r baby-walking-tracker/dist/. pages-root/baby-walking-tracker/
+
       # The Pages steps below only succeed once GitHub Pages is enabled
       # (Settings → Pages → Source: "GitHub Actions"). Until then they're
       # allowed to fail softly so the daily run stays green instead of spamming
@@ -81,7 +102,7 @@ jobs:
         if: steps.configure.outcome == 'success'
         continue-on-error: true
         with:
-          path: sports/live
+          path: pages-root
 
       - id: deployment
         if: steps.configure.outcome == 'success'
