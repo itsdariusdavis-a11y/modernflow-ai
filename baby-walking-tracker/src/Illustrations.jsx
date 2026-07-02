@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 // AI-generated illustrations (Higgsfield / recraft_v4_1), one distinct scene
 // per individual exercise — not just per week — so the picture actually
-// changes with each selection. Hosted on Higgsfield's CDN.
+// changes with each selection. Hosted on Higgsfield's CDN, which serves a
+// compressed WebP variant of each render alongside the full-size PNG.
 
 const ACTIVITY_IMAGES = {
   'w1-a1': {
@@ -43,8 +44,23 @@ const ACTIVITY_IMAGES = {
   },
 };
 
+const webpVariant = (pngUrl) => pngUrl.replace(/\.png$/, '_min.webp');
+
+// Warm the browser cache for every scene so switching exercises is instant.
+// Fired once after first paint; failures are silently ignored.
+let preloaded = false;
+export function preloadIllustrations() {
+  if (preloaded) return;
+  preloaded = true;
+  Object.values(ACTIVITY_IMAGES).forEach(({ url }) => {
+    const img = new Image();
+    img.src = webpVariant(url);
+  });
+}
+
 export default function ActivityIllustration({ activityId }) {
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const entry = ACTIVITY_IMAGES[activityId] || ACTIVITY_IMAGES['w1-a1'];
 
   if (failed) {
@@ -56,12 +72,18 @@ export default function ActivityIllustration({ activityId }) {
   }
 
   return (
-    <img
-      src={entry.url}
-      alt={entry.alt}
-      loading="lazy"
-      onError={() => setFailed(true)}
-      className="w-full aspect-[4/3] object-cover rounded-2xl shadow-card"
-    />
+    <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-card">
+      {!loaded && <div className="absolute inset-0 bg-gradient-to-br from-amber-100/70 via-orange-50 to-amber-100/70 animate-pulse" aria-hidden="true" />}
+      <picture>
+        <source srcSet={webpVariant(entry.url)} type="image/webp" />
+        <img
+          src={entry.url}
+          alt={entry.alt}
+          onLoad={() => setLoaded(true)}
+          onError={() => setFailed(true)}
+          className={`w-full h-full object-cover transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        />
+      </picture>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import ActivityIllustration from './Illustrations.jsx';
+import ActivityIllustration, { preloadIllustrations } from './Illustrations.jsx';
 
 const STORAGE_KEY = 'baby-walking-tracker:v1';
 
@@ -338,11 +338,18 @@ export default function App() {
   const [celebration, setCelebration] = useState(null);
 
   const hasLoadedRef = useRef(false);
+  const toastTimerRef = useRef(null);
 
   const triggerToast = useCallback((msg) => {
     setToastMessage(msg);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 4500);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setShowToast(false), 4500);
+  }, []);
+
+  // Warm the image cache so switching exercises shows illustrations instantly
+  useEffect(() => {
+    preloadIllustrations();
   }, []);
 
   // --- LOAD: shared link snapshot takes priority, otherwise local save ---
@@ -438,6 +445,7 @@ export default function App() {
 
   const saveBabyName = () => {
     setIsEditingName(false);
+    if (!babyName.trim()) setBabyName('My Little Explorer');
   };
 
   const submitNote = (e) => {
@@ -451,6 +459,18 @@ export default function App() {
     };
     setNotes((prev) => [freshNote, ...prev]);
     setNewNote('');
+  };
+
+  const deleteNote = (id) => {
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+  };
+
+  // Time-only for today's notes; adds the date once an entry is older than that.
+  const formatNoteTime = (iso) => {
+    const d = new Date(iso);
+    const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (d.toDateString() === new Date().toDateString()) return time;
+    return `${d.toLocaleDateString([], { month: 'short', day: 'numeric' })} · ${time}`;
   };
 
   const generateShareLink = async () => {
@@ -645,21 +665,43 @@ export default function App() {
       <main className="relative max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 flex flex-col gap-6">
           <div className="bg-white rounded-3xl p-2.5 shadow-card border border-stone-150/60 flex flex-wrap gap-2">
-            {[1, 2, 3, 4].map((wk) => (
-              <button
-                key={wk}
-                onClick={() => selectWeek(wk)}
-                aria-pressed={activeWeek === wk}
-                className={`flex-1 min-w-[80px] py-3 px-3 rounded-2xl text-center transition-all cursor-pointer ${
-                  activeWeek === wk
-                    ? 'bg-gradient-to-r from-orange-400 to-amber-500 text-white shadow-glow transform scale-[1.02]'
-                    : 'text-stone-500 hover:bg-stone-50 hover:-translate-y-0.5'
-                }`}
-              >
-                <span className="block text-[9px] uppercase tracking-widest font-black opacity-85">Week</span>
-                <span className="text-base font-black">0{wk}</span>
-              </button>
-            ))}
+            {[1, 2, 3, 4].map((wk) => {
+              const weekMilestones = milestonesList.filter((m) => m.week === wk);
+              const doneCount = weekMilestones.filter((m) => completedMilestones[m.id]).length;
+              const isActive = activeWeek === wk;
+              return (
+                <button
+                  key={wk}
+                  onClick={() => selectWeek(wk)}
+                  aria-pressed={isActive}
+                  aria-label={`Week ${wk}: ${doneCount} of ${weekMilestones.length} milestones complete`}
+                  className={`flex-1 min-w-[80px] py-3 px-3 rounded-2xl text-center transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-gradient-to-r from-orange-400 to-amber-500 text-white shadow-glow transform scale-[1.02]'
+                      : 'text-stone-500 hover:bg-stone-50 hover:-translate-y-0.5'
+                  }`}
+                >
+                  <span className="block text-[9px] uppercase tracking-widest font-black opacity-85">Week</span>
+                  <span className="text-base font-black">0{wk}</span>
+                  <span className="flex items-center justify-center gap-1 mt-1.5" aria-hidden="true">
+                    {weekMilestones.map((m) => (
+                      <span
+                        key={m.id}
+                        className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                          completedMilestones[m.id]
+                            ? isActive
+                              ? 'bg-white'
+                              : 'bg-emerald-500'
+                            : isActive
+                              ? 'bg-white/35'
+                              : 'bg-stone-200'
+                        }`}
+                      />
+                    ))}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           <div className="bg-white rounded-3xl p-6 shadow-card border border-stone-200/50 flex flex-col gap-4">
@@ -738,7 +780,8 @@ export default function App() {
                   </ol>
                 </div>
 
-                <div className="bg-gradient-to-br from-stone-900 to-stone-850 text-white p-5 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="bg-gradient-to-br from-stone-900 to-stone-850 text-white p-5 rounded-2xl shadow-lg flex flex-col gap-4">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div>
                     <h5 className="font-bold text-xs text-amber-300 flex items-center gap-1.5 uppercase tracking-wider">
                       <ClockIcon /> Clinical Timer
@@ -770,6 +813,22 @@ export default function App() {
                     >
                       ↺
                     </button>
+                  </div>
+                  </div>
+
+                  {/* elapsed-time progress track */}
+                  <div
+                    className="w-full h-1.5 bg-stone-700/80 rounded-full overflow-hidden"
+                    role="progressbar"
+                    aria-label="Exercise timer progress"
+                    aria-valuemin={0}
+                    aria-valuemax={timerMax}
+                    aria-valuenow={timerMax - timerSeconds}
+                  >
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-amber-400 to-orange-400 transition-all duration-1000 ease-linear"
+                      style={{ width: `${timerMax > 0 ? ((timerMax - timerSeconds) / timerMax) * 100 : 0}%` }}
+                    />
                   </div>
                 </div>
 
@@ -956,10 +1015,20 @@ export default function App() {
                 <div className="text-center py-4 text-stone-400 text-xs italic">No notes posted yet. Submit an update above!</div>
               ) : (
                 notes.map((n) => (
-                  <div key={n.id} className="p-3 bg-[#FDFBF9] rounded-2xl border border-stone-100 flex flex-col gap-1 text-xs">
+                  <div key={n.id} className="group p-3 bg-[#FDFBF9] rounded-2xl border border-stone-100 flex flex-col gap-1 text-xs">
                     <div className="flex justify-between items-center text-[10px]">
                       <span className="font-bold text-amber-700">{n.author}</span>
-                      <span className="text-stone-400">{new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span className="flex items-center gap-2">
+                        <span className="text-stone-400">{formatNoteTime(n.createdAt)}</span>
+                        <button
+                          type="button"
+                          onClick={() => deleteNote(n.id)}
+                          aria-label="Delete this log entry"
+                          className="text-stone-300 hover:text-rose-500 font-bold text-sm leading-none opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity cursor-pointer"
+                        >
+                          ×
+                        </button>
+                      </span>
                     </div>
                     <p className="text-stone-700 leading-normal font-medium">{n.text}</p>
                   </div>
@@ -979,6 +1048,7 @@ export default function App() {
                 <button
                   key={idx}
                   onClick={() => setActiveEduTab(idx)}
+                  aria-pressed={activeEduTab === idx}
                   className={`flex-1 py-1 px-1 rounded-lg text-[10px] sm:text-xs font-bold text-center cursor-pointer transition-all ${
                     activeEduTab === idx ? 'bg-orange-100 text-orange-700' : 'text-stone-500 hover:bg-stone-50'
                   }`}
