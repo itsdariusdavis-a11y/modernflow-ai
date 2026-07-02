@@ -1,15 +1,25 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import WeekIllustration from './Illustrations.jsx';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import ActivityIllustration from './Illustrations.jsx';
 
 const STORAGE_KEY = 'baby-walking-tracker:v1';
 
 // --- PROCEDURAL AUDIO GENERATOR (WEB AUDIO API) ---
+// A single shared AudioContext is reused across chimes instead of leaking a
+// fresh one on every completion.
+let sharedAudioCtx = null;
+const getAudioContext = () => {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return null;
+  if (!sharedAudioCtx) sharedAudioCtx = new AudioContext();
+  if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+  return sharedAudioCtx;
+};
+
 // Generates a gentle bell chime upon exercise / milestone completion
 const playCompletionSound = () => {
   try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    const ctx = new AudioContext();
+    const ctx = getAudioContext();
+    if (!ctx) return;
 
     const osc1 = ctx.createOscillator();
     const gain1 = ctx.createGain();
@@ -245,12 +255,57 @@ const weekData = [
   },
 ];
 
+// UTF-8 safe base64 (co-avoids the deprecated escape/unescape pair)
 function encodeState(state) {
-  return btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  const bytes = new TextEncoder().encode(JSON.stringify(state));
+  let binary = '';
+  bytes.forEach((b) => {
+    binary += String.fromCharCode(b);
+  });
+  return btoa(binary);
 }
 
 function decodeState(encoded) {
-  return JSON.parse(decodeURIComponent(escape(atob(encoded))));
+  const binary = atob(encoded);
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+const CONFETTI_COLORS = ['#F2A354', '#4FB3A9', '#5B9BD5', '#E8798A', '#8FB88A', '#F7D97A'];
+
+function ConfettiBurst() {
+  const pieces = useMemo(
+    () =>
+      Array.from({ length: 22 }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+        delay: Math.random() * 0.25,
+        duration: 0.9 + Math.random() * 0.6,
+        rotate: Math.random() > 0.5 ? 360 : -360,
+        size: 6 + Math.random() * 6,
+      })),
+    []
+  );
+  return (
+    <div className="fixed inset-x-0 top-0 h-0 z-[60] pointer-events-none" aria-hidden="true">
+      {pieces.map((p) => (
+        <span
+          key={p.id}
+          className="absolute top-0 rounded-sm animate-confettiFall"
+          style={{
+            left: `${p.left}%`,
+            width: p.size,
+            height: p.size * 0.6,
+            backgroundColor: p.color,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.duration}s`,
+            '--confetti-rotate': `${p.rotate}deg`,
+          }}
+        />
+      ))}
+    </div>
+  );
 }
 
 export default function App() {
@@ -280,6 +335,7 @@ export default function App() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [shareUrl, setShareUrl] = useState('');
+  const [celebration, setCelebration] = useState(null);
 
   const hasLoadedRef = useRef(false);
 
@@ -334,6 +390,18 @@ export default function App() {
     }
   }, [babyName, completedMilestones, notes]);
 
+  // --- DYNAMIC TAB TITLE ---
+  useEffect(() => {
+    document.title = `${babyName}’s Steps — Walking Milestone Tracker`;
+  }, [babyName]);
+
+  // --- CELEBRATION BURST AUTO-CLEAR ---
+  useEffect(() => {
+    if (!celebration) return;
+    const t = setTimeout(() => setCelebration(null), 1500);
+    return () => clearTimeout(t);
+  }, [celebration]);
+
   // --- TIMER CONTROLLER ---
   useEffect(() => {
     if (timerRunning) {
@@ -360,7 +428,10 @@ export default function App() {
   const toggleMilestone = (id) => {
     setCompletedMilestones((prev) => {
       const updated = { ...prev, [id]: !prev[id] };
-      if (updated[id]) playCompletionSound();
+      if (updated[id]) {
+        playCompletionSound();
+        setCelebration(Date.now());
+      }
       return updated;
     });
   };
@@ -446,15 +517,37 @@ export default function App() {
   const currentWeekData = weekData.find((w) => w.week === activeWeek) || weekData[0];
   const activeActivity = currentWeekData.activities[selectedActivity] || currentWeekData.activities[0];
   const skillStrengths = calculateNeuromotorStrengths();
+  const overallProgress = Math.round(skillStrengths.reduce((sum, s) => sum + s.percentage, 0) / skillStrengths.length);
+
+  const selectWeek = (wk) => {
+    const wkData = weekData.find((w) => w.week === wk);
+    setActiveWeek(wk);
+    setSelectedActivity(0);
+    setTimerRunning(false);
+    if (wkData) {
+      setTimerSeconds(wkData.activities[0].timeLimit);
+      setTimerMax(wkData.activities[0].timeLimit);
+    }
+  };
+
+  const selectActivity = (idx) => {
+    setSelectedActivity(idx);
+    setTimerRunning(false);
+    const act = currentWeekData.activities[idx];
+    setTimerSeconds(act.timeLimit);
+    setTimerMax(act.timeLimit);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FAF8F5] via-[#FFFDFB] to-[#FFF9F2] text-stone-800 font-sans antialiased selection:bg-amber-150">
       {showToast && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-sm bg-stone-900 text-white text-xs px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-slideIn">
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm bg-stone-900 text-white text-xs px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-slideIn" role="status" aria-live="polite">
           <div className="w-2.5 h-2.5 bg-amber-400 rounded-full animate-ping shrink-0" />
           <span className="font-medium leading-relaxed">{toastMessage}</span>
         </div>
       )}
+
+      {celebration && <ConfettiBurst key={celebration} />}
 
       {/* --- HEADER --- */}
       <header className="border-b border-stone-200/50 bg-white/70 backdrop-blur-xl sticky top-0 z-40 px-4 py-3.5">
@@ -475,6 +568,7 @@ export default function App() {
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') saveBabyName();
                       }}
+                      aria-label="Baby's name"
                       className="border-2 border-amber-300 rounded-xl px-2.5 py-0.5 text-md font-bold focus:outline-none focus:ring-2 focus:ring-amber-200 bg-amber-50/40 text-stone-850"
                       autoFocus
                     />
@@ -495,6 +589,9 @@ export default function App() {
                 )}
                 <span className="text-[10px] px-2.5 py-0.5 bg-orange-100 text-orange-700 rounded-full font-bold uppercase tracking-wider shrink-0">
                   PT Master Class
+                </span>
+                <span className="text-[10px] px-2.5 py-0.5 bg-emerald-100 text-emerald-700 rounded-full font-bold uppercase tracking-wider shrink-0" title="Average across all four skill categories">
+                  {overallProgress}% Overall Progress
                 </span>
               </div>
               <p className="text-xs text-stone-500 mt-0.5 font-medium">A gentle, week-by-week gait acceleration guide &amp; progress diagnostic suite</p>
@@ -546,10 +643,8 @@ export default function App() {
             {[1, 2, 3, 4].map((wk) => (
               <button
                 key={wk}
-                onClick={() => {
-                  setActiveWeek(wk);
-                  setSelectedActivity(0);
-                }}
+                onClick={() => selectWeek(wk)}
+                aria-pressed={activeWeek === wk}
                 className={`flex-1 min-w-[80px] py-3 px-3 rounded-2xl text-center transition-all cursor-pointer ${
                   activeWeek === wk
                     ? 'bg-gradient-to-r from-orange-400 to-amber-500 text-white shadow-md shadow-orange-100/40 transform scale-[1.01]'
@@ -589,12 +684,8 @@ export default function App() {
                 {currentWeekData.activities.map((act, idx) => (
                   <button
                     key={act.id}
-                    onClick={() => {
-                      setSelectedActivity(idx);
-                      setTimerSeconds(act.timeLimit);
-                      setTimerMax(act.timeLimit);
-                      setTimerRunning(false);
-                    }}
+                    onClick={() => selectActivity(idx)}
+                    aria-pressed={selectedActivity === idx}
                     className={`p-4 rounded-2xl text-left border-2 transition-all cursor-pointer ${
                       selectedActivity === idx ? 'border-orange-400 bg-orange-50/20 shadow-inner' : 'border-stone-150 bg-white hover:border-stone-200'
                     }`}
@@ -668,6 +759,7 @@ export default function App() {
                       }}
                       className="bg-stone-700 hover:bg-stone-600 p-2 rounded-xl text-xs"
                       title="Reset Timer"
+                      aria-label="Reset timer"
                     >
                       ↺
                     </button>
@@ -681,7 +773,9 @@ export default function App() {
               </div>
 
               <div className="flex flex-col items-center justify-center border-2 border-dashed border-stone-250 rounded-3xl p-5 bg-[#FDFCFB] relative min-h-[300px]">
-                <WeekIllustration week={activeWeek} />
+                <div key={activeActivity.id} className="w-full animate-fadeIn">
+                  <ActivityIllustration activityId={activeActivity.id} />
+                </div>
                 <p className="text-[10px] text-stone-400 text-center mt-3.5 italic">Illustrated guide: {activeActivity.name}</p>
               </div>
             </div>
@@ -779,14 +873,17 @@ export default function App() {
 
             <div className="flex flex-col gap-2.5 max-h-[300px] overflow-y-auto pr-1">
               {milestonesList.map((m) => (
-                <div
+                <button
+                  type="button"
                   key={m.id}
                   onClick={() => toggleMilestone(m.id)}
-                  className={`p-3 rounded-2xl border transition-all flex items-start gap-3 select-none cursor-pointer ${
+                  aria-pressed={completedMilestones[m.id]}
+                  className={`w-full p-3 rounded-2xl border transition-all flex items-start gap-3 select-none cursor-pointer text-left ${
                     completedMilestones[m.id] ? 'border-emerald-200 bg-emerald-50/20' : 'border-stone-150 hover:border-stone-250 bg-[#FDFDFC]'
                   }`}
                 >
                   <div
+                    aria-hidden="true"
                     className={`w-5 h-5 rounded-full flex items-center justify-center border mt-0.5 transition-all shrink-0 ${
                       completedMilestones[m.id] ? 'bg-emerald-500 border-emerald-500' : 'border-stone-300'
                     }`}
@@ -802,7 +899,7 @@ export default function App() {
                     </div>
                     <p className="text-xs text-stone-700 font-semibold leading-snug mt-0.5">{m.label}</p>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -835,6 +932,7 @@ export default function App() {
                 onChange={(e) => setNewNote(e.target.value)}
                 placeholder="Log physical updates, walking successes, or session dates..."
                 rows={2}
+                aria-label="New log entry"
                 className="w-full bg-white border border-stone-150 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-200 resize-none text-stone-850"
               />
 
