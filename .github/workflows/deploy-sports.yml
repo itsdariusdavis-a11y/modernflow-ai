@@ -1,6 +1,6 @@
 name: Pages deploy — MLB dashboard & Baby's Steps tracker
 
-# Builds a fresh MLB data snapshot and publishes it to GitHub Pages at the
+# Builds a fresh MLB data snapshot and publishes it live to GitHub Pages at the
 # site root, alongside the standalone Baby's Steps walking tracker app
 # (baby-walking-tracker/) published at the /baby-walking-tracker/ subpath.
 # GitHub Pages only serves one deployed artifact per repo, so both static
