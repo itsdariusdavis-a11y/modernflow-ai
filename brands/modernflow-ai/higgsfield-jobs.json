@@ -1,0 +1,245 @@
+{
+  "provider": "Higgsfield (nano_banana_pro)",
+  "jobs": {
+    "1": {
+      "name": "headline",
+      "id": "9b080efb-1a8a-4793-b0d3-4d09ae8ca2ef",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221719_9b080efb-1a8a-4793-b0d3-4d09ae8ca2ef.png",
+      "status": "completed"
+    },
+    "2": {
+      "name": "offer-promotion",
+      "id": "abb1c4eb-99d5-4a39-949b-358e10d96b1e",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221834_abb1c4eb-99d5-4a39-949b-358e10d96b1e.png",
+      "status": "completed"
+    },
+    "3": {
+      "name": "testimonial-card",
+      "id": "34ceac96-9def-48b4-b1e1-ff49f91a1f20",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221838_34ceac96-9def-48b4-b1e1-ff49f91a1f20.png",
+      "status": "completed"
+    },
+    "4": {
+      "name": "us-vs-them",
+      "id": "9cb2a1a9-7d90-4f5d-b592-c8ba207006fe",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221844_9cb2a1a9-7d90-4f5d-b592-c8ba207006fe.png",
+      "status": "completed"
+    },
+    "5": {
+      "name": "before-after-ugc",
+      "id": "7c806506-2ea1-496b-a1cb-1b8e5ebe8599",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221848_7c806506-2ea1-496b-a1cb-1b8e5ebe8599.png",
+      "status": "completed"
+    },
+    "6": {
+      "name": "review-card",
+      "id": "e417d1f7-da19-4a57-9282-a296a759edb1",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221853_e417d1f7-da19-4a57-9282-a296a759edb1.png",
+      "status": "completed"
+    },
+    "7": {
+      "name": "stat-callout-radial",
+      "id": "f41d722e-1e4b-4de0-a506-1b5068a34f5d",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221856_f41d722e-1e4b-4de0-a506-1b5068a34f5d.png",
+      "status": "completed"
+    },
+    "8": {
+      "name": "manifesto",
+      "id": "31a095e6-448f-448a-92b7-446bf2bcb45a",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221901_31a095e6-448f-448a-92b7-446bf2bcb45a.png",
+      "status": "completed"
+    },
+    "9": {
+      "name": "press-editorial",
+      "id": "581f5023-f0c2-4e7a-b0c8-bf710e2c80e4",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221905_581f5023-f0c2-4e7a-b0c8-bf710e2c80e4.png",
+      "status": "completed"
+    },
+    "10": {
+      "name": "imessage-screenshot",
+      "id": "6205b275-286c-4d83-ab34-9186e392c229",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221916_6205b275-286c-4d83-ab34-9186e392c229.png",
+      "status": "completed"
+    },
+    "11": {
+      "name": "post-it-note",
+      "id": "359c2f08-465e-42eb-ba4b-612a0b1b134c",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221920_359c2f08-465e-42eb-ba4b-612a0b1b134c.png",
+      "status": "completed"
+    },
+    "12": {
+      "name": "feature-callout",
+      "id": "5aec0dc2-6f1d-4206-a35d-900069724bae",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221924_5aec0dc2-6f1d-4206-a35d-900069724bae.png",
+      "status": "completed"
+    },
+    "13": {
+      "name": "negative-hook",
+      "id": "70a5755d-f42e-4a5c-891d-be081259b5e9",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221929_70a5755d-f42e-4a5c-891d-be081259b5e9.png",
+      "status": "completed"
+    },
+    "14": {
+      "name": "ingredient-breakdown",
+      "id": "dc55d170-794b-44aa-bce3-9ed5f7b16f0c",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221933_dc55d170-794b-44aa-bce3-9ed5f7b16f0c.png",
+      "status": "completed"
+    },
+    "15": {
+      "name": "founder-note",
+      "id": "4ff9b848-92a7-40b3-8a3e-45eb9c4db9b4",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221938_4ff9b848-92a7-40b3-8a3e-45eb9c4db9b4.png",
+      "status": "completed"
+    },
+    "16": {
+      "name": "benefits-checklist",
+      "id": "637c500e-26e0-4b16-98cb-a09dd05d31cf",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221942_637c500e-26e0-4b16-98cb-a09dd05d31cf.png",
+      "status": "completed"
+    },
+    "17": {
+      "name": "problem-solution-split",
+      "id": "8721241c-baa1-4921-a1b7-391e958f501f",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221946_8721241c-baa1-4921-a1b7-391e958f501f.png",
+      "status": "completed"
+    },
+    "18": {
+      "name": "macro-texture",
+      "id": "870f7b4b-427c-4b2a-ab98-8837639fef6b",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_221957_870f7b4b-427c-4b2a-ab98-8837639fef6b.png",
+      "status": "completed"
+    },
+    "19": {
+      "name": "flat-lay",
+      "id": "be930c20-0894-466e-a78d-7d6018a9cf46",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222002_be930c20-0894-466e-a78d-7d6018a9cf46.png",
+      "status": "completed"
+    },
+    "20": {
+      "name": "unboxing",
+      "id": "3966097d-6891-4ef7-b731-f553aaf1a0a4",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222005_3966097d-6891-4ef7-b731-f553aaf1a0a4.png",
+      "status": "completed"
+    },
+    "21": {
+      "name": "social-proof-stack",
+      "id": "c8d03a1c-86db-474f-99fd-295d37803df3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222009_c8d03a1c-86db-474f-99fd-295d37803df3.png",
+      "status": "completed"
+    },
+    "22": {
+      "name": "as-seen-in",
+      "id": "b9410f7a-a3b7-464a-b10d-d1e2a6a5b108",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222013_b9410f7a-a3b7-464a-b10d-d1e2a6a5b108.png",
+      "status": "completed"
+    },
+    "23": {
+      "name": "discount-code-card",
+      "id": "31f2b3fb-46f7-4fb3-ac14-6ddac8fe4433",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222017_31f2b3fb-46f7-4fb3-ac14-6ddac8fe4433.png",
+      "status": "completed"
+    },
+    "24": {
+      "name": "bundle-offer",
+      "id": "0b7f9ec0-f891-4a40-b789-d0678a471b00",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222022_0b7f9ec0-f891-4a40-b789-d0678a471b00.png",
+      "status": "completed"
+    },
+    "25": {
+      "name": "tweet-screenshot",
+      "id": "8de0b7eb-421d-480f-bd9c-34d5b26e1cbe",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222026_8de0b7eb-421d-480f-bd9c-34d5b26e1cbe.png",
+      "status": "completed"
+    },
+    "26": {
+      "name": "notes-app",
+      "id": "a5ea82c2-70d8-464b-9d28-beb1f1109a2f",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222040_a5ea82c2-70d8-464b-9d28-beb1f1109a2f.png",
+      "status": "completed"
+    },
+    "27": {
+      "name": "search-bar",
+      "id": "136a6942-443b-4262-b2ac-badc392fd0e3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222044_136a6942-443b-4262-b2ac-badc392fd0e3.png",
+      "status": "completed"
+    },
+    "28": {
+      "name": "routine-steps",
+      "id": "c4f4c4d7-765c-4624-af0f-3f51e42cc85e",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222048_c4f4c4d7-765c-4624-af0f-3f51e42cc85e.png",
+      "status": "completed"
+    },
+    "29": {
+      "name": "in-hand-lifestyle",
+      "id": "74ba73d4-7767-40ac-9a58-36be5321d57a",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222052_74ba73d4-7767-40ac-9a58-36be5321d57a.png",
+      "status": "completed"
+    },
+    "30": {
+      "name": "truck-cab-scene",
+      "id": "9e5e0f22-ca41-4689-a587-401a6566de5e",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222056_9e5e0f22-ca41-4689-a587-401a6566de5e.png",
+      "status": "completed"
+    },
+    "31": {
+      "name": "on-the-go",
+      "id": "01998a65-394b-4864-bec6-4d0132d12fb7",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222059_01998a65-394b-4864-bec6-4d0132d12fb7.png",
+      "status": "completed"
+    },
+    "32": {
+      "name": "myth-vs-fact",
+      "id": "0c1595d2-7d97-47c8-8cd4-fc2fe0ff3c05",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222103_0c1595d2-7d97-47c8-8cd4-fc2fe0ff3c05.png",
+      "status": "completed"
+    },
+    "33": {
+      "name": "three-reasons-why",
+      "id": "191cd7c3-002b-4b6e-9774-827000bdc0d5",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222107_191cd7c3-002b-4b6e-9774-827000bdc0d5.png",
+      "status": "completed"
+    },
+    "34": {
+      "name": "star-rating-hero",
+      "id": "bfe0998a-b4e6-4412-ba67-3b8cfe9d0dcd",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222121_bfe0998a-b4e6-4412-ba67-3b8cfe9d0dcd.png",
+      "status": "completed"
+    },
+    "35": {
+      "name": "guarantee-badge",
+      "id": "c989889a-a68a-45c6-8ff5-16874475156b",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222124_c989889a-a68a-45c6-8ff5-16874475156b.png",
+      "status": "completed"
+    },
+    "36": {
+      "name": "seasonal-moment",
+      "id": "287fc1ee-0e52-43ec-a402-2dadc7f4931b",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222128_287fc1ee-0e52-43ec-a402-2dadc7f4931b.png",
+      "status": "completed"
+    },
+    "37": {
+      "name": "meme-style",
+      "id": "99b1108b-86a2-4215-bd75-67b100e8d64a",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222132_99b1108b-86a2-4215-bd75-67b100e8d64a.png",
+      "status": "completed"
+    },
+    "38": {
+      "name": "faq-card",
+      "id": "df201df6-96cb-44c9-a2ed-93c4fef557c3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222136_df201df6-96cb-44c9-a2ed-93c4fef557c3.png",
+      "status": "completed"
+    },
+    "39": {
+      "name": "comparison-table",
+      "id": "8199bf6a-24a0-4215-98e9-dedf2096b29d",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222140_8199bf6a-24a0-4215-98e9-dedf2096b29d.png",
+      "status": "completed"
+    },
+    "40": {
+      "name": "story-cta",
+      "id": "7b260bdf-4f17-4264-937a-b76f54e14cc2",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_35Gxqo1zXUB1Ms3R3UpEQA5J4LE/hf_20260703_222144_7b260bdf-4f17-4264-937a-b76f54e14cc2.png",
+      "status": "completed"
+    }
+  }
+}
