@@ -1,0 +1,307 @@
+{
+  "brand": "ModernFlow AI",
+  "product": "ModernFlow AI done-for-you automation system (CRM & Pipeline, AI Assistants, Paid Ads Management, Automation Engine)",
+  "generated_at": "2026-07-03T14:30:00Z",
+  "prompts": [
+    {
+      "template_number": 1,
+      "template_name": "headline",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Bold direct-response static ad. Solid near-black #0B120E background with a faint emerald radial glow. Giant headline at top in bold geometric sans, white: \"Stop Losing Leads.\" then on the next line in emerald-to-cyan gradient: \"Start Closing Jobs.\" Smaller subhead beneath in soft gray: \"AI systems that capture, follow up, and convert every lead for your service business.\" Below the text, a smartphone standing upright displaying the ModernFlow AI dark dashboard — visual deal pipeline and a Live Automation Feed card with a pulsing green dot — studio lighting, soft emerald rim light, gentle shadow grounding it. \"ModernFlow AI\" wordmark small at bottom center. Clean, high-contrast, professional Meta ad aesthetic.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "Hero copy taken verbatim from the live site."
+    },
+    {
+      "template_number": 2,
+      "template_name": "offer-promotion",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Promotional offer ad. Dark #121A16 card background with subtle glass texture. Top banner strip in emerald #00C896 with dark text: \"// LIMITED ONBOARDING SPOTS — JULY\". Center: a laptop at a slight 15-degree angle displaying the ModernFlow AI dark CRM dashboard with emerald pipeline columns, crisp studio lighting. Large offer treatment in bold white type: \"FREE AI STRATEGY CALL\" with supporting line \"Walk away with a custom automation roadmap — even if we never work together.\" Button-shaped CTA pill at bottom in emerald-to-cyan gradient reading \"Book My Free Call\". Energetic but premium, dark-mode SaaS promotion feel.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true,
+      "notes": "Strategy call is the site's actual low-friction offer."
+    },
+    {
+      "template_number": 3,
+      "template_name": "testimonial-card",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Minimal testimonial card ad. Deep #0B120E background with a soft emerald glow in one corner. Large opening quotation mark in emerald #00C896. Centered testimonial in elegant white type: \"We went from missing 40% of our leads to responding to every single one in under 2 minutes. Our revenue jumped 35% in the first quarter alone.\" Below: five gold stars, then \"— Mike Thompson, Owner, Thompson Electric — San Diego, CA\" in smaller gray type. Generous whitespace, editorial spacing, premium B2B feel. \"ModernFlow AI\" wordmark small at bottom.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": false,
+      "notes": "Real testimonial from the site."
+    },
+    {
+      "template_number": 4,
+      "template_name": "us-vs-them",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Two-column comparison ad on dark background. Left column header \"ModernFlow AI\" on an emerald #00C896 panel; right column header \"Doing It Manually\" on a desaturated gray panel. Left column shows a glowing phone with the dark ModernFlow AI dashboard and a \"Lead responded to in 8 seconds\" notification; right shows a cluttered desk with sticky notes and a missed-call phone screen looking dull. Below each, 4 checklist rows: left side emerald checkmarks with \"Responds to every lead in under 5 minutes\", \"Books jobs while you sleep\", \"Automatic review requests\", \"One organized pipeline\"; right side red X marks with \"62% of calls missed\", \"Follow-ups forgotten\", \"Reviews left to chance\", \"Leads lost in text threads\". Clean table layout, legible rows.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "62% missed-call stat is a category benchmark."
+    },
+    {
+      "template_number": 5,
+      "template_name": "before-after-ugc",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Authentic UGC-style before-and-after split image shot on a phone camera. Left half labeled \"Before\" in casual white text with subtle drop shadow: a contractor's phone screen showing \"7 Missed Calls\" and an overflowing voicemail badge, dim evening job-site background. Right half labeled \"After\": the same phone showing a calendar week packed with booked appointments and a green \"Appointment booked — Tuesday 2PM\" notification. Same setting both sides, natural lighting, slightly imperfect framing for authenticity. Small caption strip at bottom: \"My AI answers before I can even wipe my hands off.\" Realistic phone-photo quality, not studio-polished.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": false,
+      "notes": "UGC realism intentionally overrides the polished studio look."
+    },
+    {
+      "template_number": 6,
+      "template_name": "review-card",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Faux review screenshot ad. Dark #121A16 card on #0B120E background, rendered like a real review UI: circular avatar placeholder, reviewer name \"David W.\", \"Verified Client\" badge in emerald, five filled gold stars, review title in bold white: \"Close rate went from 22% to 41%\", review body in light gray: \"ModernFlow built us a system that runs itself. I spend zero time on follow-ups now. Ninety days in and the numbers speak for themselves. Best decision we made this year.\" and a \"Helpful (47)\" link at bottom. Crisp UI rendering, realistic typography, subtle card glow.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": false,
+      "notes": "Based on the Elite HVAC testimonial."
+    },
+    {
+      "template_number": 7,
+      "template_name": "stat-callout-radial",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Product hero with radial stat callouts. A smartphone displaying the ModernFlow AI dark dashboard with emerald Live Automation Feed perfectly centered on #0B120E, soft emerald rim light. Four thin glowing callout lines radiating from the phone to stat labels at compass points, numbers oversized in emerald #00C896 with small white labels beneath: \"< 5 min — average lead response\", \"3.2x — ROI in 90 days\", \"150+ — contractors served\", \"24/7 — automation running\". Technical, infographic-clean, premium spacing. \"ModernFlow AI\" wordmark bottom center.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true,
+      "notes": "All four stats are verbatim from the site's stats section."
+    },
+    {
+      "template_number": 8,
+      "template_name": "manifesto",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Text-only brand manifesto ad. Full-bleed near-black #0B120E background with faint emerald grid lines. Left-aligned manifesto in bold geometric white type with strong line breaks like poetry: \"You didn't start your business / to chase voicemails. / Every missed call is a paycheck / handed to your competitor. / We build AI that answers in seconds, / follows up forever, / and books the job. / You do the work. It does the rest.\" The line \"and books the job.\" highlighted in emerald-to-cyan gradient. Small monospace eyebrow at top: \"// Automation Beyond Limits\". \"ModernFlow AI\" logo bottom-left. Confident editorial typography, zero imagery.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": false
+    },
+    {
+      "template_number": 9,
+      "template_name": "press-editorial",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Faux magazine editorial feature. Layout mimics a premium print magazine page on dark paper: masthead-style header \"THE TRADE REPORT\", large serif headline: \"The Contractors Who Never Miss A Call Anymore\", subhead deck in italic: \"Inside the AI systems quietly booking jobs for 150+ service businesses while their owners sleep.\" Hero photo region: a plumber's work van at dusk, a tablet on the dashboard glowing with the dark ModernFlow AI pipeline UI, moody directional lighting. Body copy columns of small greeked text below. Sophisticated print typography, generous margins.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "Fictional neutral publication name to avoid trademark issues."
+    },
+    {
+      "template_number": 10,
+      "template_name": "imessage-screenshot",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Faux iPhone iMessage conversation screenshot. Realistic iOS messages UI in dark mode, contact name \"Tony (GC crew)\" at top. Gray incoming bubble: \"bro how are you booking jobs at 11pm?? I saw your truck at that kitchen remodel\". Blue outgoing bubble: \"AI answers every call and text now. It booked 3 jobs last night while I was asleep lol\". Gray reply: \"no way. what is it?\". Blue reply: \"ModernFlow AI. they set the whole thing up in 3 weeks. google them\". Authentic iOS font, dark-mode status bar, message timestamps. Pixel-accurate UI.",
+      "aspect_ratio": "9:16",
+      "needs_product_images": false
+    },
+    {
+      "template_number": 11,
+      "template_name": "post-it-note",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Handwritten post-it note ad — intentionally lo-fi against brand polish. A single yellow sticky note photographed slightly angled on a contractor's clipboard resting on a work truck seat, natural morning light. Handwritten marker text in believable casual handwriting: \"STOP letting calls go to voicemail!! book the ModernFlow call Tues 10am\" with a rough underline and small arrow doodle. Shallow depth of field, tool belt blurred in background, authentic job-site scene, native-feeling ad.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": false
+    },
+    {
+      "template_number": 12,
+      "template_name": "feature-callout",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Annotated product breakdown. A large laptop centered on #0B120E showing the ModernFlow AI dark dashboard, soft studio light with emerald glow. Five thin glowing annotation lines pointing to specific parts of the UI, each labeled in clean white type: \"Automated lead capture & tagging\", \"AI assistant — replies in 8 seconds\", \"Visual deal pipeline\", \"Appointment booking on autopilot\", \"5-star review requests\". Headline at top: \"One System. Every Lead Handled.\" Technical diagram aesthetic with premium ad polish.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "Feature labels are verbatim service bullets from the site."
+    },
+    {
+      "template_number": 13,
+      "template_name": "negative-hook",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Negative-hook bait-and-switch ad. Stark near-black #0B120E background. Massive contrarian headline in bold white: \"Stop Buying More Leads.\" Subhead in smaller gray type flips it: \"You're losing the ones you already have. 62% of calls to home service businesses go unanswered — fix the follow-up first.\" A smartphone with the ModernFlow AI dashboard small at bottom right as the reveal, dramatic emerald spotlight. High tension, editorial feel with one emerald accent element.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 14,
+      "template_name": "ingredient-breakdown",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. \"What's inside\" transparency ad. A glowing phone with the ModernFlow AI dashboard on the left third against #0B120E. Right two-thirds: a vertical stack of 4 component rows, each with a small emerald line icon plus name in bold white and one-line benefit in gray: \"CRM & Pipeline — your command center for leads\", \"AI Assistants — 24/7 intelligent follow-up\", \"Paid Ads Management — leads on demand\", \"Automation Engine — set it and forget it\". Headline top: \"Everything Under The Hood.\" Clean grid, technical spec-sheet typography.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "The four components are the site's actual service pillars."
+    },
+    {
+      "template_number": 15,
+      "template_name": "founder-note",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Founder letter ad. Dark textured paper background #121A16 with subtle emerald edge glow. Refined typewriter-style letter in off-white: header \"A note from our founders\", then: \"We watched too many great contractors lose jobs to whoever picked up the phone first. So we built the system we wished existed — AI that answers instantly, follows up relentlessly, and never takes a day off. We set it up. You close the jobs. That's the deal.\" Handwritten-style signatures \"Darius & Ryan\" at bottom in ink, with \"San Diego, CA\" beneath. Intimate, personal, direct-mail feel. \"ModernFlow AI\" wordmark small at bottom.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": false,
+      "notes": "Founders named Darius & Ryan per public brand story."
+    },
+    {
+      "template_number": 16,
+      "template_name": "benefits-checklist",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Checklist benefit ad. Deep emerald-tinted dark background. Headline top in bold white: \"What Changes In Your First 90 Days\". Below, 5 large checklist rows, each a rounded emerald #00C896 checkmark plus bold benefit line: \"Every lead answered in under 5 minutes\", \"After-hours calls become booked jobs\", \"Follow-up runs on autopilot\", \"Review count climbs every week\", \"3.2x average ROI increase\". A phone with the ModernFlow AI dashboard anchored bottom-right at an angle, studio lit with emerald rim. Crisp iconography, generous line spacing, thumb-stopping contrast.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 17,
+      "template_name": "problem-solution-split",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Diagonal problem/solution split ad. Top-left triangle: desaturated, moody photo of a contractor on a roof at dusk missing a buzzing phone in his pocket, overlaid text \"MISSED CALL. MISSED JOB.\"; bottom-right triangle: vivid emerald field with a phone showing the ModernFlow AI auto-reply \"Thanks for calling Walsh Roofing! I can get you a quote — what's the address?\" and text \"ANSWERED. BOOKED.\" Clean diagonal divider with subtle glow. Bold contrast between halves, single CTA pill at bottom: \"Book a Free Strategy Call\".",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 18,
+      "template_name": "macro-texture",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Extreme macro UI shot. Ultra close-up of the ModernFlow AI Live Automation Feed on an OLED phone screen filling the frame — individual pixels faintly visible, a pulsing emerald status dot in razor-sharp focus, the notification \"Appointment booked — Tuesday 2PM\" partially readable, shallow depth of field with cyan bokeh. Shot on a 100mm macro lens, dramatic side lighting. Small elegant caption bottom-left in white: \"This is what closing jobs at 11PM looks like.\" \"ModernFlow AI\" logo subtle top-right. Luxurious, tactile, tech-forward.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 19,
+      "template_name": "flat-lay",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Editorial flat-lay. Top-down shot of a smartphone displaying the ModernFlow AI dark dashboard centered on a dark workshop workbench, surrounded by an artful arrangement of contractor tools — worn leather work gloves, a tape measure, a hard hat, a coffee in a paper cup, an invoice pad. Soft natural window light from the left, gentle shadows, colors graded to deep blacks with emerald accents. Small headline top corner in white: \"The newest tool in the truck.\" Instagram-premium styling.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 20,
+      "template_name": "unboxing",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Onboarding moment ad (service twist on unboxing). First-person POV: weathered contractor hands holding a phone in a truck cab at sunrise, the screen lighting up with the ModernFlow AI welcome screen and a first notification: \"New lead captured from Google Ads — Just now\". Coffee on the dash, warm natural light mixing with emerald screen glow, shallow depth of field, genuine anticipation energy. Caption text overlay in casual white type: \"Day 1 with the new system. It already answered two calls.\"",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "Unboxing template adapted for a software service."
+    },
+    {
+      "template_number": 21,
+      "template_name": "social-proof-stack",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Stacked social proof ad. #0B120E background with three overlapping dark glass review cards at slight angles, each with five gold stars and a short quote in white: \"Booking jobs at 11PM we would have completely missed. — Maria G., ClearFlow Plumbing\", \"30+ qualified leads per week. ROI positive in week two. — Jennifer W., Walsh Roofing Co.\", \"Our reviews went from 47 to 180+ in six months. — Kevin N., Nguyen Landscaping\". Headline top in bold white: \"150+ Contractors. Real Numbers.\" Subtle emerald card glow, believable UI-card rendering.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": false,
+      "notes": "All three quotes condensed from real site testimonials."
+    },
+    {
+      "template_number": 22,
+      "template_name": "as-seen-in",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Credibility ad. A laptop with the ModernFlow AI dark dashboard centered on clean #0B120E, premium studio lighting with emerald rim. Above it, headline in bold white: \"The System Behind 150+ Growing Trade Businesses\". Below, a horizontal \"TRUSTED BY THE TRADES\" strip with four generic industry wordmarks in muted gray: \"CONTRACTOR WEEKLY\", \"THE SERVICE PRO\", \"TRADESMAN JOURNAL\", \"FIELD OPS TODAY\" (fictional neutral publication names). Balanced, trustworthy, premium composition.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true,
+      "notes": "Fictional publication names — no real trademarks."
+    },
+    {
+      "template_number": 23,
+      "template_name": "discount-code-card",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Offer ticket ad. Designed like a premium boarding pass on #0B120E: dark glass card with emerald edge glow, dashed perforation line, large code in monospace type: \"STRATEGY-CALL-0\", label beneath: \"Your 30-minute AI audit — normally consultants charge $500. Yours free.\" Small terms line: \"Limited onboarding spots each month.\" A phone with the ModernFlow AI dashboard peeking from the card's right edge. Ticket skeuomorphism, crisp print-quality rendering, emerald highlights.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 24,
+      "template_name": "bundle-offer",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Tier lineup ad. Three dark glass pricing cards side by side on #0B120E, the middle one slightly larger with an emerald \"MOST POPULAR\" ribbon: \"STARTER — $97/mo — website + lead capture\", \"GROWTH — $297/mo — booking, payments, auto reviews\", \"ENTERPRISE — $697/mo — AI voice agent + chatbot\". Each card headed by a small glowing dashboard thumbnail. Bracket graphic above grouping them with label: \"Pick Your Growth Speed\". CTA pill bottom: \"Get Started\". Retail-clean, value-forward, premium SaaS pricing aesthetic.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true,
+      "notes": "Tiers and prices are the site's real pricing."
+    },
+    {
+      "template_number": 25,
+      "template_name": "tweet-screenshot",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Faux social post screenshot ad. Realistic dark-mode post UI card centered on #0B120E: circular avatar of a contractor in a hard hat, display name \"Rob the Builder\", handle \"@robmartinezGC\", post text in white: \"6 months ago I answered maybe half my calls. Today an AI booked 4 estimates while I was framing a garage. We doubled monthly revenue. Wild time to run a trade business.\", engagement row showing \"1.2K reposts · 8.4K likes\". Pixel-accurate UI, authentic font rendering, subtle card shadow.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": false,
+      "notes": "Echoes the Martinez General Contracting testimonial."
+    },
+    {
+      "template_number": 26,
+      "template_name": "notes-app",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Faux iPhone Notes app screenshot in dark mode. Realistic iOS Notes UI: title \"things that actually grew the business this year\", then a bulleted list in the iOS Notes font: \"hired a second crew\", \"stopped underbidding jobs\", \"★ ModernFlow AI — answers every call in seconds, books jobs overnight\", \"new wrap for the trucks\", \"weekly numbers review w/ Ryan\". The third item subtly emphasized. Dark status bar, yellow accent, authentic spacing. Native-content feel.",
+      "aspect_ratio": "9:16",
+      "needs_product_images": false
+    },
+    {
+      "template_number": 27,
+      "template_name": "search-bar",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Search suggestion ad. Clean dark #0B120E background with a realistic search-engine bar UI centered, query typed in white: \"why am i losing jobs to smaller competitors\". Below, a dropdown of 4 autocomplete suggestions in gray: \"why am i losing jobs to lowball bids\", \"why am i missing so many calls\", \"how fast should you respond to a lead\", and the last one highlighted in emerald: \"modernflow ai — never miss another lead\". Minimal, clever, instantly readable. \"ModernFlow AI\" wordmark bottom corner.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": false
+    },
+    {
+      "template_number": 28,
+      "template_name": "routine-steps",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Pipeline steps ad. Horizontal 3-step timeline on #0B120E with numbered emerald badges: Step 1 photo circle: a homeowner submitting a form on a phone, captioned \"Lead comes in — from ads, calls, or your site\"; Step 2 photo circle: the ModernFlow AI dashboard replying, captioned \"AI responds in 8 seconds and qualifies the job\"; Step 3 photo circle: a contractor shaking hands with a homeowner in a driveway, captioned \"You show up to a booked, confirmed appointment\". Headline top in bold white: \"From Missed Call To Booked Job — Automatically\". Friendly instructional design.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 29,
+      "template_name": "in-hand-lifestyle",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Lifestyle in-hand shot. A contractor's work-worn hand holding a phone toward camera displaying the ModernFlow AI dark dashboard with an \"Appointment booked\" notification, a sunlit residential job site with ladders and a work truck softly blurred behind, golden-hour light mixing with emerald screen glow. Screen UI crisp and fully legible. Small text overlay bottom in white: \"It booked this job while I was on the last one.\" Authentic yet polished, shot-on-mirrorless aesthetic.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 30,
+      "template_name": "truck-cab-scene",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Work-truck still-life scene. A phone mounted on a work van dashboard displaying the ModernFlow AI Live Automation Feed with a pulsing green dot, morning light through the windshield, coffee in the cupholder, clipboard and tape measure on the passenger seat, a job site visible through the glass. Composition rule-of-thirds, screen facing camera. Headline in upper negative space: \"Your Best Employee Rides Shotgun\". Warm, real-world trades aesthetic with emerald accents.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "Kitchen-counter template adapted to the contractor context."
+    },
+    {
+      "template_number": 31,
+      "template_name": "on-the-go",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Portability ad. A tablet showing the ModernFlow AI pipeline tucked into a canvas tool bag between a drill and work gloves, mid-motion as a contractor carries it across a job site, candid documentary framing, natural light. The screen glows with emerald UI elements, label crisp despite the candid style. Text overlay in bold white: \"The Whole Front Office. In The Bag.\" Motion energy, real-world context.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 32,
+      "template_name": "myth-vs-fact",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Myth vs fact educational ad. Two stacked dark glass cards on #0B120E. Top card labeled \"MYTH\" in red with strikethrough styling: \"AI is for big corporations with big budgets.\" Bottom card labeled \"FACT\" in emerald #00C896: \"150+ local contractors run AI systems that answer every lead in under 5 minutes — starting at $97/mo.\" Clean editorial typography, authoritative but friendly tone, small \"ModernFlow AI\" attribution bottom.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": false,
+      "notes": "Directly counters the brand's stated founding belief."
+    },
+    {
+      "template_number": 33,
+      "template_name": "three-reasons-why",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Numbered listicle ad. Headline top in bold white: \"3 Reasons Contractors Switch To ModernFlow AI\". Three horizontal rows, each with an oversized emerald number and a bold reason plus one-line support in gray: \"1 — Speed wins jobs. AI answers in 8 seconds, not 8 hours.\", \"2 — Nights and weekends covered. Booking jobs at 11PM is normal now.\", \"3 — It pays for itself. 3.2x average ROI in the first 90 days.\" A phone with the dark dashboard along the right edge, partially cropped, studio lit. Editorial-listicle rhythm, high scannability.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 34,
+      "template_name": "star-rating-hero",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Rating-led hero ad. A smartphone with the ModernFlow AI dark dashboard centered on #0B120E with a soft emerald gradient vignette. Directly above it, a row of five large gold stars and \"4.9/5\" in bold white, with \"from 150+ contractors across 20+ trades\" beneath in smaller gray type. One-line quote under the phone in white: \"The system runs itself. I just show up and close.\" Symmetrical, trust-forward, premium studio finish.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 35,
+      "template_name": "guarantee-badge",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Risk-reversal ad. A laptop with the ModernFlow AI dashboard slightly right of center on #0B120E. Large embossed seal badge on the left in emerald #00C896 with circular text \"LIVE IN 21 DAYS — BUILT FOR YOU — \" around a checkmark center, subtle metallic emboss detail. Headline top in bold white: \"We Build It. You Approve It. It Books Jobs.\" Sub-line: \"Custom system designed, built, and launched in 2–3 weeks.\" Trust-heavy composition, tactile badge detail, clean layout.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": true,
+      "notes": "2-3 week build time is stated on the site."
+    },
+    {
+      "template_number": 36,
+      "template_name": "seasonal-moment",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Seasonal campaign ad. A contractor wiping sweat on a blazing mid-summer roofing job, golden harsh sunlight, while his phone on the cooler beside him glows with stacked ModernFlow AI notifications: \"New lead captured\", \"Appointment booked — Thursday 9AM\". Emerald UI glow contrasts the warm scene. Headline in bold white: \"Busy Season Shouldn't Mean Missed Season.\" Corner badge in emerald: \"// July onboarding open\". Warm, timely, scroll-stopping.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true,
+      "notes": "Timed for July (peak home-services season)."
+    },
+    {
+      "template_number": 37,
+      "template_name": "meme-style",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Meme-format ad — intentionally casual against brand polish. A relatable stock-style photo of an exhausted contractor slumped in his truck at night, phone buzzing on the dash. Top text in bold white with black outline: \"ME: FINALLY DONE FOR THE DAY\". Bottom text: \"MY AI: BOOKED YOU 3 MORE JOBS WHILE YOU DROVE HOME\". Slightly compressed, native-social look. Tiny \"ModernFlow AI\" watermark corner.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": false
+    },
+    {
+      "template_number": 38,
+      "template_name": "faq-card",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. FAQ objection-handling ad. Clean dark glass card UI on #0B120E styled like an expandable FAQ: question row with bold white text \"Do I need to be tech-savvy to use this?\" and an emerald \"+\" icon, expanded answer beneath in regular gray weight: \"No. We build, launch, and manage the entire system for you in 2-3 weeks. You get a simple mobile dashboard — if you can check texts, you can run it.\" Two collapsed question rows below: \"What if I already have a CRM?\", \"How fast will I see results?\". Realistic web-UI rendering, calm and credible.",
+      "aspect_ratio": "1:1",
+      "needs_product_images": false
+    },
+    {
+      "template_number": 39,
+      "template_name": "comparison-table",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Detailed comparison table ad. A clean 3-column dark table: feature column in gray, \"ModernFlow AI\" column on an emerald #00C896 header with a small glowing dashboard thumbnail, and \"Typical Marketing Agency\" column in muted gray. Five feature rows with emerald checks vs red dashes: \"Answers every lead 24/7\", \"Custom CRM built for your trade\", \"AI follow-up until the job books\", \"Automatic review engine\", \"Live in 2-3 weeks\". Headline top in bold white: \"Not Another Agency. A System.\" Precise table rendering, legible at feed size.",
+      "aspect_ratio": "4:5",
+      "needs_product_images": true
+    },
+    {
+      "template_number": 40,
+      "template_name": "story-cta",
+      "prompt": "Premium dark-mode tech aesthetic for ModernFlow AI: near-black green-tinted background (#0B120E), vivid emerald green (#00C896) primary with cyan (#00B4D8) accents and emerald-to-cyan gradient highlights, glassmorphism cards with subtle glowing emerald borders, bold geometric Outfit-style white headlines, clean sans-serif supporting text, small monospace '//' eyebrow labels, dark CRM dashboard UI elements with pulsing green status dots, confident results-driven mood built for blue-collar contractors. Full-screen story static ad with safe margins top and bottom. Vertical composition: top third bold white headline on deep #0B120E with emerald glow: \"Your Competitors Answer In 5 Minutes. Do You?\"; middle: a large smartphone with the ModernFlow AI dark dashboard and Live Automation Feed, dramatic studio lighting with emerald and cyan gel accents; bottom third: benefit line in gray \"AI that captures, follows up, and books — 24/7\", then a thumb-reachable CTA pill in emerald-to-cyan gradient: \"Book a Free Strategy Call\" with a small upward arrow and \"Swipe Up\" affordance.",
+      "aspect_ratio": "9:16",
+      "needs_product_images": true
+    }
+  ]
+}
