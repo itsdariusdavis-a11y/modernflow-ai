@@ -35,6 +35,10 @@ for service businesses). React 19 + TS + Tailwind 4 + Framer Motion / Express 4
 + tRPC 11 / MySQL-TiDB via Drizzle / pnpm. Existing integrations: GoHighLevel
 inbound webhook (contact form), Calendly popup, Manus OAuth.
 
+**This repo is also Darius's working workspace for an automation-business
+course** — successive builds ("bricks") will land here under the B.L.A.S.T.
+protocol, each one a step toward the North Star.
+
 ---
 
 ## Data Schemas
@@ -61,7 +65,7 @@ inbound webhook (contact form), Calendly popup, Manus OAuth.
 ### B — Blueprint  🟡 IN PROGRESS
 | Question | Answer |
 |---|---|
-| North Star | ⛔ pending |
+| North Star | Build a skill set and automation business (brick by brick, via a course followed in this workspace) that generates enough income for Darius to leave his 9-5 and spend more time with his family and 10-month-old son. Every build here is measured against: *does this move the business toward replacing the 9-5 income?* |
 | Integrations + credentials | ⛔ pending |
 | Source of Truth | ⛔ pending |
 | Delivery Payload | ⛔ pending |

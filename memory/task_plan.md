@@ -11,7 +11,7 @@
 
 ## Phase B — Blueprint (Vision & Logic)  🟡 IN PROGRESS
 Discovery questions (asked one at a time, in order):
-- ⬜ 1. North Star — the singular outcome that means we won
+- ✅ 1. North Star — income-generating automation business → leave 9-5, family time (see CLAUDE.md)
 - ⬜ 2. Integrations — external services + credential readiness
 - ⬜ 3. Source of Truth — where the primary data lives
 - ⬜ 4. Delivery Payload — how/where the final result lands
