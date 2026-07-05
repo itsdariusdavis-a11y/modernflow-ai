@@ -26,3 +26,10 @@ _(pending — to be filled during Phase L; one line per credential/API test)_
 - User confirmed the initial prompt was the course's Part 1 ("Universal
   CLAUDE.md Protocol" Notion script). Constitution + scaffolding = its output.
 - Q2–Q5 deferred to the first concrete build; awaiting next course module.
+
+## 2026-07-05 — Blueprint Q2 answered
+- Integrations: user enabled ALL available services just-in-case. Workspace
+  connectors (Gmail, GCal, Drive, Slack, Apollo.io, Firecrawl, Fireflies,
+  Netlify) are OAuth-live; repo integrations (GHL webhook, MySQL) still need
+  .env values. Phase L will probe each before any build depends on it.
+- Q3 (Source of Truth) posed to user.

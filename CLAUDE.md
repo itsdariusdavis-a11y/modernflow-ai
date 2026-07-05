@@ -66,7 +66,7 @@ protocol, each one a step toward the North Star.
 | Question | Answer |
 |---|---|
 | North Star | Build a skill set and automation business (brick by brick, via a course followed in this workspace) that generates enough income for Darius to leave his 9-5 and spend more time with his family and 10-month-old son. Every build here is measured against: *does this move the business toward replacing the 9-5 income?* |
-| Integrations + credentials | Deferred — answered per-build as the course defines each project. Already available: GHL webhook, Calendly, MySQL/TiDB (repo); Gmail, Google Calendar/Drive, Slack, Apollo.io, Firecrawl, Fireflies, Netlify (session connectors). |
+| Integrations + credentials | **All available services enabled** ("all of them, just in case"): Gmail, Google Calendar, Google Drive, Slack, Apollo.io, Firecrawl, Fireflies, Netlify (workspace connectors — OAuth already live); GoHighLevel webhook, Calendly, MySQL/TiDB (repo — GHL_WEBHOOK_URL and DATABASE_URL still need values in .env). Each link gets a green Phase L probe before any build depends on it. |
 | Source of Truth | Deferred — per-build |
 | Delivery Payload | Deferred — per-build |
 | Behavioral Rules | Deferred — per-build |

@@ -12,7 +12,7 @@
 ## Phase B — Blueprint (Vision & Logic)  🟡 IN PROGRESS
 Discovery questions (asked one at a time, in order):
 - ✅ 1. North Star — income-generating automation business → leave 9-5, family time (see CLAUDE.md)
-- 🟡 2. Integrations — deferred: answered per-build when the course defines one
+- ✅ 2. Integrations — ALL available services enabled just-in-case (see CLAUDE.md); Phase L verifies each before use
 - 🟡 3. Source of Truth — deferred: answered per-build
 - 🟡 4. Delivery Payload — deferred: answered per-build
 - 🟡 5. Behavioral Rules — deferred: answered per-build
