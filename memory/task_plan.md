@@ -13,7 +13,7 @@
 Discovery questions (asked one at a time, in order):
 - ✅ 1. North Star — income-generating automation business → leave 9-5, family time (see CLAUDE.md)
 - ✅ 2. Integrations — ALL available services enabled just-in-case (see CLAUDE.md); Phase L verifies each before use
-- 🟡 3. Source of Truth — deferred: answered per-build
+- ✅ 3. Source of Truth — none yet; chosen per-build, simplest option wins
 - 🟡 4. Delivery Payload — deferred: answered per-build
 - 🟡 5. Behavioral Rules — deferred: answered per-build
 Then:

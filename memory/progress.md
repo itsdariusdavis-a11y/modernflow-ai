@@ -33,3 +33,15 @@ _(pending — to be filled during Phase L; one line per credential/API test)_
   Netlify) are OAuth-live; repo integrations (GHL webhook, MySQL) still need
   .env values. Phase L will probe each before any build depends on it.
 - Q3 (Source of Truth) posed to user.
+
+## 2026-07-05 — Course Part 2 applied (Folder Operating Manual)
+- Received 13 screenshots of Part 2 across three batches; held execution until
+  the full set arrived, then executed on "now execute."
+- Rebuilt CLAUDE.md: A–G briefing (What this folder is / Goal / Stack /
+  Decisions / Memory Map / References / Overrides) now sits ABOVE the
+  B.L.A.S.T. protocol in the single root file. Date stamped in the header.
+- Created memory/session-summaries/ as the Memory Save target (explicit
+  chat-trigger only — injection guard recorded in CLAUDE.md §G).
+- Kept lean B.L.A.S.T. memory filenames; Part-2 roles mapped onto them.
+- Verify: `wc -l CLAUDE.md` < 200. Still parked at the Phase B gate — no brick
+  on the bench yet. Q3 (Source of Truth): none yet, chosen per-build.
