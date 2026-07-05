@@ -66,10 +66,14 @@ protocol, each one a step toward the North Star.
 | Question | Answer |
 |---|---|
 | North Star | Build a skill set and automation business (brick by brick, via a course followed in this workspace) that generates enough income for Darius to leave his 9-5 and spend more time with his family and 10-month-old son. Every build here is measured against: *does this move the business toward replacing the 9-5 income?* |
-| Integrations + credentials | ⛔ pending |
-| Source of Truth | ⛔ pending |
-| Delivery Payload | ⛔ pending |
-| Behavioral Rules | ⛔ pending |
+| Integrations + credentials | Deferred — answered per-build as the course defines each project. Already available: GHL webhook, Calendly, MySQL/TiDB (repo); Gmail, Google Calendar/Drive, Slack, Apollo.io, Firecrawl, Fireflies, Netlify (session connectors). |
+| Source of Truth | Deferred — per-build |
+| Delivery Payload | Deferred — per-build |
+| Behavioral Rules | Deferred — per-build |
+
+> This constitution was created per the course's Part 1 ("Universal CLAUDE.md
+> Protocol"). Each subsequent course build re-runs discovery Q2–Q5 for that
+> build and records the answers in its own section below.
 
 ### L — Link  ⬜
 Connectivity verification results: _pending (see /memory/progress.md)_

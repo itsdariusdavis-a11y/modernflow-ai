@@ -12,10 +12,10 @@
 ## Phase B — Blueprint (Vision & Logic)  🟡 IN PROGRESS
 Discovery questions (asked one at a time, in order):
 - ✅ 1. North Star — income-generating automation business → leave 9-5, family time (see CLAUDE.md)
-- ⬜ 2. Integrations — external services + credential readiness
-- ⬜ 3. Source of Truth — where the primary data lives
-- ⬜ 4. Delivery Payload — how/where the final result lands
-- ⬜ 5. Behavioral Rules — tone, must-dos, must-not-dos, refusal triggers
+- 🟡 2. Integrations — deferred: answered per-build when the course defines one
+- 🟡 3. Source of Truth — deferred: answered per-build
+- 🟡 4. Delivery Payload — deferred: answered per-build
+- 🟡 5. Behavioral Rules — deferred: answered per-build
 Then:
 - ⬜ Define JSON Data Schema (input → output) in CLAUDE.md
 - ⬜ Research prior art → log in `/memory/findings.md`

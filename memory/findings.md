@@ -37,3 +37,12 @@
 ### Open — awaiting Blueprint
 The actual automation/system to build has NOT been specified yet. The repo is the
 context, not the task. All five discovery questions pending (see task_plan.md).
+
+## 2026-07-05 — Course context clarified
+- The B.L.A.S.T. system prompt came from the course's Notion doc: "Universal
+  CLAUDE.md Protocol" (last updated 2026-05-09). It is Module/Part 1 of the
+  course; Darius will paste subsequent parts as he progresses.
+- Implication: the protocol setup itself was the first deliverable. The five
+  discovery questions fully apply per-build — Q2–Q5 (integrations, source of
+  truth, payload, behavioral rules) get concrete answers when the course
+  defines the first actual build. North Star (Q1) is global and stands.

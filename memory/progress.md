@@ -21,3 +21,8 @@ _(pending — to be filled during Phase L; one line per credential/API test)_
 - North Star captured: build skills + automation business via course work in this
   repo, until income replaces the 9-5 → more family time (10-month-old son).
 - Logged in CLAUDE.md. Q2 (Integrations) posed to user.
+
+## 2026-07-05 — Module 1 confirmed complete
+- User confirmed the initial prompt was the course's Part 1 ("Universal
+  CLAUDE.md Protocol" Notion script). Constitution + scaffolding = its output.
+- Q2–Q5 deferred to the first concrete build; awaiting next course module.
