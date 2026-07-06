@@ -1,0 +1,7 @@
+# Working folders hold customer data, call notes, and drafts — never commit their contents.
+00_Inbox/*
+03_Outputs/*
+04_Review/*
+05_Logs/*
+07_Archive/*
+!*/.gitkeep

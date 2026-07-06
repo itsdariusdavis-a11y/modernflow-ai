@@ -139,6 +139,12 @@ See `AI-PLATFORM-MIGRATION-GUIDE.md` for detailed platform-specific instructions
 
 ---
 
+## Company OS (Running the Business Solo with Claude)
+
+The `company-os/` folder is a complete operating system for running ModernFlow AI as a one-person company: a Claude Project setup with company/customer/voice context files, reusable prompt templates for research, sales, content, and operations, three Claude Skills (morning brief, proposal builder, weekly review), and a 30-day rollout plan. Start at `company-os/README.md`.
+
+---
+
 ## Deploying to Netlify / Vercel (Free)
 
 See `FREE-HOSTING-GUIDE.md` for step-by-step instructions.
