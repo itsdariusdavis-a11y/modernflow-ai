@@ -145,6 +145,14 @@ See `FREE-HOSTING-GUIDE.md` for step-by-step instructions.
 
 ---
 
+## UGC Engine (Service Line)
+
+Operating system for ModernFlow's AI-generated UGC video service — Claude as Creative Director + Higgsfield MCP for production, sold as monthly creative packs to local service businesses and Shopify DTC brands.
+
+See [`ugc-agency/README.md`](ugc-agency/README.md) for the full 4-stage workflow, prompts, pricing, and compliance rules.
+
+---
+
 ## Logo
 
 The geometric "M" logo is the ModernFlow AI brand mark. Available in:
