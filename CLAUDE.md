@@ -171,3 +171,4 @@ the playbook above governs everything else.
 - Automations (n8n, ServiceTitan follow-up): `automation/`, `automations/`
 - Company OS (solo-operator docs): `company-os/`
 - Business plan & launch prompt: `BUSINESS-PLAN.md`, `LAUNCH-PROMPT.md`
+- Curated external knowledge: `docs/ai-native-agency-playbook.md` (AI-native operating doctrine + workflow blueprints, distilled)
