@@ -13,6 +13,15 @@ A full-stack marketing website for ModernFlow AI — a done-for-you AI automatio
 
 ---
 
+## 📈 Business Plan & Command Center
+
+- **[`BUSINESS-PLAN.md`](./BUSINESS-PLAN.md)** — the complete plan to hit **$3,000/month in recurring revenue (MRR) within 30 days** (setup fees excluded), and scale to **$10k MRR within 12 months**.
+- **[`planner/index.html`](./planner/index.html)** — the **Command Center**: a self-contained, no-build app the team works from daily. MRR dashboard, 30-day sprint checklist, lead pipeline, revenue log, sales scripts, role views for Darius & Ryan, an Ask-AI assistant (Claude Haiku 4.5, bring your own API key), and real-time shared Team Notes (optional free Firebase Realtime Database).
+
+**Using it:** open `planner/index.html` in any browser — it's a single file with zero dependencies. To get a shareable URL, drag the `planner/` folder onto [Netlify Drop](https://app.netlify.com/drop) (free, ~30 seconds) or deploy it with Vercel — see `FREE-HOSTING-GUIDE.md`. Team sync setup is documented inside the app's Settings tab.
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
