@@ -8,7 +8,7 @@
 - Stack: React 19 + TypeScript + Vite + Tailwind CSS 4 + Framer Motion (client),
   Express 4 + tRPC 11 (server), MySQL/TiDB via Drizzle ORM, pnpm.
 - 13-section single-page site; components in `client/src/components/`.
-- Also contains two unrelated sub-projects: `baby-walking-tracker/` and `sports/`.
+- Also contains one unrelated sub-project: `baby-walking-tracker/`.
 
 ### Existing integrations (from README + code layout)
 | Integration | Where | Status |
