@@ -111,3 +111,8 @@ temp/
 
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
+
+# Static Ad Generator — generated images are heavy and cheap to regenerate
+brands/*/outputs/
+__pycache__/
+*.pyc
