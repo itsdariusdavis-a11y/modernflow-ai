@@ -18,11 +18,35 @@ the agency:
 | --- | --- | --- |
 | Marketing site | React 19 + tRPC + Express site that sells the agency | `client/`, `server/`, `shared/` |
 | Operating layer | Agents, skills, and SOPs that run the business | `.claude/`, `docs/sops/` |
+| Service lines | UGC creative engine, brand photo generation, automations | `ugc-agency/`, `brands/`, `automations/`, `automation/` |
+| Company OS | Solo-operator system docs | `company-os/` |
 
 > **`sports/` is OUT OF SCOPE.** The `sports/` directory is a standalone MLB analytics
 > side project with **no connection to ModernFlow AI**. Disregard it entirely when doing
 > ModernFlow work — don't touch it, report on it, or include it in deploys, reviews, or
 > reports. Only work in `sports/` if a request is explicitly and exclusively about it.
+> `baby-walking-tracker/` is likewise an independent sub-app with its own package.json.
+
+## Commands (main site)
+
+```bash
+pnpm dev        # dev server (tsx watch server/_core/index.ts)
+pnpm check      # typecheck (tsc --noEmit)
+pnpm test       # vitest run
+pnpm build      # vite build + esbuild server bundle
+pnpm format     # prettier --write .
+pnpm db:push    # drizzle-kit generate && migrate
+```
+
+## Layout
+
+- `client/src/` — frontend: `pages/`, `components/` (shadcn/ui under
+  `components/ui`), `hooks/`, `contexts/`. Import alias `@/` → `client/src`.
+- `server/` — `routers.ts` is the tRPC app router; `server/_core/` is plumbing
+  (trpc setup, env, cookies/auth, notifications, LLM helpers). Contact form
+  forwards to a GoHighLevel webhook (`GHL_WEBHOOK_URL`).
+- `shared/` — cross-cutting types/constants. Import alias `@shared/`.
+- `drizzle/` — schema + migrations.
 
 ## How work is organized (read this before starting anything)
 
@@ -50,6 +74,34 @@ specialists. For a single-process request, invoke that specialist (or its skill)
 | Internal comms | `comms-agent` | Slack, Gmail |
 | Reporting + KPIs | `reporting-agent` | All of the above (read-only) |
 | **Orchestration** | `modernflow-ops` | Delegates to all of the above |
+
+### Delegation policy (orchestrator/worker tiering)
+
+Alongside the process specialists, `.claude/agents/` defines a tiered worker fleet.
+The intent: the top-level session makes the decisions that compound —
+decomposition, dispatch, judging returned work, synthesis — and bounded work goes
+to cheaper workers. A worker mistake is local and cheap to retry; an orchestration
+mistake multiplies across every worker.
+
+- **scout** (haiku) — read-only search/summarization. Use for "where is X /
+  how does Y work" questions where only the conclusion is needed.
+- **implementer** (sonnet) — well-specified, self-contained coding tasks with
+  acceptance criteria stated in the prompt. Give it the plan; don't ask it to
+  make design decisions.
+- **verifier** (haiku) — runs `pnpm check` / `pnpm test` / `pnpm build` and
+  reports raw results; it never fixes.
+
+Guidelines for the orchestrating session:
+
+- Keep planning, architectural choices, schema changes, conflict resolution,
+  and final review at the top level. Delegate bounded slices, not judgment.
+- Every agent in `.claude/agents/` must declare an explicit `model:` —
+  subagents default to `inherit`, which silently bills workers at the
+  top-level model's rate. Keep that rule when adding agents.
+- Verify worker output against the original requirements you still hold in
+  context; don't take "done" on faith — the verifier exists to make that cheap.
+- Prompts to workers should be self-contained: goal, files in scope,
+  acceptance criteria, and what to do when blocked (report back, don't improvise).
 
 ## Engineering conventions (for `web-eng-agent` and anyone touching code)
 
@@ -108,3 +160,8 @@ require constant clarification.
 - Process SOPs: `docs/sops/`
 - Agents: `.claude/agents/`
 - Skills (run with `/<skill-name>` or auto-invoked): `.claude/skills/`
+- UGC creative engine: `ugc-agency/`
+- Brand photo generation: `brands/`
+- Automations (n8n, ServiceTitan follow-up): `automation/`, `automations/`
+- Company OS (solo-operator docs): `company-os/`
+- Business plan & launch prompt: `BUSINESS-PLAN.md`, `LAUNCH-PROMPT.md`
