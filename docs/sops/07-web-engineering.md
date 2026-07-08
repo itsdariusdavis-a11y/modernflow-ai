@@ -12,8 +12,6 @@ Ship correct, on-brand, well-tested changes to the ModernFlow AI marketing site.
   (`server/`), shared types (`shared/`), MySQL/TiDB via Drizzle (`drizzle/`). Package
   manager `pnpm`. Contact form → GoHighLevel (`server/routers.ts`) + owner notification;
   keep both intact.
-- **OUT OF SCOPE — `sports/`** — a standalone MLB analytics side project, unrelated to
-  ModernFlow AI. Don't touch, build, deploy, or review it as part of ModernFlow work.
 
 ## The quality gate (run before every push)
 

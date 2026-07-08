@@ -21,11 +21,9 @@ the agency:
 | Service lines | UGC creative engine, brand photo generation, automations | `ugc-agency/`, `brands/`, `automations/`, `automation/` |
 | Company OS | Solo-operator system docs | `company-os/` |
 
-> **`sports/` is OUT OF SCOPE.** The `sports/` directory is a standalone MLB analytics
-> side project with **no connection to ModernFlow AI**. Disregard it entirely when doing
-> ModernFlow work — don't touch it, report on it, or include it in deploys, reviews, or
-> reports. Only work in `sports/` if a request is explicitly and exclusively about it.
-> `baby-walking-tracker/` is likewise an independent sub-app with its own package.json.
+> `baby-walking-tracker/` is an independent sub-app with its own package.json —
+> don't conflate it with the main site. (A former `sports/` MLB test app was
+> removed from this repo in July 2026.)
 
 ## Commands (main site)
 

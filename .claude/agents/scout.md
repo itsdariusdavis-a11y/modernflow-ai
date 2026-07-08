@@ -29,5 +29,5 @@ Repository quick map (verify, don't assume):
   `server/_core/` is framework plumbing (trpc, env, auth, notifications, llm)
 - `shared/` — types and constants shared across client/server
 - `drizzle/` — database schema and migrations (MySQL)
-- `sports/` and `baby-walking-tracker/` — separate sub-apps with their own
-  package.json; do not conflate them with the main site
+- `baby-walking-tracker/` — separate sub-app with its own package.json; do not
+  conflate it with the main site
