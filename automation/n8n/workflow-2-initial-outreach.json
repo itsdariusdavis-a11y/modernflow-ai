@@ -1,0 +1,223 @@
+{
+  "name": "ModernFlow 2 — AI Personalized Outreach (Gmail)",
+  "nodes": [
+    {
+      "id": "schedule",
+      "name": "Hourly (Business Hours)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9-16 * * 1-5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "get-new-leads",
+      "name": "Get NEW Leads",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [200, 0],
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "NEW"
+            }
+          ]
+        },
+        "options": {
+          "returnAllMatches": "returnAllMatches"
+        }
+      }
+    },
+    {
+      "id": "limit",
+      "name": "Limit Batch (Deliverability)",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [400, 0],
+      "parameters": {
+        "maxItems": 10
+      }
+    },
+    {
+      "id": "lead-loop",
+      "name": "Lead Loop",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [600, 0],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      }
+    },
+    {
+      "id": "build-request",
+      "name": "Build Claude Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [800, 150],
+      "parameters": {
+        "jsCode": "const lead = $json;\n\nconst SENDER_NAME = 'Ryan'; // <-- EDIT: your name as it should appear in emails\nconst CALENDLY_URL = 'https://calendly.com/ryan-modernflowai/30min';\n\nconst system = `You are ${SENDER_NAME}, founder of ModernFlow AI, a done-for-you AI automation agency for service businesses (contractors, plumbers, HVAC, electricians, roofers, landscapers).\\n\\nWhat ModernFlow AI does for clients:\\n- 24/7 AI assistant that answers calls/texts so missed calls stop turning into lost jobs\\n- Automated booking system that fills the calendar without back-and-forth\\n- CRM + follow-up automation so no lead ever falls through the cracks\\n- Review automation that builds a 5-star reputation on autopilot\\n\\nWrite a COLD OUTREACH email to the lead described by the user. Rules:\\n- 70 to 110 words, plain text, no HTML, no bullet points\\n- Personalize the first line to their specific company, trade, and location -- it must NOT feel templated\\n- Lead with ONE concrete pain point for their trade (e.g. missed calls during jobs = lost revenue)\\n- One soft CTA: offer a free 30-minute strategy call and include this exact link once: ${CALENDLY_URL}\\n- No spammy words (free money, guarantee, act now), no exclamation marks, no emojis\\n- Subject line: under 6 words, lowercase-casual, specific to them, no clickbait\\n- Sign off with just the name ${SENDER_NAME}, ModernFlow AI`;\n\nconst userMsg = `Lead:\\n- Name: ${lead.first_name} ${lead.last_name}\\n- Title: ${lead.title}\\n- Company: ${lead.company}\\n- Industry: ${lead.industry}\\n- Location: ${lead.city}, ${lead.state}\\n- Website: ${lead.website}\\n\\nWrite the outreach email now.`;\n\nreturn [{\n  json: {\n    model: 'claude-opus-4-8',\n    max_tokens: 2000,\n    system,\n    messages: [{ role: 'user', content: userMsg }],\n    output_config: {\n      format: {\n        type: 'json_schema',\n        schema: {\n          type: 'object',\n          properties: {\n            subject: { type: 'string', description: 'Email subject line' },\n            body: { type: 'string', description: 'Plain-text email body including signature' }\n          },\n          required: ['subject', 'body'],\n          additionalProperties: false\n        }\n      }\n    }\n  }\n}];"
+      }
+    },
+    {
+      "id": "claude-write",
+      "name": "Claude — Write Email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 150],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse-email",
+      "name": "Parse Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 150],
+      "parameters": {
+        "jsCode": "const res = $input.first().json;\nif (res.stop_reason === 'refusal') {\n  throw new Error('Claude declined to write this email — check the lead data.');\n}\nconst textBlock = (res.content || []).find(b => b.type === 'text');\nif (!textBlock) throw new Error('No text block in Claude response');\nconst email = JSON.parse(textBlock.text);\nconst lead = $('Lead Loop').first().json;\nreturn [{ json: { ...lead, subject: email.subject, body: email.body } }];"
+      }
+    },
+    {
+      "id": "gmail-send",
+      "name": "Send via Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1400, 150],
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    },
+    {
+      "id": "prepare-update",
+      "name": "Prepare Sheet Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1600, 150],
+      "parameters": {
+        "jsCode": "const sent = $input.first().json;\nconst lead = $('Parse Email').first().json;\nreturn [{\n  json: {\n    email: lead.email,\n    status: 'CONTACTED',\n    thread_id: sent.threadId || '',\n    last_contact_at: new Date().toISOString(),\n    notes: 'Outreach sent: ' + lead.subject\n  }\n}];"
+      }
+    },
+    {
+      "id": "sheets-update",
+      "name": "Mark Lead CONTACTED",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1800, 150],
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["email"],
+          "schema": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "wait",
+      "name": "Human-Pace Delay",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [2000, 150],
+      "parameters": {
+        "amount": 90,
+        "unit": "seconds"
+      }
+    }
+  ],
+  "connections": {
+    "Hourly (Business Hours)": {
+      "main": [[{ "node": "Get NEW Leads", "type": "main", "index": 0 }]]
+    },
+    "Get NEW Leads": {
+      "main": [[{ "node": "Limit Batch (Deliverability)", "type": "main", "index": 0 }]]
+    },
+    "Limit Batch (Deliverability)": {
+      "main": [[{ "node": "Lead Loop", "type": "main", "index": 0 }]]
+    },
+    "Lead Loop": {
+      "main": [
+        [],
+        [{ "node": "Build Claude Request", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build Claude Request": {
+      "main": [[{ "node": "Claude — Write Email", "type": "main", "index": 0 }]]
+    },
+    "Claude — Write Email": {
+      "main": [[{ "node": "Parse Email", "type": "main", "index": 0 }]]
+    },
+    "Parse Email": {
+      "main": [[{ "node": "Send via Gmail", "type": "main", "index": 0 }]]
+    },
+    "Send via Gmail": {
+      "main": [[{ "node": "Prepare Sheet Update", "type": "main", "index": 0 }]]
+    },
+    "Prepare Sheet Update": {
+      "main": [[{ "node": "Mark Lead CONTACTED", "type": "main", "index": 0 }]]
+    },
+    "Mark Lead CONTACTED": {
+      "main": [[{ "node": "Human-Pace Delay", "type": "main", "index": 0 }]]
+    },
+    "Human-Pace Delay": {
+      "main": [[{ "node": "Lead Loop", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
