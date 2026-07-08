@@ -101,6 +101,10 @@ jspm_packages/
 tmp/
 temp/
 
+# B.L.A.S.T. ephemeral workbench (intermediates only, never deliverables)
+/.tmp/*
+!/.tmp/.gitkeep
+
 # Database
 *.db
 *.sqlite

@@ -155,6 +155,14 @@ For multi-step tasks, state a brief plan, each step paired with how you'll verif
 Strong success criteria let you loop independently; weak criteria ("make it work")
 require constant clarification.
 
+## B.L.A.S.T. course workspace
+
+The automation-business course Darius follows uses its own operating protocol
+(B.L.A.S.T. + A.N.T.) with workspace dirs `memory/`, `architecture/`, `execution/`,
+and `.tmp/`. That protocol is documented in [`docs/blast-protocol.md`](docs/blast-protocol.md)
+and applies **only** when working on course builds ("bricks") in those directories —
+the playbook above governs everything else.
+
 ## Quick index
 
 - Process SOPs: `docs/sops/`
