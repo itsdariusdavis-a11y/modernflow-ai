@@ -1,0 +1,282 @@
+{
+  "name": "ServiceTitan → SMS + Email — Post-Job Follow-Up (Template v2)",
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "ServiceTitan Job Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [200, 400],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "servicetitan/job-complete",
+        "responseMode": "onReceived",
+        "multipleMethods": false,
+        "options": {}
+      },
+      "notes": "ServiceTitan webhook subscription posts Job.Completed events here. Configure in ServiceTitan: Settings → Integrations → Webhooks."
+    },
+    {
+      "id": "n2",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [420, 400],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "tenantId", "type": "string", "value": "={{ $env.ST_TENANT_ID }}" },
+            { "id": "2", "name": "appKey", "type": "string", "value": "={{ $env.ST_APP_KEY }}" },
+            { "id": "3", "name": "clientId", "type": "string", "value": "={{ $env.ST_CLIENT_ID }}" },
+            { "id": "4", "name": "clientSecret", "type": "string", "value": "={{ $env.ST_CLIENT_SECRET }}" },
+            { "id": "5", "name": "stBaseUrl", "type": "string", "value": "https://api-integration.servicetitan.io" },
+            { "id": "6", "name": "stAuthUrl", "type": "string", "value": "https://auth-integration.servicetitan.io/connect/token" },
+            { "id": "7", "name": "twilioFromNumber", "type": "string", "value": "={{ $env.TWILIO_FROM_NUMBER }}" },
+            { "id": "8", "name": "resendApiKey", "type": "string", "value": "={{ $env.RESEND_API_KEY }}" },
+            { "id": "9", "name": "resendFromEmail", "type": "string", "value": "={{ $env.RESEND_FROM_EMAIL }}" },
+            { "id": "10", "name": "ownerNotifyEmail", "type": "string", "value": "={{ $env.OWNER_NOTIFY_EMAIL }}" },
+            { "id": "11", "name": "clientName", "type": "string", "value": "={{ $env.CLIENT_BUSINESS_NAME }}" },
+            { "id": "12", "name": "reviewLink", "type": "string", "value": "={{ $env.CLIENT_REVIEW_LINK }}" },
+            { "id": "13", "name": "jobId", "type": "string", "value": "={{ $json.body.jobId ?? $json.body.id }}" }
+          ]
+        },
+        "options": {}
+      },
+      "notes": "All per-client config from env vars. Swap stBaseUrl/stAuthUrl from -integration.servicetitan.io to .servicetitan.io for production."
+    },
+    {
+      "id": "n3",
+      "name": "ServiceTitan OAuth Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [640, 400],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.stAuthUrl }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Content-Type", "value": "application/x-www-form-urlencoded" }] },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            { "name": "grant_type", "value": "client_credentials" },
+            { "name": "client_id", "value": "={{ $json.clientId }}" },
+            { "name": "client_secret", "value": "={{ $json.clientSecret }}" }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Carry Token + Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [860, 400],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "accessToken", "type": "string", "value": "={{ $json.access_token }}" },
+            { "id": "2", "name": "tenantId", "type": "string", "value": "={{ $('Config').item.json.tenantId }}" },
+            { "id": "3", "name": "appKey", "type": "string", "value": "={{ $('Config').item.json.appKey }}" },
+            { "id": "4", "name": "stBaseUrl", "type": "string", "value": "={{ $('Config').item.json.stBaseUrl }}" },
+            { "id": "5", "name": "twilioFromNumber", "type": "string", "value": "={{ $('Config').item.json.twilioFromNumber }}" },
+            { "id": "6", "name": "resendApiKey", "type": "string", "value": "={{ $('Config').item.json.resendApiKey }}" },
+            { "id": "7", "name": "resendFromEmail", "type": "string", "value": "={{ $('Config').item.json.resendFromEmail }}" },
+            { "id": "8", "name": "ownerNotifyEmail", "type": "string", "value": "={{ $('Config').item.json.ownerNotifyEmail }}" },
+            { "id": "9", "name": "clientName", "type": "string", "value": "={{ $('Config').item.json.clientName }}" },
+            { "id": "10", "name": "reviewLink", "type": "string", "value": "={{ $('Config').item.json.reviewLink }}" },
+            { "id": "11", "name": "jobId", "type": "string", "value": "={{ $('Config').item.json.jobId }}" }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n5",
+      "name": "GET Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1080, 400],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.stBaseUrl }}/jpm/v2/tenant/{{ $json.tenantId }}/jobs/{{ $json.jobId }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $json.appKey }}" }
+          ]
+        },
+        "sendBody": false,
+        "options": {}
+      }
+    },
+    {
+      "id": "n6",
+      "name": "GET Customer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1300, 400],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $('Carry Token + Config').item.json.stBaseUrl }}/crm/v2/tenant/{{ $('Carry Token + Config').item.json.tenantId }}/customers/{{ $json.customerId }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Token + Config').item.json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $('Carry Token + Config').item.json.appKey }}" }
+          ]
+        },
+        "sendBody": false,
+        "options": {}
+      }
+    },
+    {
+      "id": "n7",
+      "name": "Eligible?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1520, 400],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "combinator": "and",
+          "conditions": [
+            { "id": "c1", "leftValue": "={{ $('GET Job').item.json.jobStatus }}", "rightValue": "Completed", "operator": { "type": "string", "operation": "equals" } },
+            { "id": "c2", "leftValue": "={{ $json.doNotMail ?? false }}", "rightValue": false, "operator": { "type": "boolean", "operation": "equals" } }
+          ]
+        },
+        "options": {}
+      },
+      "notes": "Gate: Job is Completed AND customer hasn't opted out. Extend with hours-of-day and excluded job types per client."
+    },
+    {
+      "id": "n8",
+      "name": "Wait 2 Hours",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1740, 300],
+      "parameters": { "resume": "timeInterval", "amount": 2, "unit": "hours" },
+      "notes": "Let the tech leave the driveway before pinging the customer."
+    },
+    {
+      "id": "n9",
+      "name": "Build Messages",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1960, 300],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            { "id": "1", "name": "firstName", "type": "string", "value": "={{ $('GET Customer').item.json.firstName ?? ($('GET Customer').item.json.name ? $('GET Customer').item.json.name.split(' ')[0] : 'there') }}" },
+            { "id": "2", "name": "phone", "type": "string", "value": "={{ ($('GET Customer').item.json.contacts && $('GET Customer').item.json.contacts.find(c => c.type === 'MobilePhone'))?.value ?? '' }}" },
+            { "id": "3", "name": "email", "type": "string", "value": "={{ $('GET Customer').item.json.email ?? '' }}" },
+            { "id": "4", "name": "customerId", "type": "string", "value": "={{ $('GET Customer').item.json.id }}" },
+            { "id": "5", "name": "smsBody", "type": "string", "value": "=Hi {{ $('GET Customer').item.json.firstName ?? 'there' }}, thanks for choosing {{ $('Carry Token + Config').item.json.clientName }}! If {{ $('GET Job').item.json.leadTechnicianName ?? 'our team' }} earned 5 stars, would you mind sharing? {{ $('Carry Token + Config').item.json.reviewLink }} — Reply STOP to opt out." },
+            { "id": "6", "name": "emailSubject", "type": "string", "value": "=Thanks from {{ $('Carry Token + Config').item.json.clientName }} — quick favor?" },
+            { "id": "7", "name": "emailHtml", "type": "string", "value": "=<p>Hi {{ $('GET Customer').item.json.firstName ?? 'there' }},</p><p>Thanks for letting <strong>{{ $('Carry Token + Config').item.json.clientName }}</strong> take care of your {{ $('GET Job').item.json.jobTypeName ?? 'service' }} today.</p><p>If {{ $('GET Job').item.json.leadTechnicianName ?? 'our team' }} earned a 5-star experience, would you mind taking 30 seconds to share that?</p><p><a href=\"{{ $('Carry Token + Config').item.json.reviewLink }}\" style=\"background:#10b981;color:#fff;padding:12px 20px;text-decoration:none;border-radius:6px;display:inline-block;\">Leave a quick review</a></p><p>Either way — thank you for the trust.</p><p>— The {{ $('Carry Token + Config').item.json.clientName }} team</p>" }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n10",
+      "name": "Send SMS (Twilio)",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [2180, 240],
+      "parameters": {
+        "resource": "sms",
+        "operation": "send",
+        "from": "={{ $('Carry Token + Config').item.json.twilioFromNumber }}",
+        "to": "={{ $json.phone }}",
+        "message": "={{ $json.smsBody }}",
+        "options": {}
+      },
+      "continueOnFail": true,
+      "notes": "Add Twilio credentials in n8n: Credentials → New → Twilio API. Sends only if customer has a mobile number."
+    },
+    {
+      "id": "n11",
+      "name": "Send Email (Resend)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2180, 380],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Token + Config').item.json.resendApiKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ from: $('Carry Token + Config').item.json.resendFromEmail, to: [$json.email], subject: $json.emailSubject, html: $json.emailHtml }) }}",
+        "options": {}
+      },
+      "continueOnFail": true,
+      "notes": "Resend HTTP API. Sender domain must be verified in Resend with SPF/DKIM/DMARC."
+    },
+    {
+      "id": "n12",
+      "name": "Log Note to ServiceTitan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2400, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Carry Token + Config').item.json.stBaseUrl }}/crm/v2/tenant/{{ $('Carry Token + Config').item.json.tenantId }}/customers/{{ $('Build Messages').item.json.customerId }}/notes",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Carry Token + Config').item.json.accessToken }}" },
+            { "name": "ST-App-Key", "value": "={{ $('Carry Token + Config').item.json.appKey }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: 'ModernFlow Automation: post-job follow-up sent (SMS + email + review request) for job ' + $('Carry Token + Config').item.json.jobId, pinToTop: false }) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "ServiceTitan Job Webhook": { "main": [[{ "node": "Config", "type": "main", "index": 0 }]] },
+    "Config": { "main": [[{ "node": "ServiceTitan OAuth Token", "type": "main", "index": 0 }]] },
+    "ServiceTitan OAuth Token": { "main": [[{ "node": "Carry Token + Config", "type": "main", "index": 0 }]] },
+    "Carry Token + Config": { "main": [[{ "node": "GET Job", "type": "main", "index": 0 }]] },
+    "GET Job": { "main": [[{ "node": "GET Customer", "type": "main", "index": 0 }]] },
+    "GET Customer": { "main": [[{ "node": "Eligible?", "type": "main", "index": 0 }]] },
+    "Eligible?": { "main": [[{ "node": "Wait 2 Hours", "type": "main", "index": 0 }], []] },
+    "Wait 2 Hours": { "main": [[{ "node": "Build Messages", "type": "main", "index": 0 }]] },
+    "Build Messages": { "main": [[{ "node": "Send SMS (Twilio)", "type": "main", "index": 0 }, { "node": "Send Email (Resend)", "type": "main", "index": 0 }]] },
+    "Send SMS (Twilio)": { "main": [[{ "node": "Log Note to ServiceTitan", "type": "main", "index": 0 }]] },
+    "Send Email (Resend)": { "main": [[{ "node": "Log Note to ServiceTitan", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "timezone": "America/New_York"
+  }
+}
