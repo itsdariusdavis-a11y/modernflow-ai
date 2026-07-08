@@ -35,15 +35,17 @@ Pricing rationale and market comps: [`PRICING-AND-RESEARCH.md`](PRICING-AND-RESE
 
 ## Files in this directory
 
-| File                      | Purpose                                                         |
-| ------------------------- | --------------------------------------------------------------- |
-| `README.md`               | This file — product definition                                  |
-| `PRICING-AND-RESEARCH.md` | Market comps, pricing rationale, revenue math                   |
-| `LAUNCH-CHECKLIST.md`     | Step-by-step: build zips → Lemon Squeezy → live links → traffic |
-| `build-packages.sh`       | Assembles the three tier zips into `dist/` from repo sources    |
-| `content/START-HERE.md`   | The buyer's entry point, included in every zip                  |
-| `content/LICENSE.md`      | Single-operator commercial license, included in every zip       |
-| `content/SALES-COPY.md`   | Ready-to-paste listing copy for each tier                       |
+| File                       | Purpose                                                                 |
+| -------------------------- | ----------------------------------------------------------------------- |
+| `README.md`                | This file — product definition                                          |
+| `PRICING-AND-RESEARCH.md`  | Market comps, pricing rationale, revenue math                           |
+| `LAUNCH-CHECKLIST.md`      | Step-by-step: build zips → Lemon Squeezy → live links → traffic         |
+| `MARKETING-PLAN-30-DAY.md` | 30-day go-to-market: channels, calendar, paid test, KPIs                |
+| `creatives/`               | Ready-to-shoot video scripts, X posts/threads, IG carousels, ad prompts |
+| `build-packages.sh`        | Assembles the three tier zips into `dist/` from repo sources            |
+| `content/START-HERE.md`    | The buyer's entry point, included in every zip                          |
+| `content/LICENSE.md`       | Single-operator commercial license, included in every zip               |
+| `content/SALES-COPY.md`    | Ready-to-paste listing copy for each tier                               |
 
 The marketing site has a matching sales page at `/toolkit`
 (`client/src/pages/Toolkit.tsx`) — update its `CHECKOUT_URLS` once the Lemon Squeezy
