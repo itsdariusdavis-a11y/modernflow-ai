@@ -18,10 +18,17 @@
         "source": "github",
         "repo": "wshobson/agents"
       }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+      }
     }
   },
   "enabledPlugins": {
     "superpowers@superpowers-marketplace": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
     "document-skills@anthropic-agent-skills": true,
     "example-skills@anthropic-agent-skills": true
   },

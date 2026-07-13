@@ -10,11 +10,12 @@ repositories (star counts approximate at time of research).
 
 ## Installed and enabled
 
-| Plugin            | Marketplace (repo)                                                                             | Why                                                                                                                                                                                             |
-| ----------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `superpowers`     | `superpowers-marketplace` ([obra/superpowers](https://github.com/obra/superpowers), ~94k ⭐)   | The most popular community skills library: TDD, systematic debugging, planning, and collaboration skills that load on demand. Complements our Karpathy-derived working principles in CLAUDE.md. |
-| `document-skills` | `anthropic-agent-skills` ([anthropics/skills](https://github.com/anthropics/skills), official) | Anthropic's official Excel/Word/PowerPoint/PDF creation skills — directly useful for proposals, reports, and client deliverables.                                                               |
-| `example-skills`  | `anthropic-agent-skills` (same)                                                                | Official skill-creator, MCP-builder, and webapp-testing skills. This repo's operating layer is built on skills, so skill-creator earns its keep.                                                |
+| Plugin            | Marketplace (repo)                                                                                                                | Why                                                                                                                                                                                                                                                                                 |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `superpowers`     | `superpowers-marketplace` ([obra/superpowers](https://github.com/obra/superpowers), ~94k ⭐)                                      | The most popular community skills library: TDD, systematic debugging, planning, and collaboration skills that load on demand. Complements our Karpathy-derived working principles in CLAUDE.md.                                                                                     |
+| `document-skills` | `anthropic-agent-skills` ([anthropics/skills](https://github.com/anthropics/skills), official)                                    | Anthropic's official Excel/Word/PowerPoint/PDF creation skills — directly useful for proposals, reports, and client deliverables.                                                                                                                                                   |
+| `example-skills`  | `anthropic-agent-skills` (same)                                                                                                   | Official skill-creator, MCP-builder, and webapp-testing skills. This repo's operating layer is built on skills, so skill-creator earns its keep.                                                                                                                                    |
+| `ui-ux-pro-max`   | `ui-ux-pro-max-skill` ([nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), ~102k ⭐) | The most popular community UI/UX design skill: searchable databases of styles, palettes, and typography for website building. **Our brand system in CLAUDE.md still wins** — use this for structure, layout, and UX reasoning, not to drift the emerald/teal/cyan palette or fonts. |
 
 ## Registered for browsing (nothing enabled by default)
 
@@ -40,6 +41,10 @@ browse it with `/plugin` without any setup here.
   Good place to shop for future additions.
 - **davila7/claude-code-templates** (aitmpl.com) — installs via its own `npx` CLI
   rather than the plugin system; redundant with the marketplaces above.
+- **Leonxlnx/taste-skill** (~59k ⭐) and **pbakaus/impeccable** (~44k ⭐) — strong
+  design skills, but they overlap with ui-ux-pro-max, and stacking multiple
+  opinionated design skills gives conflicting guidance. Swap one in via
+  `enabledPlugins` if ui-ux-pro-max doesn't fit.
 
 ## Ground rules
 
