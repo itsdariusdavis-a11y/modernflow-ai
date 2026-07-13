@@ -29,12 +29,7 @@ const plans = [
     setupFee: "$2,000",
     monthlyFee: "$297/mo",
     popular: true,
-    features: [
-      "5-Page Website",
-      "Booking System",
-      "Payments",
-      "Auto Reviews",
-    ],
+    features: ["5-Page Website", "Booking System", "Payments", "Auto Reviews"],
     cta: "Get Started",
     href: "#book",
   },
@@ -58,7 +53,10 @@ const plans = [
 export default function Pricing() {
   const { openCalendly } = useCalendly();
   return (
-    <section id="pricing" className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]">
+    <section
+      id="pricing"
+      className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]"
+    >
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -72,11 +70,11 @@ export default function Pricing() {
             className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            Choose Your{" "}
-            <span className="gradient-text">Growth Plan.</span>
+            Choose Your <span className="gradient-text">Growth Plan.</span>
           </h2>
           <p className="text-[oklch(0.65_0.02_155.83)] mt-4 max-w-2xl mx-auto">
-            Never Miss Another Customer — Capture Leads Around the Clock. Every plan includes a one-time setup fee and a monthly platform fee.
+            Never Miss Another Customer — Capture Leads Around the Clock. Every
+            plan includes a one-time setup fee and a monthly platform fee.
           </p>
         </motion.div>
 
@@ -96,7 +94,10 @@ export default function Pricing() {
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-[#00C896] to-[#00B4D8] text-[oklch(0.145_0.014_155.83)] text-xs font-bold px-4 py-1.5 rounded-full" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  <span
+                    className="bg-gradient-to-r from-[#10b981] to-[#06b6d4] text-[oklch(0.145_0.014_155.83)] text-xs font-bold px-4 py-1.5 rounded-full"
+                    style={{ fontFamily: "'Outfit', sans-serif" }}
+                  >
                     Most Popular
                   </span>
                 </div>
@@ -109,7 +110,9 @@ export default function Pricing() {
                 >
                   {plan.name}
                 </h3>
-                <p className="text-[oklch(0.55_0.02_155.83)] text-sm">{plan.subtitle}</p>
+                <p className="text-[oklch(0.55_0.02_155.83)] text-sm">
+                  {plan.subtitle}
+                </p>
               </div>
 
               <div className="mb-6">
@@ -120,20 +123,27 @@ export default function Pricing() {
                   >
                     {plan.setupFee}
                   </span>
-                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">Setup</span>
+                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">
+                    Setup
+                  </span>
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-lg font-semibold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  <span
+                    className="text-lg font-semibold text-white"
+                    style={{ fontFamily: "'Outfit', sans-serif" }}
+                  >
                     {plan.monthlyFee}
                   </span>
-                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">per month</span>
+                  <span className="text-[oklch(0.55_0.02_155.83)] text-sm">
+                    per month
+                  </span>
                 </div>
               </div>
 
               <ul className="space-y-3 mb-8 flex-1">
-                {plan.features.map((feature) => (
+                {plan.features.map(feature => (
                   <li key={feature} className="flex items-start gap-3 text-sm">
-                    <Check className="w-4 h-4 text-[#00C896] shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-[#10b981] shrink-0 mt-0.5" />
                     <span className="text-white/80">{feature}</span>
                   </li>
                 ))}
@@ -141,13 +151,56 @@ export default function Pricing() {
 
               <button
                 onClick={openCalendly}
-                className={plan.popular ? "cta-button justify-center" : "cta-button-outline justify-center"}
+                className={
+                  plan.popular
+                    ? "cta-button justify-center"
+                    : "cta-button-outline justify-center"
+                }
               >
                 {plan.cta} <ArrowRight className="w-4 h-4" />
               </button>
             </motion.div>
           ))}
         </div>
+
+        {/* Every plan includes + risk reversal */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.35, delay: 0.1 }}
+          className="max-w-5xl mx-auto mt-10"
+        >
+          <div className="glass-card px-6 py-5 flex flex-col md:flex-row items-center justify-center gap-x-8 gap-y-3 text-sm">
+            <p className="section-label !text-xs shrink-0">
+              // Every plan includes
+            </p>
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+              {[
+                "Full setup & training",
+                "Ongoing support",
+                "You own your accounts & data",
+                "No long-term contract",
+              ].map(item => (
+                <span
+                  key={item}
+                  className="flex items-center gap-2 text-white/80"
+                >
+                  <Check className="w-4 h-4 text-[#10b981] shrink-0" />
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <p className="text-center text-[oklch(0.55_0.02_155.83)] text-sm mt-5">
+            Backed by a{" "}
+            <span className="text-[#10b981] font-medium">
+              30-day money-back guarantee
+            </span>{" "}
+            — if you don't see value in the system we build, you get a full
+            refund.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

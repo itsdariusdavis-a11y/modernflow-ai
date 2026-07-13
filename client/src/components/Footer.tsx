@@ -89,20 +89,20 @@ export default function Footer() {
               </span>
             </a>
             <p className="text-[oklch(0.55_0.02_155.83)] text-sm leading-relaxed mb-6">
-              AI-powered automation systems for service businesses. Capture more leads,
-              close more jobs, grow faster.
+              AI-powered automation systems for service businesses. Capture more
+              leads, close more jobs, grow faster.
             </p>
 
             {/* Social Media Icons */}
             <div className="flex items-center gap-3">
-              {socialLinks.map((social) => (
+              {socialLinks.map(social => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[oklch(0.55_0.02_155.83)] hover:text-white hover:bg-white/10 hover:border-[#00C896]/30 transition-all duration-200"
+                  className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[oklch(0.55_0.02_155.83)] hover:text-white hover:bg-white/10 hover:border-[#10b981]/30 transition-all duration-200"
                   title={social.label}
                 >
                   {social.icon}
@@ -120,11 +120,11 @@ export default function Footer() {
               Services
             </h4>
             <ul className="space-y-2.5">
-              {footerLinks.services.map((link) => (
+              {footerLinks.services.map(link => (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm"
+                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#10b981] transition-colors text-sm"
                   >
                     {link.label}
                   </a>
@@ -142,11 +142,11 @@ export default function Footer() {
               Company
             </h4>
             <ul className="space-y-2.5">
-              {footerLinks.company.map((link) => (
+              {footerLinks.company.map(link => (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm"
+                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#10b981] transition-colors text-sm"
                   >
                     {link.label}
                   </a>
@@ -164,11 +164,11 @@ export default function Footer() {
               Legal
             </h4>
             <ul className="space-y-2.5">
-              {footerLinks.legal.map((link) => (
+              {footerLinks.legal.map(link => (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm"
+                    className="text-[oklch(0.55_0.02_155.83)] hover:text-[#10b981] transition-colors text-sm"
                   >
                     {link.label}
                   </a>
@@ -181,16 +181,17 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-[oklch(0.696_0.17_162.48/8%)] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[oklch(0.45_0.02_155.83)] text-sm">
-            &copy; {new Date().getFullYear()} ModernFlow AI. All rights reserved.
+            &copy; {new Date().getFullYear()} ModernFlow AI. All rights
+            reserved.
           </p>
           <div className="flex items-center gap-5">
-            {socialLinks.map((social) => (
+            {socialLinks.map(social => (
               <a
                 key={social.label}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[oklch(0.45_0.02_155.83)] hover:text-[#00C896] transition-colors text-xs"
+                className="text-[oklch(0.45_0.02_155.83)] hover:text-[#10b981] transition-colors text-xs"
               >
                 {social.label}
               </a>
