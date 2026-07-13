@@ -14,12 +14,12 @@ $2k+$297/mo, Elite $3k+$697/mo).
 This repository holds the ModernFlow AI marketing site plus the operating layer for
 the agency:
 
-| Area | What it is | Where |
-| --- | --- | --- |
-| Marketing site | React 19 + tRPC + Express site that sells the agency | `client/`, `server/`, `shared/` |
-| Operating layer | Agents, skills, and SOPs that run the business | `.claude/`, `docs/sops/` |
-| Service lines | UGC creative engine, brand photo generation, automations | `ugc-agency/`, `brands/`, `automations/`, `automation/` |
-| Company OS | Solo-operator system docs | `company-os/` |
+| Area            | What it is                                               | Where                                                   |
+| --------------- | -------------------------------------------------------- | ------------------------------------------------------- |
+| Marketing site  | React 19 + tRPC + Express site that sells the agency     | `client/`, `server/`, `shared/`                         |
+| Operating layer | Agents, skills, and SOPs that run the business           | `.claude/`, `docs/sops/`                                |
+| Service lines   | UGC creative engine, brand photo generation, automations | `ugc-agency/`, `brands/`, `automations/`, `automation/` |
+| Company OS      | Solo-operator system docs                                | `company-os/`                                           |
 
 > `baby-walking-tracker/` is an independent sub-app with its own package.json —
 > don't conflate it with the main site. (A former `sports/` MLB test app was
@@ -60,18 +60,18 @@ specialists. For a single-process request, invoke that specialist (or its skill)
 
 ### The processes and who owns them
 
-| Process | Subagent | Primary systems |
-| --- | --- | --- |
-| Lead generation / prospecting | `lead-gen-agent` | Apollo |
-| Sales outreach / sequences | `outreach-agent` | Apollo campaigns, Gmail |
-| CRM + client onboarding | `crm-onboarding-agent` | GoHighLevel, Gmail, Drive |
-| Booking + scheduling | `scheduling-agent` | Google Calendar, Calendly |
-| Meeting intelligence | `meeting-intel-agent` | Fireflies |
-| Content + marketing | `content-marketing-agent` | Gamma, media generation, Slack |
-| Web + engineering | `web-eng-agent` | This repo, Netlify, GitHub |
-| Internal comms | `comms-agent` | Slack, Gmail |
-| Reporting + KPIs | `reporting-agent` | All of the above (read-only) |
-| **Orchestration** | `modernflow-ops` | Delegates to all of the above |
+| Process                       | Subagent                  | Primary systems                |
+| ----------------------------- | ------------------------- | ------------------------------ |
+| Lead generation / prospecting | `lead-gen-agent`          | Apollo                         |
+| Sales outreach / sequences    | `outreach-agent`          | Apollo campaigns, Gmail        |
+| CRM + client onboarding       | `crm-onboarding-agent`    | GoHighLevel, Gmail, Drive      |
+| Booking + scheduling          | `scheduling-agent`        | Google Calendar, Calendly      |
+| Meeting intelligence          | `meeting-intel-agent`     | Fireflies                      |
+| Content + marketing           | `content-marketing-agent` | Gamma, media generation, Slack |
+| Web + engineering             | `web-eng-agent`           | This repo, Netlify, GitHub     |
+| Internal comms                | `comms-agent`             | Slack, Gmail                   |
+| Reporting + KPIs              | `reporting-agent`         | All of the above (read-only)   |
+| **Orchestration**             | `modernflow-ops`          | Delegates to all of the above  |
 
 ### Delegation policy (orchestrator/worker tiering)
 
@@ -166,6 +166,8 @@ the playbook above governs everything else.
 - Process SOPs: `docs/sops/`
 - Agents: `.claude/agents/`
 - Skills (run with `/<skill-name>` or auto-invoked): `.claude/skills/`
+- Installed Claude Code plugins/marketplaces: `.claude/settings.json` — rationale in
+  [`docs/claude-code-plugins.md`](docs/claude-code-plugins.md)
 - UGC creative engine: `ugc-agency/`
 - Brand photo generation: `brands/`
 - Automations (n8n, ServiceTitan follow-up): `automation/`, `automations/`
