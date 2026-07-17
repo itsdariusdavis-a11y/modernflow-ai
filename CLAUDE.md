@@ -182,6 +182,9 @@ the playbook above governs everything else.
 
 - Turnaround plan (canonical, weekly-reviewed): `docs/ACTION-PLAN.md`
 - GHL delivery guide (step-by-step + prompts): `docs/GHL-EXECUTION-GUIDE.md`
+- Integration map (GHL-first architecture): `docs/INTEGRATION-MAP.md`
+- Daily ops system (directive emails, wins dashboard, routines): `docs/DAILY-OPS-SYSTEM.md`
+- Wins log (append-only, feeds the dashboard): `docs/WINS-LOG.md`
 - Tool stack playbook (Higgsfield, Gamma, Fireflies…): `docs/TOOLSTACK-PLAYBOOK.md`
 - Process SOPs: `docs/sops/`
 - Agents: `.claude/agents/`
