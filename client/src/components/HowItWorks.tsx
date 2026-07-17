@@ -11,28 +11,35 @@ const steps = [
   {
     number: "01",
     title: "Free Strategy Call",
-    description: "We learn about your business, your goals, and where leads are falling through the cracks. No pressure, no pitch — just a conversation.",
+    description:
+      "We learn about your business, your goals, and where leads are falling through the cracks. No pressure, no pitch — just a conversation.",
   },
   {
     number: "02",
     title: "Custom System Build",
-    description: "We design and build your complete automation system — CRM, AI assistants, follow-up sequences, and integrations. Everything tailored to your business.",
+    description:
+      "We design and build your complete automation system — CRM, AI assistants, follow-up sequences, and integrations. Everything tailored to your business.",
   },
   {
     number: "03",
     title: "Launch & Optimize",
-    description: "We launch your system, train your team, and monitor performance. We optimize continuously to ensure maximum lead conversion.",
+    description:
+      "We launch your system, train your team, and monitor performance. We optimize continuously to ensure maximum lead conversion.",
   },
   {
     number: "04",
     title: "Scale & Grow",
-    description: "With your system running 24/7, you focus on what you do best — delivering great service. We handle the rest and help you scale.",
+    description:
+      "With your system running 24/7, you focus on what you do best — delivering great service. We handle the rest and help you scale.",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]">
+    <section
+      id="how-it-works"
+      className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]"
+    >
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -50,38 +57,50 @@ export default function HowItWorks() {
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, i) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.35, delay: i * 0.05 }}
-              className="glass-card p-7 relative"
-            >
-              <span
-                className="text-5xl font-bold gradient-text opacity-30 absolute top-4 right-6"
-                style={{ fontFamily: "'Outfit', sans-serif" }}
+        <div className="relative">
+          {/* Timeline connector across the steps (desktop only) */}
+          <div
+            className="hidden lg:block absolute top-12 left-[10%] right-[10%] h-px bg-gradient-to-r from-[#10b981]/50 via-[#14b8a6]/50 to-[#06b6d4]/50"
+            aria-hidden="true"
+          />
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+            {steps.map((step, i) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.35, delay: i * 0.05 }}
+                className="glass-card p-7 relative"
               >
-                {step.number}
-              </span>
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-5 ${i % 2 === 0 ? 'bg-[#00C896]/10' : 'bg-[#00B4D8]/10'}`}>
-                <span className={`font-bold text-sm ${i % 2 === 0 ? 'text-[#00C896]' : 'text-[#00B4D8]'}`} style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <span
+                  className="text-5xl font-bold gradient-text opacity-30 absolute top-4 right-6"
+                  style={{ fontFamily: "'Outfit', sans-serif" }}
+                >
                   {step.number}
                 </span>
-              </div>
-              <h3
-                className="text-lg font-semibold text-white mb-3"
-                style={{ fontFamily: "'Outfit', sans-serif" }}
-              >
-                {step.title}
-              </h3>
-              <p className="text-[oklch(0.65_0.02_155.83)] text-sm leading-relaxed">
-                {step.description}
-              </p>
-            </motion.div>
-          ))}
+                <div
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center mb-5 ${i % 2 === 0 ? "bg-[#10b981]/10" : "bg-[#06b6d4]/10"}`}
+                >
+                  <span
+                    className={`font-bold text-sm ${i % 2 === 0 ? "text-[#10b981]" : "text-[#06b6d4]"}`}
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    {step.number}
+                  </span>
+                </div>
+                <h3
+                  className="text-lg font-semibold text-white mb-3"
+                  style={{ fontFamily: "'Outfit', sans-serif" }}
+                >
+                  {step.title}
+                </h3>
+                <p className="text-[oklch(0.65_0.02_155.83)] text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         <motion.div

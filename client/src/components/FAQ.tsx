@@ -23,7 +23,7 @@ const faqItems = [
   },
   {
     q: "What if it doesn't work for my business?",
-    a: "We offer a 30-day money-back guarantee. If you don't see value in the system we build, you get a full refund. We've never had to issue one — but the guarantee is there because we're confident in what we deliver.",
+    a: "We offer a 30-day money-back guarantee. If you don't see value in the system we build, you get a full refund. The guarantee exists because we're confident in what we deliver — and because you shouldn't have to take a new agency's word for it.",
   },
   {
     q: "Do I own my accounts and data?",
@@ -49,7 +49,10 @@ const faqItems = [
 
 export default function FAQ() {
   return (
-    <section id="faq" className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]">
+    <section
+      id="faq"
+      className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]"
+    >
       <div className="container">
         <div className="max-w-3xl mx-auto">
           <motion.div
@@ -83,7 +86,7 @@ export default function FAQ() {
                   className="glass-card px-6 py-1 border-none data-[state=open]:border-[oklch(0.696_0.17_162.48/20%)]"
                 >
                   <AccordionTrigger
-                    className="text-left font-heading font-semibold text-white hover:text-[#00C896] hover:no-underline transition-colors py-5 text-base md:text-lg data-[state=open]:text-[#00C896]"
+                    className="text-left font-heading font-semibold text-white hover:text-[#10b981] hover:no-underline transition-colors py-5 text-base md:text-lg data-[state=open]:text-[#10b981]"
                     style={{ fontFamily: "'Outfit', sans-serif" }}
                   >
                     {item.q}

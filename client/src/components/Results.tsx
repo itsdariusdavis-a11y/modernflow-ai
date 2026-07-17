@@ -1,66 +1,42 @@
 /*
- * Design: Testimonial cards with star ratings and real headshot photos
- * Glass-card styling, 3 columns on desktop
- * Green accent stars, circular avatar photos
- * Font: Outfit headings, DM Sans body
+ * Design: Honest results section — what the system measures + founding-client offer
+ * Replaces placeholder testimonials: every number here is either an industry
+ * stat (cited) or a capability of the system we install. Real case studies
+ * slot in as founding clients go live.
+ * Font: Outfit headings, DM Sans body, JetBrains Mono labels
  */
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { PhoneCall, MessageSquare, Star, ArrowRight } from "lucide-react";
+import { useCalendly } from "@/hooks/useCalendly";
 
-const testimonials = [
+const reportMetrics = [
   {
-    name: "Mike Thompson",
-    role: "Owner, Thompson Electric",
-    location: "San Diego, CA",
-    quote: "We went from missing 40% of our leads to responding to every single one in under 2 minutes. Our revenue jumped 35% in the first quarter alone.",
-    stars: 5,
-    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-1-XGpvVk5WdGkYVwEfa4xnqS.webp",
+    icon: PhoneCall,
+    title: "Calls captured",
+    description:
+      "Every missed call gets an instant text-back. You see exactly how many would-be voicemails became conversations instead.",
   },
   {
-    name: "Maria Gonzalez",
-    role: "Owner, ClearFlow Plumbing",
-    location: "Austin, TX",
-    quote: "The AI assistant handles our after-hours calls perfectly. We're booking jobs at 11PM that we would have completely missed before. Game changer.",
-    stars: 5,
-    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-2-CiPERiD4q35kYpoBYpciNK.webp",
+    icon: MessageSquare,
+    title: "Leads responded to in under 5 minutes",
+    description:
+      "Speed-to-lead is the whole game — most businesses take hours. Your report shows response time on every single inquiry.",
   },
   {
-    name: "David Williams",
-    role: "Owner, Elite HVAC Solutions",
-    location: "Phoenix, AZ",
-    quote: "ModernFlow built us a system that runs itself. I spend zero time on follow-ups now, and our close rate went from 22% to 41% in 90 days.",
-    stars: 5,
-    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-3-LNdUf5zEVaGjtTf2c9hcQW.webp",
-  },
-  {
-    name: "Jennifer Walsh",
-    role: "Owner, Walsh Roofing Co.",
-    location: "Denver, CO",
-    quote: "The paid ads campaign they built generates 30+ qualified leads per week. Best marketing investment we've ever made. ROI was positive in week two.",
-    stars: 5,
-    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-4-GvUkNnscwNaV2tqbPyRA3n.webp",
-  },
-  {
-    name: "Kevin Nguyen",
-    role: "Owner, Nguyen Landscaping",
-    location: "Portland, OR",
-    quote: "Our Google reviews went from 47 to 180+ in six months. The automated review requests are a game-changer for our reputation and local SEO.",
-    stars: 5,
-    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-5-RikxRFDncEjKWDfE3ehhEc.webp",
-  },
-  {
-    name: "Robert Martinez",
-    role: "Owner, Martinez General Contracting",
-    location: "Los Angeles, CA",
-    quote: "I was skeptical about AI, but the results speak for themselves. We've doubled our monthly revenue since implementing ModernFlow's system.",
-    stars: 5,
-    photo: "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/testimonial-6-4PYJmsqb9ywuFKoBfNNirE.webp",
+    icon: Star,
+    title: "Reviews gained",
+    description:
+      "Automated review requests after every completed job. Watch your Google rating and review count climb month over month.",
   },
 ];
 
 export default function Results() {
+  const { openCalendly } = useCalendly();
   return (
-    <section id="results" className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]">
+    <section
+      id="results"
+      className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]"
+    >
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -69,51 +45,90 @@ export default function Results() {
           transition={{ duration: 0.35 }}
           className="text-center mb-14"
         >
-          <p className="section-label mb-4">// Real Results</p>
+          <p className="section-label mb-4">// Measurable Results</p>
           <h2
             className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            Contractors love{" "}
-            <span className="gradient-text">the results.</span>
+            You'll see the numbers{" "}
+            <span className="gradient-text">every month.</span>
           </h2>
+          <p className="text-[oklch(0.65_0.02_155.83)] mt-4 max-w-2xl mx-auto">
+            No vague promises. Every client gets a monthly report with three
+            numbers that either justify what you pay us — or don't. That's the
+            deal.
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.35, delay: i * 0.04 }}
-              className="glass-card p-7 flex flex-col"
-            >
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: t.stars }).map((_, j) => (
-                  <Star key={j} className="w-4 h-4 fill-[#00C896] text-[#00C896]" />
-                ))}
-              </div>
-              <p className="text-white/90 text-sm leading-relaxed mb-6 italic flex-1">
-                "{t.quote}"
-              </p>
-              <div className="flex items-center gap-3">
-                <img
-                  src={t.photo}
-                  alt={t.name}
-                  className="w-11 h-11 rounded-full object-cover object-top ring-2 ring-[#00C896]/20 flex-shrink-0"
-                />
-                <div>
-                  <p className="text-white font-semibold text-sm" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                    {t.name}
-                  </p>
-                  <p className="text-[oklch(0.55_0.02_155.83)] text-xs">{t.role}</p>
-                  <p className="text-[#00C896]/70 text-xs">{t.location}</p>
+        <div className="grid md:grid-cols-3 gap-5 mb-12">
+          {reportMetrics.map((metric, i) => {
+            const Icon = metric.icon;
+            return (
+              <motion.div
+                key={metric.title}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.35, delay: i * 0.05 }}
+                className="glass-card p-7"
+              >
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${i % 2 === 0 ? "bg-[#10b981]/10" : "bg-[#06b6d4]/10"}`}
+                >
+                  <Icon
+                    className={`w-6 h-6 ${i % 2 === 0 ? "text-[#10b981]" : "text-[#06b6d4]"}`}
+                  />
                 </div>
-              </div>
-            </motion.div>
-          ))}
+                <h3
+                  className="text-lg font-semibold text-white mb-3"
+                  style={{ fontFamily: "'Outfit', sans-serif" }}
+                >
+                  {metric.title}
+                </h3>
+                <p className="text-[oklch(0.65_0.02_155.83)] text-sm leading-relaxed">
+                  {metric.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.35, delay: 0.1 }}
+          className="glass-card p-8 md:p-10 text-center max-w-3xl mx-auto relative overflow-hidden"
+        >
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 80% 100% at 50% 0%, rgba(16, 185, 129, 0.07), transparent 65%)",
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative">
+            <p className="section-label mb-4">// Founding Clients</p>
+            <h3
+              className="text-2xl md:text-3xl font-bold text-white mb-4"
+              style={{ fontFamily: "'Outfit', sans-serif" }}
+            >
+              Be one of our first ten —{" "}
+              <span className="gradient-text">and pay like it.</span>
+            </h3>
+            <p className="text-[oklch(0.65_0.02_155.83)] leading-relaxed max-w-xl mx-auto mb-7">
+              We're a new agency earning our case studies right now, and we're
+              pricing like it: founding clients get the full Growth system with
+              the setup fee waived, in exchange for letting us publish your
+              before-and-after numbers. When the spots are gone, so is the
+              pricing.
+            </p>
+            <button onClick={openCalendly} className="cta-button">
+              Claim a Founding Spot <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

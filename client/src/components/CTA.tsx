@@ -10,12 +10,9 @@ import { useCalendly } from "@/hooks/useCalendly";
 export default function CTA() {
   const { openCalendly } = useCalendly();
   return (
-    <section
-      id="book"
-      className="py-20 md:py-28 relative overflow-hidden"
-    >
+    <section id="book" className="py-20 md:py-28 relative overflow-hidden">
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#00C896]/5 via-[#00A67E]/10 to-[#00B4D8]/5" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#10b981]/5 via-[#14b8a6]/10 to-[#06b6d4]/5" />
 
       <div className="container relative z-10">
         <motion.div
@@ -34,10 +31,14 @@ export default function CTA() {
             <span className="gradient-text">start growing?</span>
           </h2>
           <p className="text-[oklch(0.65_0.02_155.83)] text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
-            Book a free strategy call and we'll show you exactly how we can automate
-            your lead capture, follow-up, and conversion — tailored to your business.
+            Book a free strategy call and we'll show you exactly how we can
+            automate your lead capture, follow-up, and conversion — tailored to
+            your business.
           </p>
-          <button onClick={openCalendly} className="cta-button text-lg !py-4 !px-8">
+          <button
+            onClick={openCalendly}
+            className="cta-button text-lg !py-4 !px-8"
+          >
             Book My Free Strategy Call <ArrowRight className="w-5 h-5" />
           </button>
           <p className="text-[oklch(0.55_0.02_155.83)] text-sm mt-6">

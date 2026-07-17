@@ -11,6 +11,7 @@ import About from "@/components/About";
 import CTA from "@/components/CTA";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import StickyCTA from "@/components/StickyCTA";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
       <CTA />
       <Contact />
       <Footer />
+      <StickyCTA />
     </div>
   );
 }

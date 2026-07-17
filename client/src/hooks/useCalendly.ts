@@ -1,5 +1,5 @@
 // Hook to open Calendly popup widget
-const CALENDLY_URL = "https://calendly.com/ryan-modernflowai/30min";
+import { CALENDLY_URL } from "@/config";
 
 export function useCalendly() {
   const openCalendly = (e?: React.MouseEvent) => {

@@ -7,8 +7,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { BarChart3, Bot, Megaphone, Workflow, Check } from "lucide-react";
 
-const DASHBOARD_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/dashboard-mockup-GXmLPAhW7o5GHbUhMkHGKZ.webp";
-const AUTOMATION_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/automation-flow-9dsxuiFhZbd325dkof37Tk.webp";
+const DASHBOARD_IMG =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/dashboard-mockup-GXmLPAhW7o5GHbUhMkHGKZ.webp";
+const AUTOMATION_IMG =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663029667540/GXtnUFss9AoWw228KaXxY6/automation-flow-9dsxuiFhZbd325dkof37Tk.webp";
 
 const services = [
   {
@@ -16,8 +18,14 @@ const services = [
     icon: BarChart3,
     title: "CRM & Pipeline",
     subtitle: "Your command center for leads",
-    description: "A fully customized CRM built for contractors. Track every lead, manage your pipeline, and never let a deal slip through the cracks.",
-    features: ["Automated lead capture & tagging", "Visual deal pipeline", "Contact history & notes", "Mobile-friendly dashboard"],
+    description:
+      "A fully customized CRM built for contractors. Track every lead, manage your pipeline, and never let a deal slip through the cracks.",
+    features: [
+      "Automated lead capture & tagging",
+      "Visual deal pipeline",
+      "Contact history & notes",
+      "Mobile-friendly dashboard",
+    ],
     image: DASHBOARD_IMG,
   },
   {
@@ -25,8 +33,14 @@ const services = [
     icon: Bot,
     title: "AI Assistants",
     subtitle: "24/7 intelligent follow-up",
-    description: "AI-powered assistants that respond to leads instantly via text, email, and webchat. They qualify leads, answer questions, and book appointments — all without you lifting a finger.",
-    features: ["Sub-5-minute response time", "Natural language conversations", "Automatic appointment booking", "Multi-channel (SMS, email, chat)"],
+    description:
+      "AI-powered assistants that respond to leads instantly via text, email, and webchat. They qualify leads, answer questions, and book appointments — all without you lifting a finger.",
+    features: [
+      "Sub-5-minute response time",
+      "Natural language conversations",
+      "Automatic appointment booking",
+      "Multi-channel (SMS, email, chat)",
+    ],
     image: AUTOMATION_IMG,
   },
   {
@@ -34,8 +48,14 @@ const services = [
     icon: Megaphone,
     title: "Paid Ads Management",
     subtitle: "Leads on demand",
-    description: "We build and manage high-converting Google and Facebook ad campaigns designed specifically for service businesses. From creative to conversion tracking — we handle it all.",
-    features: ["Google Local Service Ads", "Facebook & Instagram campaigns", "Landing page optimization", "Monthly performance reports"],
+    description:
+      "We build and manage high-converting Google and Facebook ad campaigns designed specifically for service businesses. From creative to conversion tracking — we handle it all.",
+    features: [
+      "Google Local Service Ads",
+      "Facebook & Instagram campaigns",
+      "Landing page optimization",
+      "Monthly performance reports",
+    ],
     image: DASHBOARD_IMG,
   },
   {
@@ -43,8 +63,14 @@ const services = [
     icon: Workflow,
     title: "Automation Engine",
     subtitle: "Set it and forget it",
-    description: "From the moment a lead comes in to the final review request — every step is automated. Follow-ups, reminders, booking confirmations, and review requests all run on autopilot.",
-    features: ["Lead nurture sequences", "Appointment reminders", "Post-job review requests", "Re-engagement campaigns"],
+    description:
+      "From the moment a lead comes in to the final review request — every step is automated. Follow-ups, reminders, booking confirmations, and review requests all run on autopilot.",
+    features: [
+      "Lead nurture sequences",
+      "Appointment reminders",
+      "Post-job review requests",
+      "Re-engagement campaigns",
+    ],
     image: AUTOMATION_IMG,
   },
 ];
@@ -54,7 +80,10 @@ export default function Services() {
   const active = services[activeTab];
 
   return (
-    <section id="services" className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]">
+    <section
+      id="services"
+      className="py-20 md:py-28 border-t border-[oklch(0.696_0.17_162.48/8%)]"
+    >
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -68,8 +97,7 @@ export default function Services() {
             className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            Your complete{" "}
-            <span className="gradient-text">growth system.</span>
+            Your complete <span className="gradient-text">growth system.</span>
           </h2>
         </motion.div>
 
@@ -83,7 +111,7 @@ export default function Services() {
                 onClick={() => setActiveTab(i)}
                 className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium transition-all ${
                   activeTab === i
-                    ? "bg-gradient-to-r from-[#00C896] to-[#00B4D8] text-[oklch(0.145_0.014_155.83)]"
+                    ? "bg-gradient-to-r from-[#10b981] to-[#06b6d4] text-[oklch(0.145_0.014_155.83)]"
                     : "glass-card text-[oklch(0.65_0.02_155.83)] hover:text-white"
                 }`}
                 style={{ fontFamily: "'Outfit', sans-serif" }}
@@ -118,9 +146,12 @@ export default function Services() {
                 {active.description}
               </p>
               <ul className="space-y-3">
-                {active.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3 text-white/90 text-sm">
-                    <Check className="w-4 h-4 text-[#00C896] shrink-0" />
+                {active.features.map(feature => (
+                  <li
+                    key={feature}
+                    className="flex items-center gap-3 text-white/90 text-sm"
+                  >
+                    <Check className="w-4 h-4 text-[#10b981] shrink-0" />
                     {feature}
                   </li>
                 ))}

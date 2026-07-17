@@ -21,6 +21,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const scrolledRef = useRef(false);
   const { openCalendly } = useCalendly();
 
@@ -34,6 +35,25 @@ export default function Navbar() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll-spy: highlight the nav link for the section currently in view
+  useEffect(() => {
+    const sections = navLinks
+      .map(link => document.getElementById(link.href.slice(1)))
+      .filter((el): el is HTMLElement => el !== null);
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    sections.forEach(section => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -69,16 +89,24 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-[oklch(0.65_0.02_155.83)] hover:text-[#00C896] transition-colors text-sm font-medium"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map(link => {
+            const isActive = activeSection === link.href;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                aria-current={isActive ? "true" : undefined}
+                className={`transition-colors text-sm font-medium border-b-2 pb-0.5 ${
+                  isActive
+                    ? "text-[#10b981] border-[#10b981]"
+                    : "text-[oklch(0.65_0.02_155.83)] border-transparent hover:text-[#10b981]"
+                }`}
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </div>
 
         {/* CTA Button — opens Calendly popup */}
@@ -92,9 +120,15 @@ export default function Navbar() {
         {/* Mobile Menu Toggle */}
         <button
           className="md:hidden text-white"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 
@@ -111,7 +145,7 @@ export default function Navbar() {
             }}
           >
             <div className="container py-6 flex flex-col gap-4">
-              {navLinks.map((link) => (
+              {navLinks.map(link => (
                 <a
                   key={link.href}
                   href={link.href}
@@ -122,7 +156,10 @@ export default function Navbar() {
                 </a>
               ))}
               <button
-                onClick={(e) => { setMobileOpen(false); openCalendly(e); }}
+                onClick={e => {
+                  setMobileOpen(false);
+                  openCalendly(e);
+                }}
                 className="cta-button text-sm justify-center mt-2"
               >
                 Book a Free Strategy Call <ArrowRight className="w-4 h-4" />
