@@ -180,6 +180,9 @@ the playbook above governs everything else.
 
 ## Quick index
 
+- Turnaround plan (canonical, weekly-reviewed): `docs/ACTION-PLAN.md`
+- GHL delivery guide (step-by-step + prompts): `docs/GHL-EXECUTION-GUIDE.md`
+- Tool stack playbook (Higgsfield, Gamma, Fireflies…): `docs/TOOLSTACK-PLAYBOOK.md`
 - Process SOPs: `docs/sops/`
 - Agents: `.claude/agents/`
 - Skills (run with `/<skill-name>` or auto-invoked): `.claude/skills/`
