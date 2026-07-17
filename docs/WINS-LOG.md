@@ -21,4 +21,6 @@ appends here, commits, and republishes the dashboard.
 - **Darius + Claude:** Ron Hayes revival draft v2 staged in Gmail.
 - **Darius + Claude:** Daily ops system live: daily directive, nightly wins update,
   weekly review.
-- Scoreboard: MRR $0 / $3,000 · touches 0 · calls 0 · closes 0
+- **Darius:** 🔥 Made 5 outreach calls — the outreach engine is BACK ON after two
+  months at zero. First revenue-generating activity since May.
+- Scoreboard: MRR $0 / $3,000 · touches 5 · calls booked 0 · closes 0
