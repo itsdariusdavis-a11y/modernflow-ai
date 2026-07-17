@@ -10,44 +10,42 @@ execution. Follow the order — it's sequenced by revenue impact per `docs/ACTIO
 
 ---
 
-## Part 1 — Finish Ecomax (Priority 0, ~2 evenings)
+## Part 1 — The standard client build (~2 evenings per client)
 
-Your build prompts are already written and sitting in Google Drive. This is assembly,
-not authoring.
+> This is the reusable build pattern for every new client, distilled from the
+> workflow-spec docs in Google Drive (the `*-build.md` prompt format). Build it once
+> in a template sub-account, snapshot it, and each client starts at 80% done.
 
 ### Evening 1 — workflows
 
-1. **Open** the Ecomax sub-account → Automation → Workflows.
-2. **Fix the 2 broken trigger filters** (60 seconds): open "Ecomax Lead Intake
-   Automation" → the 2nd and 3rd Form Submitted triggers both point at
-   "Ecomax - Service Request." Repoint: trigger 2 → the Quick Callback form,
-   trigger 3 → the Service Feedback form. (Full detail: Drive doc
-   `ecomax-efficient-path.md`.)
-3. **Rename** that workflow to `W1 — Lead Confirmation` so the numbering matches the specs.
-4. **Build the remaining workflows** — for each one: + Create Workflow → paste the
-   prompt from its Drive doc into the "What do you want to automate?" box → review what
-   Workflow AI generates against the doc's checklist → Save (don't publish yet).
-   Run order and where each prompt lives:
-   - `W3a` — done already per the docs; verify it exists
-   - `W5H` (next-service-due date helper) — `ecomax-w5h-build.md`
-   - `W2, W3b, W4, W5, W6, W7a, W7b` — `ecomax_workflow_prompts` + `ecomax-w1-build.md` / `ecomax-w3a-build.md` siblings
-5. **Publish in dependency order:** helpers first (W5H before W5 — W5 reads the date
-   W5H writes), then the rest.
+1. **Open** the client's sub-account → Automation → Workflows.
+2. **Write the workflow specs first, build second.** Draft one short spec doc per
+   workflow (W1 lead confirmation, W2 nurture, W3 booking, W4 reminders, W5 service
+   reminder + W5H due-date helper, W6 reactivation, W7 reviews) with: trigger, exact
+   filters (which form/pipeline/stage — misfiltered triggers were the #1 defect found
+   in past builds), steps, and message copy. The Drive `*-build.md` docs show
+   the format; the reusable prompts in Part 2 below are the starting copy.
+3. **Build each workflow:** + Create Workflow → paste the spec's prompt into the
+   "What do you want to automate?" box → review what Workflow AI generates against
+   the spec's checklist → Save (don't publish yet).
+4. **Publish in dependency order:** helpers before consumers (a due-date helper
+   publishes before the reminder workflow that reads its field).
 
 ### Evening 2 — QA + handoff
 
-6. **Run the QA script** from `ecomax-build-and-qa-complete.md` (paste its QA prompt
-   into the sub-account's Ask AI). It ends with a GO / NO-GO summary — fix anything
-   red, rerun until GO.
-7. **Live-fire test with your own phone:** submit each form, call the tracked number
+5. **Run a QA pass with Ask AI:** paste a QA prompt listing every workflow, its
+   trigger, its filter, and its expected output, and ask for a GO/NO-GO check on
+   misfiltered triggers, dead-end branches, and missing waits. Fix reds, rerun until GO.
+6. **Live-fire test with your own phone:** submit each form, call the tracked number
    and hang up (missed-call text-back must fire), book a test appointment, mark a test
    opportunity Closed Won (review request must fire). Screenshot each firing.
-8. **Record the walkthrough** (Loom or phone screen-record, 5–8 min): site → form fill
-   → the instant text you received → pipeline view → review request. Send with the
-   Gmail draft already prepared for Andy.
-9. **On the launch call:** Payments → Invoices → send remaining $1,000. Then
-   Payments → Subscriptions (or a recurring invoice) → $297/mo starting that day, card
-   on file. Do not leave the call without both.
+7. **Record the walkthrough** (Loom or phone screen-record, 5–8 min): site → form fill
+   → the instant text you received → pipeline view → review request.
+8. **On the launch call:** Payments → Invoices → send any remaining balance. Then
+   Payments → Subscriptions → the monthly starting that day, card on file. Do not
+   leave the call without both.
+9. **Snapshot it:** Agency view → Snapshots → save this build as the tier template so
+   the next client starts at 80% done.
 
 ---
 
@@ -129,7 +127,7 @@ On reply YES: create opportunity, notify owner, hand off to Conversation AI
 to book. On STOP: mark DND.
 ```
 
-### 2.6 Next-service-due helper (pattern from Ecomax W5H — any recurring trade)
+### 2.6 Next-service-due helper (any recurring trade)
 
 ```
 When an opportunity moves to "Closed Won", read the service type field:
@@ -205,8 +203,7 @@ this in 7 days, guaranteed." Keep it under 250 words, plain language, no hype.
 
 ## Part 5 — Payments checklist (where the money actually moves)
 
-- Stripe is already connected (verified: the Ecomax $1,000 ran through it).
-- Ecomax: invoice remaining $1,000 at launch + $297/mo subscription, card on file.
+- Stripe is already connected and has processed live payments.
 - Founding-offer closes: subscription product "Growth+ Founding — $497/mo" with a
   3-month minimum in the agreement; card on file **on the close call**, not after.
 - Text-to-pay: send every invoice by SMS too — trades owners live in their texts.

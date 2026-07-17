@@ -4,25 +4,24 @@ Created 2026-07-17 from the full business audit (see the audit report PDF for ev
 and reasoning). This is the canonical execution doc. The weekly review Routine measures
 progress against THIS file. Update statuses inline; don't fork new plan documents.
 
-## Ground truth (as of 2026-07-17)
+## Ground truth (as of 2026-07-17, updated same day)
 
-- Lifetime revenue: $1,000 (Ecomax deposit, Apr 15). MRR: $0. Clients live: 0.
-- Ecomax (Andy, ecomax.repairs@gmail.com): PAID, undelivered. Build stopped May 21
-  at 2 of 9 workflows. Specs for the rest already written (Drive: `ecomax-*` docs).
+- MRR: $0. Clients live: 0. (Ecomax contract cancelled July 2026 — closed account,
+  no further work, no contact. Excluded from this plan entirely.)
 - Ron Hayes (rhayes@lahydrojet.com): warm, went dark in April. No invoice ever sent.
+  The ONLY warm deal.
 - Outreach: 0 touches/day against a 30–40/day plan. No business meetings since May 7.
 - modernflowai.com serves the GHL-built site (no booking CTA); this repo's site is
   not deployed to the domain.
 
-## Priority 0 — Deliver Ecomax (unlocks: $1,000 cash + $297/mo + case study + referral)
+## Priority 0 — Revive Ron Hayes + build the live demo
 
-- [ ] Review + send the two Gmail drafts (Andy, Ron) — fill in bracketed dates first
-- [ ] Fix 2 trigger filters per `ecomax-efficient-path.md` (60 seconds, GHL Workflow AI)
-- [ ] Build W2–W7b from the written prompts (Drive: `ecomax-w*-build.md`) — 1–2 evenings
-- [ ] Run the QA prompt from `ecomax-build-and-qa-complete.md`
-- [ ] Record walkthrough video → send to Andy with launch-call slots
-- [ ] Launch call → go live → invoice remaining $1,000 → start $297/mo subscription
-- [ ] Referral ask (free chatbot add-on deal from Apr 7 call — already agreed)
+- [ ] **Clean the Gmail drafts folder:** discard the two stale drafts (an old delivery
+      email and Ron v1) — send only **Ron draft v2** after filling the two time options.
+- [ ] **Build the live demo** the Ron pitch (and every future pitch) needs: missed-call
+      text-back + speed-to-lead on YOUR OWN number/site (GHL guide Parts 2.1–2.2 +
+      Part 4). Your own live system is the proof — no client dependency, no one can
+      cancel it.
 
 ## Priority 1 — Decisions (this week, cheap, unblock everything)
 
@@ -36,7 +35,7 @@ progress against THIS file. Update statuses inline; don't fork new plan document
       tiers after. Update company-os/01_Context/01-company.md to match BUSINESS-PLAN.md.
 - [ ] Add a booking CTA to whatever site is live (today the GHL site has NONE).
 
-## Priority 2 — 30-day sales restart (after Ecomax ships)
+## Priority 2 — 30-day sales restart (starts NOW — no delivery debt in the way)
 
 - [ ] Pick ONE niche + metro (recommended: plumbing/hydrojet, San Diego — warm context)
 - [ ] Lead list: 150 businesses (Google Maps + Yelp) — name, phone, email, review count

@@ -5,9 +5,9 @@ it. Ordered by revenue priority, not alphabetically. Companion to
 `docs/GHL-EXECUTION-GUIDE.md` (delivery) and `docs/ACTION-PLAN.md` (what to do when).
 
 > **Standing rule:** a tool only earns time when it serves the current priority
-> (deliver Ecomax → revive warm deals → outreach). Everything else stays parked no
-> matter how fun it is. Draft-first safety applies everywhere: nothing sends to a
-> human without your review.
+> (revive Ron Hayes → build the live demo → outreach restart). Everything
+> else stays parked no matter how fun it is. Draft-first safety applies everywhere:
+> nothing sends to a human without your review.
 
 ---
 
@@ -24,13 +24,13 @@ The delivery platform. Full guide with copy-paste prompts: `docs/GHL-EXECUTION-G
   - "Draft a follow-up to [prospect] referencing [detail]" → lands in Gmail drafts.
   - `/cold-outreach [segment/angle]` → staged sequence as drafts, never auto-sent.
   - `/book-call [who, purpose]` → finds slots, drafts the invite.
-- **Right now:** two revival drafts (Andy, Ron) are sitting in Gmail — review, fill
-  bracketed dates, send.
+- **Right now:** use the Ron Hayes draft **v2** in Gmail (fill the two time options,
+  send). Discard the two older stale drafts in the folder.
 
 ### Fireflies — meeting intelligence
 
 - **What:** records/transcribes every sales call; your objection library and follow-up
-  fuel. It captured the Ecomax and Hayes commitments that made the audit possible.
+  fuel. Its transcripts are what made the business audit's deal history reconstructable.
 - **Execute:** after every call — `/meeting-recap [meeting]` → decisions, action items
   with owners, and a follow-up email draft. Paste action items into the GHL
   opportunity card the same evening.
