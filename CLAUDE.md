@@ -141,6 +141,23 @@ Always-on — no invocation needed.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
 
+### Continuous self-correction (added 2026-07-17)
+
+**Every session that touches this business should leave it more correct than it found
+it.** Concretely:
+
+- **Sell > build.** Before building anything new, check `docs/ACTION-PLAN.md`: if
+  outreach/delivery targets are unmet, surface that and steer toward revenue work
+  first. New tooling while clients are undelivered is drift — name it.
+- **Claims must be verifiable.** Never write client counts, ROI figures, ratings, or
+  testimonials into any site, deck, or outreach unless backed by a named consenting
+  client or a cited source. If you find an unverifiable claim, flag it and fix it.
+- **Correct stale docs on contact.** When you touch a doc that contradicts
+  `BUSINESS-PLAN.md` or `docs/ACTION-PLAN.md` (pricing, team, niche, hosting), fix
+  the contradiction or flag it — don't propagate it.
+- **Audit trail.** The weekly review Routine measures the business against
+  `docs/ACTION-PLAN.md`. Keep that file's statuses current as work completes.
+
 ### Goal-driven execution
 
 **Define success criteria. Loop until verified.** Turn tasks into verifiable goals:

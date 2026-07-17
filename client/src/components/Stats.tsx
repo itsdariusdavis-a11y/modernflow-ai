@@ -4,26 +4,31 @@
  * Font: Outfit for numbers, DM Sans for labels
  */
 import { motion } from "framer-motion";
-import { Clock, TrendingUp, Users, Zap } from "lucide-react";
+import { Clock, PhoneMissed, PhoneOff, Zap } from "lucide-react";
 
+/*
+ * Industry stats: Aira missed-call research (2026) — 62% of calls to small
+ * businesses go unanswered; 85% of voicemail callers never call back.
+ * Product stats (<5 min, 24/7) describe what the system we install does.
+ */
 const stats = [
+  {
+    icon: PhoneMissed,
+    value: "62%",
+    label: "Of Calls Go Unanswered",
+    description: "At the average small service business",
+  },
+  {
+    icon: PhoneOff,
+    value: "85%",
+    label: "Of Missed Callers Never Call Back",
+    description: "They hire the next result on Google",
+  },
   {
     icon: Clock,
     value: "< 5 min",
-    label: "Average Lead Response Time",
-    description: "AI responds to every inquiry instantly",
-  },
-  {
-    icon: TrendingUp,
-    value: "3.2x",
-    label: "Average ROI Increase",
-    description: "Within the first 90 days",
-  },
-  {
-    icon: Users,
-    value: "150+",
-    label: "Contractors Served",
-    description: "Across 20+ service categories",
+    label: "Response Time With Our System",
+    description: "Every lead answered — even after hours",
   },
   {
     icon: Zap,

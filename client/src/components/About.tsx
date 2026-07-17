@@ -11,7 +11,7 @@ const CONTRACTOR_IMG =
 
 const badges = [
   { icon: MapPin, text: "Based in San Diego, CA" },
-  { icon: Users, text: "150+ contractors served" },
+  { icon: Users, text: "Founder-built — no outsourcing" },
   { icon: Clock, text: "Systems built in 2–3 weeks" },
 ];
 
@@ -59,9 +59,10 @@ export default function About() {
               </p>
               <p>
                 Too many potential clients slip through the cracks due to missed
-                calls, slow follow-up, and a lack of a centralized system. We've
-                seen it happen to hundreds of contractors — good businesses
-                losing revenue because they can't respond fast enough.
+                calls, slow follow-up, and a lack of a centralized system. It
+                happens at almost every service business we test — good
+                businesses losing revenue because they can't respond fast
+                enough.
               </p>
               <p>
                 We solve this by implementing powerful, AI-driven automation

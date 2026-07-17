@@ -23,7 +23,7 @@ const faqItems = [
   },
   {
     q: "What if it doesn't work for my business?",
-    a: "We offer a 30-day money-back guarantee. If you don't see value in the system we build, you get a full refund. We've never had to issue one — but the guarantee is there because we're confident in what we deliver.",
+    a: "We offer a 30-day money-back guarantee. If you don't see value in the system we build, you get a full refund. The guarantee exists because we're confident in what we deliver — and because you shouldn't have to take a new agency's word for it.",
   },
   {
     q: "Do I own my accounts and data?",

@@ -175,26 +175,17 @@ export default function Hero() {
               transition={{ duration: 0.4, delay: 0.25 }}
               className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-10"
             >
-              <div className="flex items-center gap-2">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-[#10b981] text-[#10b981]"
-                    />
-                  ))}
-                </div>
-                <span className="text-sm text-white/80">
-                  5.0 from contractors
-                </span>
-              </div>
+              <p className="text-sm text-[oklch(0.65_0.02_155.83)]">
+                <span className="text-white font-semibold">&lt; 5 min</span>{" "}
+                response to every lead, 24/7
+              </p>
               <span
                 className="hidden sm:block w-px h-4 bg-white/15"
                 aria-hidden="true"
               />
               <p className="text-sm text-[oklch(0.65_0.02_155.83)]">
-                <span className="text-white font-semibold">150+</span> service
-                businesses automated
+                <span className="text-white font-semibold">Founder-built</span>{" "}
+                — every system delivered personally
               </p>
               <span
                 className="hidden sm:block w-px h-4 bg-white/15"

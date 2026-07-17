@@ -10,6 +10,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Mail, MapPin, CheckCircle, Loader2 } from "lucide-react";
 import { useCalendly } from "@/hooks/useCalendly";
+import { CONTACT_EMAIL } from "@/config";
 import { trpc } from "@/lib/trpc";
 
 const businessTypes = [
@@ -351,10 +352,10 @@ export default function Contact() {
                 <div>
                   <p className="text-white/80 text-sm font-medium">Email</p>
                   <a
-                    href="mailto:ryan@modernflowai.com"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="text-[oklch(0.65_0.02_155.83)] text-sm hover:text-[#10b981] transition-colors"
                   >
-                    ryan@modernflowai.com
+                    {CONTACT_EMAIL}
                   </a>
                 </div>
               </div>
