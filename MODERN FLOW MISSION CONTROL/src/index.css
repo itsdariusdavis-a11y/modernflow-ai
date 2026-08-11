@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    /* Room for the phone home indicator — this gets used one-handed. */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Every number in this app is monospaced and tabular so columns line up and
+     a changing figure doesn't shift the layout. */
+  .num {
+    @apply font-mono tabular-nums;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* iOS zooms the page when a focused input is under 16px. */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent/60;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-line rounded-lg;
+  }
+
+  .field {
+    @apply w-full bg-surface2 border border-line rounded-md px-3 py-3 text-ink
+           placeholder:text-muted/60;
+  }
+
+  .btn {
+    @apply rounded-md px-4 py-3 font-medium border border-line bg-surface2
+           active:opacity-80 disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-bg border-accent font-semibold;
+  }
+
+  .label {
+    @apply block text-xs uppercase tracking-wide text-muted mb-1.5;
+  }
+}
