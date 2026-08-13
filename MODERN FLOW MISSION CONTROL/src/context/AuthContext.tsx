@@ -9,6 +9,7 @@ import {
   setSession,
 } from '@/lib/api';
 import { clearCache } from '@/lib/store';
+import { storage } from '@/lib/storage';
 import { PEOPLE, type Person } from '@shared/types';
 
 interface AuthValue {
@@ -20,7 +21,7 @@ interface AuthValue {
 const AuthContext = createContext<AuthValue | null>(null);
 
 function storedPerson(): Person | null {
-  const raw = localStorage.getItem(PERSON_KEY);
+  const raw = storage.get(PERSON_KEY);
   return PEOPLE.includes(raw as Person) ? (raw as Person) : null;
 }
 

@@ -37,6 +37,20 @@ window, the touch minimum, or the hourly floor there and every screen follows.
 | `/review`   | Weekly gates vs actuals, biggest objection, one change                   |
 | `/econ`     | Effective hourly on the $500 cycle. Red below $60/hr                     |
 
+## Shareable demo
+
+```bash
+npm run demo    # -> dist-demo/mfa-ops-demo.html
+```
+
+Builds the whole app into one self-contained HTML file with sample data and no
+backend. Useful for looking at the UI before the Google Sheet exists, or for
+showing someone the thing without giving them the passcode.
+
+It stubs `fetch` at the network boundary (`demo/stub.ts`) rather than replacing
+the data layer, so the cache, optimistic writes, rollback, and retry are all the
+real code. Writes work and persist until you refresh. Demo passcode is `demo`.
+
 ## How it's put together
 
 ```

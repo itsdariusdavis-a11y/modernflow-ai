@@ -1,4 +1,5 @@
 import type { Person, Snapshot } from '@shared/types';
+import { storage } from './storage';
 
 const BASE = '/.netlify/functions';
 
@@ -16,17 +17,17 @@ export class ApiError extends Error {
 }
 
 export function getToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
+  return storage.get(TOKEN_KEY);
 }
 
 export function setSession(token: string, person: Person): void {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(PERSON_KEY, person);
+  storage.set(TOKEN_KEY, token);
+  storage.set(PERSON_KEY, person);
 }
 
 export function clearSession(): void {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(PERSON_KEY);
+  storage.remove(TOKEN_KEY);
+  storage.remove(PERSON_KEY);
 }
 
 /** Listeners fired when the server rejects our token, so the app can bounce to login. */

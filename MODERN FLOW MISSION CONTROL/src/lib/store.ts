@@ -1,5 +1,6 @@
 import { useCallback, useSyncExternalStore } from 'react';
 import { fetchSnapshot, ApiError } from './api';
+import { storage } from './storage';
 import type { Snapshot } from '@shared/types';
 
 /**
@@ -34,7 +35,7 @@ let inFlight: Promise<void> | null = null;
 
 function readCache(): Snapshot | null {
   try {
-    const raw = localStorage.getItem(CACHE_KEY);
+    const raw = storage.get(CACHE_KEY);
     return raw ? (JSON.parse(raw) as Snapshot) : null;
   } catch {
     return null;
@@ -43,7 +44,7 @@ function readCache(): Snapshot | null {
 
 function writeCache(data: Snapshot): void {
   try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+    storage.set(CACHE_KEY, JSON.stringify(data));
   } catch {
     // Quota or private mode. The in-memory copy still works for this session.
   }
@@ -65,7 +66,7 @@ export function getState(): StoreState {
 
 export function clearCache(): void {
   try {
-    localStorage.removeItem(CACHE_KEY);
+    storage.remove(CACHE_KEY);
   } catch {
     /* ignore */
   }
