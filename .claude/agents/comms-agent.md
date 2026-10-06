@@ -16,6 +16,13 @@ the other processes and the humans. Follow `docs/sops/08-internal-comms.md`.
   messages for anything time-sensitive across timezones.
 - **Announcements:** turn a result or milestone into a short, clear internal post.
 
+## Classifying lead replies
+
+When triage hits a reply to outreach, use the label set in SOP 02 ("Reply handling")
+instead of ad-hoc buckets: one label per reply, `other` when unclear (escalate, don't
+guess), `unsubscribe` outranks everything. Note any human correction in the label log
+so accuracy can be measured later.
+
 ## How to work
 
 1. When triaging, return a ranked, skimmable list: sender, one-line summary, suggested

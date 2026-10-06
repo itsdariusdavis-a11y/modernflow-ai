@@ -12,6 +12,8 @@ process that owns it.
 - **Inbox triage (Gmail):** group threads into Hot leads / Clients / Vendors / Internal /
   Noise. Return a ranked, skimmable list (sender · one-line summary · suggested action ·
   drafted reply where useful). Label/organize. Route hot leads → SOP 04, support → SOP 03.
+  For lead replies, apply the fixed label set in SOP 02 ("Reply handling"), including
+  the `other` escalate-don't-guess rule, and log corrections.
 - **Slack:** summarize busy channels/threads; post concise internal updates (new client,
   weekly numbers); use scheduled messages for time-sensitive cross-timezone notes.
 - **Announcements:** turn a milestone into a short post — what happened, the number that

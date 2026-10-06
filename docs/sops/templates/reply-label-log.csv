@@ -1,0 +1,5 @@
+date,source,reply_excerpt_redacted,agent_label,asks_for_price,mentions_competitor,human_label,corrected
+2026-01-01,gmail,"synthetic: sounds interesting, can you send pricing?",interested,yes,no,interested,no
+2026-01-01,gmail,"synthetic: we already use a vendor for this, not now",not_now,no,yes,not_interested,yes
+2026-01-01,gmail,"synthetic: out of office until the 14th",auto_reply,no,no,auto_reply,no
+2026-01-01,apollo,"synthetic: who is this? remove me",unsubscribe,no,no,unsubscribe,no
