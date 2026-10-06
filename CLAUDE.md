@@ -164,6 +164,7 @@ the playbook above governs everything else.
 ## Quick index
 
 - Process SOPs: `docs/sops/`
+- Third-party references: `docs/references/` (Jev typed-classifier API — reference only, not integrated)
 - Agents: `.claude/agents/`
 - Skills (run with `/<skill-name>` or auto-invoked): `.claude/skills/`
 - UGC creative engine: `ugc-agency/`
