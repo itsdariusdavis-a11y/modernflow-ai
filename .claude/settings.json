@@ -29,5 +29,16 @@
       "Read(./.env)",
       "Read(./.env.*)"
     ]
+  },
+  "extraKnownMarketplaces": {
+    "hyperframes": {
+      "source": {
+        "source": "github",
+        "repo": "heygen-com/hyperframes"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "hyperframes@hyperframes": true
   }
 }
