@@ -6,7 +6,7 @@ import json
 import time
 from pathlib import Path
 
-from . import analyze, api, watch
+from . import analyze, api, backtest, watch
 
 DAY = 86400
 
@@ -33,6 +33,10 @@ def main() -> None:
     a.add_argument("--period", default="MONTH"); a.add_argument("--top", type=int, default=100)
     a.add_argument("--days", type=int, default=90); a.add_argument("--max-pages", type=int, default=200)
     a.add_argument("--out", default="data/report.md")
+    m = sub.add_parser("simulate", help="walk-forward $25 copy simulation (picks on older data, trades newer)")
+    m.add_argument("--period", default="MONTH"); m.add_argument("--top", type=int, default=100)
+    m.add_argument("--bankroll", type=float, default=25.0); m.add_argument("--frac", type=float, default=0.10)
+    m.add_argument("--max-pages", type=int, default=200)
     w = sub.add_parser("watch", help="PAPER copy-trade vetted wallets (never places real orders)")
     w.add_argument("--wallets", default="data/vetted.json"); w.add_argument("--ledger", default="data/paper_ledger.jsonl")
     w.add_argument("--interval", type=int, default=30)
@@ -44,6 +48,24 @@ def main() -> None:
         return
 
     lb = analyze.screen_leaderboard(api.leaderboard(args.period, "PNL", args.top))
+    if args.cmd == "simulate":
+        now = int(time.time()); since = now - 90 * DAY
+        by = {}
+        for r in lb:
+            if r["passes"]:
+                pos, complete = api.closed_positions(r["proxyWallet"], since, args.max_pages)
+                if complete:
+                    by[r["proxyWallet"]] = pos
+                print(r["userName"][:20], len(pos), "" if complete else "TRUNCATED-skipped")
+        wf = backtest.walk_forward(by, now, bankroll=args.bankroll, frac=args.frac)
+        print(f"picked {len(wf['picked'])} wallets on train slice")
+        if wf["picked"]:
+            test = [p for w in wf["picked"] for p in by[w] if p["timestamp"] >= now - 30 * DAY]
+            for slip, res in backtest.slippage_grid(test, bankroll=args.bankroll, frac=args.frac).items():
+                print(f"slip {slip:.0%}: ${res['start']:.0f} -> ${res['end']:.2f} ({res['ret']:+.0%}) "
+                      f"trades={res['trades']} win={res['win_rate']:.0%} maxDD={res['max_dd']:.0%}"
+                      f"{' BUSTED' if res['busted'] else ''}")
+        return
     if args.cmd == "screen":
         for r in lb:
             print(f"{'OK  ' if r['passes'] else 'DROP'} {r['userName'][:24]:24} pnl=${r['pnl']:>11,.0f} vol=${r['vol']:>13,.0f} "

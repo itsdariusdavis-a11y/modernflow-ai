@@ -43,5 +43,22 @@ class Copy(unittest.TestCase):
         self.assertEqual(watch.simulate_copy({**self.T, "side": "SELL"}, 0.6, watch.Config())["action"], "SKIP")
         self.assertEqual(watch.simulate_copy(self.T, None, watch.Config())["action"], "SKIP")
 
+
+class Backtest(unittest.TestCase):
+    def test_return_math_and_slippage(self):
+        from pmx import backtest
+        win = {"timestamp": 1, "avgPrice": 0.5, "totalBought": 100, "realizedPnl": 50}   # resolved to $1
+        self.assertAlmostEqual(backtest.copy_return(win, 0.0), 1.0)
+        self.assertAlmostEqual(backtest.copy_return(win, 0.1), 0.5 / 0.6 * 2 - 1)
+        loss = {**win, "realizedPnl": -50}
+        self.assertAlmostEqual(backtest.copy_return(loss, 0.0), -1.0)
+    def test_simulate_busts_and_compounds(self):
+        from pmx import backtest
+        loss = [{"timestamp": i, "avgPrice": 0.5, "totalBought": 10, "realizedPnl": -5} for i in range(200)]
+        self.assertTrue(backtest.simulate(loss, frac=1.0)["busted"])
+        win = [{"timestamp": i, "avgPrice": 0.5, "totalBought": 10, "realizedPnl": 5} for i in range(3)]
+        r = backtest.simulate(win, bankroll=25, frac=0.1, slip=0.0)
+        self.assertGreater(r["end"], 25 * 1.1 ** 3 * 0.99)
+
 if __name__ == "__main__":
     unittest.main()
