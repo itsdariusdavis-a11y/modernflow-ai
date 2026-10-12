@@ -1,0 +1,306 @@
+{
+"source": "data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&orderBy=PNL",
+"fetched": "2026-10-12",
+"rows": [
+{
+"userName": "e46m3",
+"proxyWallet": "0x4f1d5ae26fc31472966e951af3183308736d8de2",
+"vol": 2270428,
+"pnl": 2656086
+},
+{
+"userName": "BreakTheBank",
+"proxyWallet": "0xf0318c32136c2db7fec88b84869aee6a1106c80c",
+"vol": 45025644,
+"pnl": 2586865
+},
+{
+"userName": "UpTheBlues",
+"proxyWallet": "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7",
+"vol": 130794986,
+"pnl": 2002403
+},
+{
+"userName": "00gringo00",
+"proxyWallet": "0x51698a47f840a242abc2ca0351371c7ffac41842",
+"vol": 19407750,
+"pnl": 1739969
+},
+{
+"userName": "Kch-Temp",
+"proxyWallet": "0x924379a79c64b77ad5816ad362122a5f6228658e",
+"vol": 14652334,
+"pnl": 1704053
+},
+{
+"userName": "joseph00677",
+"proxyWallet": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a",
+"vol": 9916428,
+"pnl": 1581558
+},
+{
+"userName": "Papeasy",
+"proxyWallet": "0x111f73e91f85b6fe4de1ddec3de2fe32122e355b",
+"vol": 717,
+"pnl": 1094222
+},
+{
+"userName": "HomeRunHazard",
+"proxyWallet": "0x5268527977f700f9bf9b6d5cd843859e4e70135d",
+"vol": 116913410,
+"pnl": 981353
+},
+{
+"userName": "mooseborzoii",
+"proxyWallet": "0x1f3a646ce5cbe2c70270e7a46161d89b7c7b895d",
+"vol": 58339717,
+"pnl": 975804
+},
+{
+"userName": "raybanman",
+"proxyWallet": "0xcbc666209b4c17ea84c03c0dda71b5dab9e4ec62",
+"vol": 9495047,
+"pnl": 928852
+},
+{
+"userName": "TheReturnOfDarthMaul",
+"proxyWallet": "0x3a8aa345d5db7ec5138298c8c4f4540259be7699",
+"vol": 3315001,
+"pnl": 881408
+},
+{
+"userName": "0xb0e74DF9430A089Aa102e2207Af5fde1967439D2-1789545517033",
+"proxyWallet": "0xb0e74df9430a089aa102e2207af5fde1967439d2",
+"vol": 3000,
+"pnl": 853608
+},
+{
+"userName": "0x361b16e3ddfe1d415d41008daac2631d94ab74fe",
+"proxyWallet": "0x361b16e3ddfe1d415d41008daac2631d94ab74fe",
+"vol": 5019799,
+"pnl": 793743
+},
+{
+"userName": "primm",
+"proxyWallet": "0xd38b71f3e8ed1af71983e5c309eac3dfa9b35029",
+"vol": 12679754,
+"pnl": 777507
+},
+{
+"userName": "wr0ngw4yb3tt0r",
+"proxyWallet": "0x224a89dbe0db0d6124b335edabd15b3f877da3d5",
+"vol": 83502210,
+"pnl": 728792
+},
+{
+"userName": "omnibus-076daa",
+"proxyWallet": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+"vol": 34671656,
+"pnl": 703217
+},
+{
+"userName": "juice-fruit",
+"proxyWallet": "0x5fdd66ffd0325d4e8d1d86fbec50caa31770a747",
+"vol": 4757769,
+"pnl": 696225
+},
+{
+"userName": "Bigggggggg",
+"proxyWallet": "0x511f9c771449162349795d17becf8b37031acbe1",
+"vol": 5446263,
+"pnl": 654046
+},
+{
+"userName": "0xBc43c8bfBC4d77c2FC9011adaD38Ba43b88996d3-1765231687816",
+"proxyWallet": "0xbc43c8bfbc4d77c2fc9011adad38ba43b88996d3",
+"vol": 23886413,
+"pnl": 651975
+},
+{
+"userName": "anoin123",
+"proxyWallet": "0x96489abcb9f583d6835c8ef95ffc923d05a86825",
+"vol": 6250042,
+"pnl": 597760
+},
+{
+"userName": "fortnitethegoat667",
+"proxyWallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+"vol": 25981019,
+"pnl": 573381
+},
+{
+"userName": "Elaran1993",
+"proxyWallet": "0xb7271c112cbd83eb4c1ef1b554ff963604ae2a9d",
+"vol": 5326427,
+"pnl": 564097
+},
+{
+"userName": "0xd4aa6f8e91cfea29b66a48ebff52814",
+"proxyWallet": "0x709e8dcb133555794decc598e07f2c923b8366f5",
+"vol": 2491839,
+"pnl": 533418
+},
+{
+"userName": "totoro3miyazaki",
+"proxyWallet": "0x0f6f76ced62a911bccef92f50faaff143854d977",
+"vol": 10941063,
+"pnl": 504908
+},
+{
+"userName": "3edmond.dantes",
+"proxyWallet": "0x983eedfbd75803602e4a6e6ea9aab6dc6b9c6748",
+"vol": 1281818,
+"pnl": 501647
+},
+{
+"userName": "TeamA",
+"proxyWallet": "0x9ba9dec33838f4ec9f032f7247d7481987e63ce9",
+"vol": 499761,
+"pnl": 500768
+},
+{
+"userName": "Ancient-Strike",
+"proxyWallet": "0xc9ae00eda811041a059f3eec9356b24067c1b9e0",
+"vol": 2988627,
+"pnl": 469001
+},
+{
+"userName": "justwins",
+"proxyWallet": "0xa2cced8bfae7d645f7f437fb76becf2fcbb70cbc",
+"vol": 3341257,
+"pnl": 441585
+},
+{
+"userName": "ic4cream",
+"proxyWallet": "0x27f738fe203827445690339104aae35b20bc44b0",
+"vol": 5498641,
+"pnl": 410072
+},
+{
+"userName": "MumiaTriste",
+"proxyWallet": "0x1109da04152c38666464f5adb5d7c55618810b2c",
+"vol": 3794978,
+"pnl": 391526
+},
+{
+"userName": "0x9b11866433281ade9f2811dbde8acdefc45f5375",
+"proxyWallet": "0x9b11866433281ade9f2811dbde8acdefc45f5375",
+"vol": 38555886,
+"pnl": 387550
+},
+{
+"userName": "dsasdaas",
+"proxyWallet": "0x1e52bbdf389526f57abc62641d518868f4c5eb43",
+"vol": 3634443,
+"pnl": 384127
+},
+{
+"userName": "alwaysfade",
+"proxyWallet": "0xe5b70fd855af9258d9463992e4f1ed7987905ee3",
+"vol": 1229199,
+"pnl": 381960
+},
+{
+"userName": "para-Vision",
+"proxyWallet": "0x676c1bb692c76b57b06f1b93817515acfa5ce139",
+"vol": 4094324,
+"pnl": 370876
+},
+{
+"userName": "BillyGating",
+"proxyWallet": "0x2dfa4e79eca44b7c774f40a45535adbc368a6f60",
+"vol": 2648540,
+"pnl": 364156
+},
+{
+"userName": "weflyhigh",
+"proxyWallet": "0x03e8a544e97eeff5753bc1e90d46e5ef22af1697",
+"vol": 1206818,
+"pnl": 355841
+},
+{
+"userName": "0x80d5aebbE7a714879177E4dAE0014195beb3987E-1789159822906",
+"proxyWallet": "0x80d5aebbe7a714879177e4dae0014195beb3987e",
+"vol": 698702,
+"pnl": 339858
+},
+{
+"userName": "0x16bb9951a36fce71e2ef57890b786145e0ba8492",
+"proxyWallet": "0x16bb9951a36fce71e2ef57890b786145e0ba8492",
+"vol": 7067473,
+"pnl": 337331
+},
+{
+"userName": "THEHIGHLIFE",
+"proxyWallet": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
+"vol": 8837052,
+"pnl": 336671
+},
+{
+"userName": "kindar",
+"proxyWallet": "0x369f46433349a57cd6d08abf2819da737c09873e",
+"vol": 2556839,
+"pnl": 319324
+},
+{
+"userName": "donthackme",
+"proxyWallet": "0x03805a13a0b3e058f55f6c6af95389d4f431073d",
+"vol": 5381670,
+"pnl": 312597
+},
+{
+"userName": "theowalcott",
+"proxyWallet": "0x7ad71d79a3bb90d0a87a06500fa0fe11663842aa",
+"vol": 4683330,
+"pnl": 308509
+},
+{
+"userName": "foodenjoyer",
+"proxyWallet": "0x7b02b2bac2a30ed5e40b7094e734f4c3dc2a4991",
+"vol": 3376989,
+"pnl": 299702
+},
+{
+"userName": "liquiditycrisis",
+"proxyWallet": "0xa90429bc88a1d22eb40e4aac9aaf0bcefd29d20c",
+"vol": 4700605,
+"pnl": 297122
+},
+{
+"userName": "0x06dc51826bc524d9a83770e7de9dd7e005b0452",
+"proxyWallet": "0x06dc51826bc524d9a83770e7de9dd7e005b04524",
+"vol": 29172644,
+"pnl": 291670
+},
+{
+"userName": "chubbytoro",
+"proxyWallet": "0xe4a57385a34b0b32fd86be72efd25cda41003cad",
+"vol": 4198281,
+"pnl": 278922
+},
+{
+"userName": "lllllllIlll",
+"proxyWallet": "0xe40ecff63ec661d218a86c048186ac83389a9770",
+"vol": 10609867,
+"pnl": 278077
+},
+{
+"userName": "aenews2",
+"proxyWallet": "0x44c1dfe43260c94ed4f1d00de2e1f80fb113ebc1",
+"vol": 3595254,
+"pnl": 277550
+},
+{
+"userName": "DelidelaDele",
+"proxyWallet": "0x95c6c9a6727ed203e97230dda61ab19a020e1508",
+"vol": 1229879,
+"pnl": 273695
+},
+{
+"userName": "MKSafe",
+"proxyWallet": "0xb4164e085a0503532989d487c4b4b19f4288dd7b",
+"vol": 284203,
+"pnl": 260641
+}
+]
+}

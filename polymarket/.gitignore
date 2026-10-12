@@ -1,0 +1,4 @@
+data/report.md
+data/vetted.json
+data/paper_ledger.jsonl
+__pycache__/
