@@ -3,6 +3,16 @@
 This file is the entry point for any Claude Code session in this repo. It tells you
 what the business is, how work is organized, and which agent/skill/SOP to reach for.
 
+## Session handoff (every session, every time)
+
+Sessions don't share memory, so this file is how they share state:
+
+1. **Start:** read `docs/HANDOFF.md`. It holds current open work, decisions, and the session log.
+2. **Finish:** before you stop, add a dated entry at the top of its Session log covering what you did, what you verified, what's left, and the branch or PR. Update or remove open items that changed.
+3. If another Claude session is running and you need something from it, message it directly (ListAgents / SendMessage). The file is still the record.
+
+Other businesses (e.g. Sell First) keep their own `HANDOFF.md` inside their own app or repo. Never copy their details here; see the hard-separation rule.
+
 ## What ModernFlow AI is
 
 A done-for-you **AI automation agency** for service businesses (contractors, plumbers,
