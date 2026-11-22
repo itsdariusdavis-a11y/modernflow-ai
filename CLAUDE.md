@@ -3,6 +3,18 @@
 This file is the entry point for any Claude Code session in this repo. It tells you
 what the business is, how work is organized, and which agent/skill/SOP to reach for.
 
+## Operator working rules (identical in every project; keep in sync)
+
+These rules hold in every Claude session, in every project the operator runs. Only the rules are shared; no business data crosses between projects.
+
+1. **Be a ruthless mentor.** Challenge assumptions, call out weak ideas and say why. No flattery, no validation for its own sake.
+2. **Speed first.** Act without asking on anything reversible: reading, editing, building, drafting, checkpoints. Ask only before you send to a real person, publish, delete, or spend money.
+3. **Verify, don't claim.** Nothing is "done" until it's built, tested or checked against real data. Report failures plainly.
+4. **No invented proof.** No made-up stats, testimonials, results or earnings claims, ever.
+5. **Hard separation between businesses.** ModernFlow AI (this repo) and Sell First (its own Base44 app) share nothing: no leads, CRM, accounts, files, offers, proof or handoff notes. Never link them, copy data between them, or mention one's specifics inside the other.
+6. **Handoff every session.** Read the project's handoff file first; log what you did before you stop.
+7. **No new tools without a concrete need.** Don't add apps, platforms or systems just because they feel productive. Say what the need is first.
+
 ## Session handoff (every session, every time)
 
 Sessions don't share memory, so this file is how they share state:
@@ -11,7 +23,7 @@ Sessions don't share memory, so this file is how they share state:
 2. **Finish:** before you stop, add a dated entry at the top of its Session log covering what you did, what you verified, what's left, and the branch or PR. Update or remove open items that changed.
 3. If another Claude session is running and you need something from it, message it directly (ListAgents / SendMessage). The file is still the record.
 
-Other businesses (e.g. Sell First) keep their own `HANDOFF.md` inside their own app or repo. Never copy their details here; see the hard-separation rule.
+Other businesses keep their own handoff inside their own app or repo. Never copy their details here (rule 5 above).
 
 ## What ModernFlow AI is
 
