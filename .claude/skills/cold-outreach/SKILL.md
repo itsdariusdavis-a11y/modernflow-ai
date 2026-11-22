@@ -15,10 +15,16 @@ for `outreach-agent` / `docs/sops/02-sales-outreach.md`.
 2. **Write the sequence** (default 4 touches: relevance → value/proof → pattern-interrupt
    → breakup). Rules: under ~90 words each, lowercase 2–5 word subject lines, one ask =
    a 15-min call, plain-spoken owner-to-owner tone, defensible proof only.
-3. **Personalize** line 1 per lead from the "why they fit / signal" field.
-4. **Stage as drafts:** create Gmail drafts (or a draft Apollo campaign) with the send
+3. **Personalize** line 1 per lead from the "why they fit / signal" field. For
+   high-value leads, run `seo-local` on their site first and open with one
+   concrete, verifiable gap (review count/recency vs. the top map-pack competitor).
+4. **Deliverability gate:** before the first send from a domain (or after any
+   domain/volume change, or a bounce/spam spike), run `cold-email-deliverability`.
+   Any BLOCKER means don't stage the campaign. Never run cold volume from the primary
+   domain that carries client mail.
+5. **Stage as drafts:** create Gmail drafts (or a draft Apollo campaign) with the send
    schedule. Show the user the copy + the send plan.
-5. **Stop at the approval gate.** Only send after the user says "send it." Then route
+6. **Stop at the approval gate.** Only send after the user says "send it." Then route
    positive replies to `/book-call` (scheduling).
 
 ## Guardrails
